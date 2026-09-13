@@ -119,7 +119,21 @@
         button {
             font-family: Arial, sans-serif;
         }
+.song {
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.08);
+}
 
+.song h4 {
+    margin: 0 0 5px;
+}
+
+.song p {
+    margin: 0;
+    font-size: 13px;
+}
         .btn {
             border: none;
             padding: 10px 13px;
@@ -347,6 +361,15 @@
     <span>Files</span>
 </div>
 
+<div class="icon" data-open="music">
+    <div class="emoji">🎵</div>
+    <span>Music</span>
+</div>
+
+<div class="icon" data-open="settings">
+    <div class="emoji">⚙️</div>
+    <span>Settings</span>
+</div>
         </div>
 
 
@@ -366,17 +389,23 @@
                 <div class="hero">
                     <h2>Welcome to PixelOS 👋</h2>
 
-                    <p>
-                        This is my own browser-based OS for the WebOS 1
-                        mission. Windows can be moved around, apps can be
-                        opened from the desktop or dock, and notes are saved
-                        in the browser.
-                    </p>
+<p>
+    This is my own browser-based OS for the WebOS 2 mission.
+    Windows can be moved around, apps can be opened from the desktop or dock,
+    and notes are saved in the browser.
+</p>
+
+<p>
+    <strong>✨ New in WebOS 2:</strong>
+    File Manager, Music Player, and Settings with customizable wallpapers,
+    notifications, and more.
+</p>
+
                 </div>
 
                 <div class="feature-card">
                     <b>Custom feature:</b>
-                    Theme Lab lets you change the colors and wallpaper.
+                    Theme Lab lets you change the colors and wallpaper in WebOS 1. In WebOS 2, Added setting app music and files.
                 </div>
 
             </div>
@@ -401,6 +430,98 @@
         <button class="btn" id="newFile">Create File</button>
     </div>
 
+</section>
+
+<!-- Music window -->
+<section class="window" id="music"
+    style="left: 350px; top: 180px; display: none;">
+
+    <div class="titlebar">
+        <i class="dot close"></i>
+        <i class="dot min"></i>
+        <i class="dot max"></i>
+        <div class="title">Music</div>
+    </div>
+
+    <div class="body">
+        <h3>🎵 Music Player</h3>
+        <p>Choose a song to play.</p>
+        <p id="songStatus">No song selected</p>
+
+        <audio id="pixelosAudio" src="pixelos-theme.mp3"></audio>
+<audio id="dreamsAudio" src="digital-dreams.mp3"></audio>
+
+       <div class="song" onclick="if (currentAudio) currentAudio.pause(); selectedSong = 'PixelOS Theme'; currentAudio = pixelosAudio; document.getElementById('songStatus').textContent = selectedSong; showToast('PixelOS Theme selected 🎵')">
+    <h4>🎶 PixelOS Theme</h4>
+    <p>Click to select</p>
+</div>
+
+<div class="song" onclick="if (currentAudio) currentAudio.pause(); selectedSong = 'Digital Dreams'; currentAudio = dreamsAudio; document.getElementById('songStatus').textContent = selectedSong; showToast('Digital Dreams selected 🎵')">
+    <h4>🌌 Digital Dreams</h4>
+    <p>Click to select</p>
+</div>
+
+       <button class="btn" id="playMusic">▶ Play</button>
+       <button class="btn" id="pauseMusic">⏸ Pause</button>
+    </div>
+
+</section>
+<!-- Settings window -->
+<section class="window" id="settings"
+    style="left: 400px; top: 180px; display: none;">
+
+    <div class="titlebar">
+        <i class="dot close"></i>
+        <i class="dot min"></i>
+        <i class="dot max"></i>
+        <div class="title">Settings</div>
+    </div>
+
+    <div class="body">
+        <h3>⚙️ Settings</h3>
+        <p>Customize your PixelOS experience.</p>
+
+        <h4>🎨 Appearance</h4>
+        <button class="btn" id="voidWallpaper">🌌 Void</button>
+<button class="btn" id="oceanWallpaper">🌊 Ocean</button>
+<button class="btn" id="sunsetWallpaper">🌅 Sunset</button>
+        <button class="btn" id="settingsTheme">Theme Lab</button>
+
+        <h4>🔔 Notifications</h4>
+<button class="btn" id="notificationToggle">Notifications: On</button>
+
+        <h4>🔊 Sound</h4>
+        <button class="btn" id="soundToggle">Sound: On</button>
+
+        <h4>💻 About</h4>
+        <p class="small">PixelOS WebOS 2</p>
+        <button class="btn" id="resetSettings">🔄 Reset Settings</button>
+    </div>
+</section>
+<!-- Settings window -->
+<section class="window" id="settings"
+    style="left: 400px; top: 180px; display: none;">
+
+    <div class="titlebar">
+        <i class="dot close"></i>
+        <i class="dot min"></i>
+        <i class="dot max"></i>
+        <div class="title">Settings</div>
+    </div>
+
+    <div class="body">
+        <h3>⚙️ Settings</h3>
+        <p>Customize your PixelOS experience.</p>
+
+        <h4>🎨 Appearance</h4>
+        <button class="btn" id="settingsTheme">Theme Lab</button>
+
+        <h4>🔊 Sound</h4>
+        <button class="btn" id="soundToggle">Sound: On</button>
+
+        <h4>💻 About</h4>
+        <p class="small">PixelOS WebOS 2</p>
+    </div>
 </section>
         <!-- Notes window -->
         <section class="window" id="notes"
@@ -563,6 +684,21 @@
                 🎨
             </button>
 
+            <button class="dockbtn"
+                data-open="files">
+                📁
+            </button>
+
+            <button class="dockbtn"
+                data-open="music">
+                🎵
+            </button>
+
+            <button class="dockbtn"
+              data-open="settings">
+                 ⚙️
+            </button>
+            
             <div id="clock"></div>
 
         </div>
@@ -578,6 +714,35 @@
 
         /* Basic variables */
         var desktop = document.getElementById("desktop");
+        var selectedSong = "";
+        var playMusic = document.getElementById("playMusic");
+        var pauseMusic = document.getElementById("pauseMusic");
+        var pixelosAudio = document.getElementById("pixelosAudio");
+        var dreamsAudio = document.getElementById("dreamsAudio");
+        var currentAudio = null;
+
+playMusic.addEventListener("click", function () {
+    if (selectedSong == "") {
+        showToast("Select a song first");
+        return;
+    }
+
+    document.getElementById("songStatus").textContent =
+        "▶ Playing: " + selectedSong;
+        currentAudio.play();
+});
+
+pauseMusic.addEventListener("click", function () {
+    if (selectedSong == "") {
+        showToast("No song selected");
+        return;
+    }
+
+    document.getElementById("songStatus").textContent =
+        "⏸ Paused: " + selectedSong;
+        currentAudio.pause();
+});
+
         var zIndex = 20;
       var newFile = document.getElementById("newFile");
 var fileList = document.getElementById("fileList");
@@ -601,6 +766,9 @@ newFile.addEventListener("click", function () {
 
         /* Shows a small notification */
         function showToast(message) {
+            if (notificationsOn == false) {
+    return;
+}
 
             var toast = document.getElementById("toast");
 
@@ -625,6 +793,57 @@ newFile.addEventListener("click", function () {
 
             showToast(id + " opened");
         }
+
+        document.getElementById("settingsTheme").addEventListener("click", function () {
+    openWindow("theme");
+});
+document.getElementById("voidWallpaper").addEventListener("click", function () {
+    desktop.style.background = "linear-gradient(135deg, #050014, #160044, #000000)";
+    showToast("Void wallpaper applied");
+});
+
+document.getElementById("oceanWallpaper").addEventListener("click", function () {
+    desktop.style.background = "linear-gradient(135deg, #001f3f, #0074D9, #00a8a8)";
+    showToast("Ocean wallpaper applied");
+});
+
+document.getElementById("sunsetWallpaper").addEventListener("click", function () {
+    desktop.style.background = "linear-gradient(135deg, #ff7b00, #ff3cac, #5b2cff)";
+    showToast("Sunset wallpaper applied");
+});
+var notificationsOn = true;
+
+document.getElementById("notificationToggle").addEventListener("click", function () {
+    notificationsOn = !notificationsOn;
+
+    if (notificationsOn) {
+        this.textContent = "Notifications: On";
+        showToast("Notifications turned on");
+    } else {
+        this.textContent = "Notifications: Off";
+        showToast("Notifications turned off");
+    }
+});
+
+var soundOn = true;
+
+document.getElementById("soundToggle").addEventListener("click", function () {
+    soundOn = !soundOn;
+
+    if (soundOn) {
+        this.textContent = "Sound: On";
+        showToast("Sound turned on");
+    } else {
+        this.textContent = "Sound: Off";
+        showToast("Sound turned off");
+    }
+});
+
+document.getElementById("resetSettings").addEventListener("click", function () {
+    soundOn = true;
+    document.getElementById("soundToggle").textContent = "Sound: On";
+    showToast("Settings reset");
+});
 
 
         /* Closes a window */
