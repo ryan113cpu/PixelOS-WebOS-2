@@ -1,0 +1,1002 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PixelOS - WebOS 1</title>
+
+    <style>
+        /* Main page */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            overflow: hidden;
+        }
+
+        #desktop {
+            height: 100vh;
+            position: relative;
+            background: var(--wallpaper);
+        }
+
+        /* Title on desktop */
+        .desktop-title {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+        }
+
+        .desktop-title h1 {
+            margin: 0;
+            font-size: 40px;
+        }
+
+        .desktop-title p {
+            color: #b0b5ca;
+        }
+
+        /* Desktop icons */
+        .icon-grid {
+            position: absolute;
+            top: 120px;
+            left: 25px;
+        }
+
+        .icon {
+            width: 80px;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .icon:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .emoji {
+            font-size: 32px;
+        }
+
+        .icon span {
+            font-size: 12px;
+        }
+
+        /* Windows */
+        .window {
+            position: absolute;
+            width: 390px;
+            background: rgba(25, 29, 50, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .titlebar {
+            height: 45px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            cursor: grab;
+        }
+
+        .dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+        }
+
+        .close {
+            background: #ff5f57;
+        }
+
+        .min {
+            background: #ffbd2e;
+        }
+
+        .max {
+            background: #28c840;
+        }
+
+        .title {
+            margin-left: 5px;
+            font-weight: bold;
+        }
+
+        .body {
+            padding: 18px;
+        }
+
+        /* Buttons */
+        button {
+            font-family: Arial, sans-serif;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 13px;
+            border-radius: 10px;
+            background: var(--accent);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+        .secondary {
+            background: #44485c;
+        }
+
+        /* Text boxes */
+        textarea,
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 9px;
+            border: 1px solid #55596b;
+            background: #171a29;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 170px;
+            resize: none;
+        }
+
+        .row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .row button {
+            flex: 1;
+        }
+
+        /* Welcome app */
+        .hero {
+            padding: 17px;
+            border-radius: 12px;
+            background: rgba(124, 92, 255, 0.2);
+        }
+
+        .hero h2 {
+            margin-top: 0;
+        }
+
+        .hero p {
+            color: #b0b5ca;
+            line-height: 1.5;
+        }
+
+        .feature-card {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .small {
+            color: #aeb6d3;
+            font-size: 12px;
+        }
+
+        /* Calculator */
+        #calcDisplay {
+            text-align: right;
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 7px;
+        }
+
+        .keys button {
+            padding: 13px;
+            border: none;
+            border-radius: 9px;
+            background: #303447;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .keys button:hover {
+            background: #44485c;
+        }
+
+        /* Theme preview */
+        .theme-preview {
+            height: 70px;
+            margin: 10px 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), #cef036);
+        }
+
+        /* Taskbar */
+        #taskbar {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+
+            height: 60px;
+            padding: 7px 10px;
+
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            background: rgba(12, 15, 28, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 18px;
+        }
+
+        .dockbtn {
+            width: 47px;
+            height: 47px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .dockbtn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #clock {
+            padding: 0 10px;
+            color: #aeb6d3;
+            font-size: 12px;
+        }
+
+        /* Notification */
+        #toast {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+
+            padding: 12px 15px;
+            border-radius: 10px;
+
+            background: #202438;
+            border: 1px solid #44485c;
+
+            opacity: 0;
+            transition: 0.2s;
+        }
+
+        #toast.show {
+            opacity: 1;
+        }
+
+        /* Small screens */
+        @media (max-width: 700px) {
+            .window {
+                width: calc(100vw - 30px);
+                left: 15px !important;
+            }
+
+            .desktop-title {
+                left: 20px;
+            }
+
+            .desktop-title h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div id="desktop">
+
+        <!-- Desktop title -->
+        <div class="desktop-title">
+            <h1>PixelOS</h1>
+            <p>A tiny operating system inside your browser.</p>
+        </div>
+
+
+        <!-- Desktop icons -->
+        <div class="icon-grid">
+
+            <div class="icon" data-open="welcome">
+                <div class="emoji">🖥️</div>
+                <span>Welcome</span>
+            </div>
+
+            <div class="icon" data-open="notes">
+                <div class="emoji">📝</div>
+                <span>Notes</span>
+            </div>
+
+            <div class="icon" data-open="calc">
+                <div class="emoji">🧮</div>
+                <span>Calculator</span>
+            </div>
+
+            <div class="icon" data-open="theme">
+                <div class="emoji">🎨</div>
+                <span>Theme Lab</span>
+            </div>
+            
+            <div class="icon" data-open="files">
+    <div class="emoji">📁</div>
+    <span>Files</span>
+</div>
+
+        </div>
+
+
+        <!-- Welcome window -->
+        <section class="window" id="welcome"
+            style="left: 150px; top: 145px;">
+
+            <div class="titlebar">
+                <i class="dot close"></i>
+                <i class="dot min"></i>
+                <i class="dot max"></i>
+                <div class="title">Welcome</div>
+            </div>
+
+            <div class="body">
+
+                <div class="hero">
+                    <h2>Welcome to PixelOS 👋</h2>
+
+                    <p>
+                        This is my own browser-based OS for the WebOS 1
+                        mission. Windows can be moved around, apps can be
+                        opened from the desktop or dock, and notes are saved
+                        in the browser.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <b>Custom feature:</b>
+                    Theme Lab lets you change the colors and wallpaper.
+                </div>
+
+            </div>
+        </section>
+
+<!-- Files window -->
+<section class="window" id="files"
+    style="left: 300px; top: 180px; display: none;">
+
+    <div class="titlebar">
+        <i class="dot close"></i>
+        <i class="dot min"></i>
+        <i class="dot max"></i>
+        <div class="title">Files</div>
+    </div>
+
+    <div class="body">
+        <h3>My Files</h3>
+        <div id="fileList"></div>
+        <p class="small">Your files will appear here.</p>
+        <input id="fileName" placeholder="File name">
+        <button class="btn" id="newFile">Create File</button>
+    </div>
+
+</section>
+        <!-- Notes window -->
+        <section class="window" id="notes"
+            style="left: 560px; top: 120px; display: none;">
+
+            <div class="titlebar">
+                <i class="dot close"></i>
+                <i class="dot min"></i>
+                <i class="dot max"></i>
+                <div class="title">Notes</div>
+            </div>
+
+            <div class="body">
+
+                <textarea id="notesText"
+                    placeholder="Write something..."></textarea>
+
+                <div class="row">
+                    <button class="btn" id="saveNotes">Save</button>
+                    <button class="btn secondary" id="clearNotes">Clear</button>
+                </div>
+
+                <p class="small">
+                    Your notes are saved in your browser.
+                </p>
+
+            </div>
+        </section>
+
+
+        <!-- Calculator window -->
+        <section class="window" id="calc"
+            style="left: 390px; top: 430px; display: none;">
+
+            <div class="titlebar">
+                <i class="dot close"></i>
+                <i class="dot min"></i>
+                <i class="dot max"></i>
+                <div class="title">Calculator</div>
+            </div>
+
+            <div class="body">
+
+                <input id="calcDisplay" value="0" readonly>
+
+                <div class="keys">
+
+                    <button data-key="7">7</button>
+                    <button data-key="8">8</button>
+                    <button data-key="9">9</button>
+                    <button data-key="/">÷</button>
+
+                    <button data-key="4">4</button>
+                    <button data-key="5">5</button>
+                    <button data-key="6">6</button>
+                    <button data-key="*">×</button>
+
+                    <button data-key="1">1</button>
+                    <button data-key="2">2</button>
+                    <button data-key="3">3</button>
+                    <button data-key="-">−</button>
+
+                    <button data-key="0">0</button>
+                    <button data-key=".">.</button>
+                    <button data-key="=">=</button>
+                    <button data-key="+">+</button>
+
+                    <button data-key="C"
+                        style="grid-column: 1 / 5;">
+                        Clear
+                    </button>
+
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Theme Lab -->
+        <section class="window" id="theme"
+            style="left: 720px; top: 300px; display: none;">
+
+            <div class="titlebar">
+                <i class="dot close"></i>
+                <i class="dot min"></i>
+                <i class="dot max"></i>
+                <div class="title">Theme Lab</div>
+            </div>
+
+            <div class="body">
+
+                <p class="small">
+                    Change how PixelOS looks.
+                </p>
+
+                <div class="theme-preview"></div>
+
+                <label>Accent color</label>
+                <input type="color" id="accent" value="#7c5cff">
+
+                <br><br>
+
+                <label>Wallpaper</label>
+
+                <select id="wallpaper">
+
+                    <option value="default">
+                        Pixel Purple
+                    </option>
+
+                    <option value="blue">
+                        Ocean Blue
+                    </option>
+
+                    <option value="green">
+                        Neon Green
+                    </option>
+
+                    <option value="sunset">
+                        Sunset
+                    </option>
+
+                </select>
+
+                <div class="row">
+
+                    <button class="btn" id="randomTheme">
+                        Randomize
+                    </button>
+
+                    <button class="btn secondary" id="resetTheme">
+                        Reset
+                    </button>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- Taskbar -->
+        <div id="taskbar">
+
+            <button class="dockbtn"
+                data-open="welcome">
+                🖥️
+            </button>
+
+            <button class="dockbtn"
+                data-open="notes">
+                📝
+            </button>
+
+            <button class="dockbtn"
+                data-open="calc">
+                🧮
+            </button>
+
+            <button class="dockbtn"
+                data-open="theme">
+                🎨
+            </button>
+
+            <div id="clock"></div>
+
+        </div>
+
+
+        <!-- Toast notification -->
+        <div id="toast"></div>
+
+    </div>
+
+
+    <script>
+
+        /* Basic variables */
+        var desktop = document.getElementById("desktop");
+        var zIndex = 20;
+      var newFile = document.getElementById("newFile");
+var fileList = document.getElementById("fileList");
+var fileName = document.getElementById("fileName");
+var savedFiles = localStorage.getItem("files");
+
+if (savedFiles) {
+    fileList.innerHTML = savedFiles;
+}
+newFile.addEventListener("click", function () {
+    if (fileName.value == "") {
+    showToast("Enter a file name");
+    return;
+}
+    fileList.innerHTML += "<div>📄 " + fileName.value + " <button onclick=\"this.parentElement.remove(); localStorage.setItem('files', document.getElementById('fileList').innerHTML)\">Delete</button></div>";
+    localStorage.setItem("files", fileList.innerHTML);
+    fileName.value = "";
+    showToast("New file created");
+});
+
+
+        /* Shows a small notification */
+        function showToast(message) {
+
+            var toast = document.getElementById("toast");
+
+            toast.textContent = message;
+            toast.classList.add("show");
+
+            setTimeout(function () {
+                toast.classList.remove("show");
+            }, 1700);
+        }
+
+
+        /* Opens a window */
+        function openWindow(id) {
+
+            var window = document.getElementById(id);
+
+            window.style.display = "block";
+
+            zIndex++;
+            window.style.zIndex = zIndex;
+
+            showToast(id + " opened");
+        }
+
+
+        /* Closes a window */
+        function closeWindow(window) {
+            window.style.display = "none";
+        }
+
+
+        /* Open apps when an icon is clicked */
+        var openButtons = document.querySelectorAll("[data-open]");
+
+        openButtons.forEach(function (button) {
+
+            button.addEventListener("click", function () {
+
+                openWindow(button.dataset.open);
+
+            });
+
+        });
+
+
+        /* Make the windows draggable */
+        var windows = document.querySelectorAll(".window");
+
+        windows.forEach(function (window) {
+
+            var titlebar = window.querySelector(".titlebar");
+            var closeButton = window.querySelector(".close");
+
+            closeButton.addEventListener("click", function () {
+                closeWindow(window);
+            });
+
+
+            var dragging = false;
+            var mouseX = 0;
+            var mouseY = 0;
+
+
+            titlebar.addEventListener("mousedown", function (event) {
+
+                dragging = true;
+
+                mouseX = event.clientX - window.offsetLeft;
+                mouseY = event.clientY - window.offsetTop;
+
+                zIndex++;
+                window.style.zIndex = zIndex;
+
+            });
+
+
+            document.addEventListener("mousemove", function (event) {
+
+                if (dragging == true) {
+
+                    window.style.left =
+                        event.clientX - mouseX + "px";
+
+                    window.style.top =
+                        event.clientY - mouseY + "px";
+
+                }
+
+            });
+
+
+            document.addEventListener("mouseup", function () {
+
+                dragging = false;
+
+            });
+
+        });
+
+
+        /* ---------------- NOTES ---------------- */
+
+        var notes = document.getElementById("notesText");
+
+        notes.value = localStorage.getItem("pixelos-notes") || "";
+
+
+        document.getElementById("saveNotes").addEventListener(
+            "click",
+            function () {
+
+                localStorage.setItem(
+                    "pixelos-notes",
+                    notes.value
+                );
+
+                showToast("Notes saved");
+
+            }
+        );
+
+
+        document.getElementById("clearNotes").addEventListener(
+            "click",
+            function () {
+
+                notes.value = "";
+
+                localStorage.removeItem("pixelos-notes");
+
+                showToast("Notes cleared");
+
+            }
+        );
+
+
+        /* ---------------- CALCULATOR ---------------- */
+
+        var display = document.getElementById("calcDisplay");
+        var expression = "";
+
+
+        var calculatorButtons =
+            document.querySelectorAll("[data-key]");
+
+
+        calculatorButtons.forEach(function (button) {
+
+            button.addEventListener("click", function () {
+
+                var key = button.dataset.key;
+
+
+                /* Clear */
+                if (key == "C") {
+
+                    expression = "";
+                    display.value = "0";
+
+                    return;
+                }
+
+
+                /* Equals */
+                if (key == "=") {
+
+                    try {
+
+                        expression = String(
+                            Function(
+                                "return " + expression
+                            )()
+                        );
+
+                        display.value = expression;
+
+                    }
+                    catch {
+
+                        display.value = "Error";
+                        expression = "";
+
+                    }
+
+                    return;
+                }
+
+
+                /* Add the button to the calculator */
+                expression = expression + key;
+                display.value = expression;
+
+            });
+
+        });
+
+
+        /* Calculator keyboard support */
+        document.addEventListener("keydown", function (event) {
+
+            if ("0123456789.+-*/".includes(event.key)) {
+
+                expression = expression + event.key;
+                display.value = expression;
+
+            }
+
+
+            if (event.key == "Enter") {
+
+                try {
+
+                    expression = String(
+                        Function(
+                            "return " + expression
+                        )()
+                    );
+
+                    display.value = expression;
+
+                }
+                catch {
+
+                    display.value = "Error";
+                    expression = "";
+
+                }
+
+            }
+
+        });
+
+
+        /* ---------------- THEMES ---------------- */
+
+        var accent = document.getElementById("accent");
+
+
+        function setAccent(color) {
+
+            document.documentElement.style.setProperty(
+                "--accent",
+                color
+            );
+
+            accent.value = color;
+
+            localStorage.setItem(
+                "pixelos-accent",
+                color
+            );
+
+        }
+
+
+        var savedAccent =
+            localStorage.getItem("pixelos-accent");
+
+
+        if (savedAccent) {
+            setAccent(savedAccent);
+        }
+        else {
+            setAccent("#7c5cff");
+        }
+
+
+        accent.addEventListener("input", function () {
+
+            setAccent(accent.value);
+
+        });
+
+
+        /* Random theme */
+        document.getElementById("randomTheme").addEventListener(
+            "click",
+            function () {
+
+                var colors = [
+                    "#7c5cff",
+                    "#00b8ff",
+                    "#ff4fa3",
+                    "#20c997",
+                    "#ff9f43",
+                    "#feca57"
+                ];
+
+                var randomNumber =
+                    Math.floor(Math.random() * colors.length);
+
+                setAccent(colors[randomNumber]);
+
+                showToast("Theme changed");
+
+            }
+        );
+
+
+        /* Reset theme */
+        document.getElementById("resetTheme").addEventListener(
+            "click",
+            function () {
+
+                setAccent("#7c5cff");
+
+                showToast("Theme reset");
+
+            }
+        );
+
+
+        /* Wallpapers */
+        var wallpapers = {
+
+            default:
+                "linear-gradient(135deg, #0a0d1b, #151a32, #090c16)",
+
+            blue:
+                "linear-gradient(135deg, #071e3d, #1261a0, #0b132b)",
+
+            green:
+                "linear-gradient(135deg, #071a12, #0b5d3b, #06110d)",
+
+            sunset:
+                "linear-gradient(135deg, #32113f, #9b3d5e, #f08a4b)"
+
+        };
+
+
+        var wallpaper =
+            document.getElementById("wallpaper");
+
+
+        function setWallpaper(name) {
+
+            document.documentElement.style.setProperty(
+                "--wallpaper",
+                wallpapers[name]
+            );
+
+            localStorage.setItem(
+                "pixelos-wallpaper",
+                name
+            );
+
+        }
+
+
+        var savedWallpaper =
+            localStorage.getItem("pixelos-wallpaper");
+
+
+        if (savedWallpaper) {
+
+            wallpaper.value = savedWallpaper;
+            setWallpaper(savedWallpaper);
+
+        }
+        else {
+
+            setWallpaper("default");
+
+        }
+
+
+        wallpaper.addEventListener("change", function () {
+
+            setWallpaper(wallpaper.value);
+
+        });
+
+
+        /* ---------------- CLOCK ---------------- */
+
+        function updateClock() {
+
+            var date = new Date();
+
+            var time = date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+
+            document.getElementById("clock").textContent = time;
+
+        }
+
+
+        updateClock();
+
+        setInterval(updateClock, 1000);
+
+    </script>
+
+</body>
+</html>
+```
