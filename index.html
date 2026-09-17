@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,351 +8,352 @@
 
 <style>
 :root {
-    --accent: #6c63ff;
-    --wallpaper: linear-gradient(135deg, #111827, #312e81);
+  --accent: #6c63ff;
+ --wallpaper: linear-gradient(135deg, #111827, #312e81);
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #111;
-    overflow: hidden;
-    color: white;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #111;
+  overflow: hidden;
+  color: white;
 }
 
 #desktop {
-    width: 100vw;
-    height: 100vh;
-    background: var(--wallpaper);
-    position: relative;
-    overflow: hidden;
+ width: 100vw;
+  height: 100vh;
+       background: var(--wallpaper);
+  position: relative;
+                overflow: hidden;
 }
 
-/* icons */
+
 
 .desktop-icons {
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    width: 110px;
+     padding: 20px;
+ display: flex;
+                flex-direction: column;
+ gap: 18px;
+  width: 110px;
 }
 
 .desktop-icon {
-    width: 90px;
-    padding: 8px;
-    text-align: center;
-    border-radius: 10px;
-    cursor: pointer;
-    user-select: none;
+ width: 90px;
+ padding: 8px;
+ text-align: center;
+  border-radius: 10px;
+ cursor: pointer;
+ user-select: none;
 }
 
 .desktop-icon:hover {
-    background: rgba(255,255,255,0.15);
+ background: rgba(255,255,255,0.15);
 }
 
 .icon-picture {
-    width: 50px;
-    height: 50px;
-    margin: auto;
-    border-radius: 12px;
-    background: var(--accent);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 25px;
+width: 50px;
+   height: 50px;
+   margin: auto;
+  border-radius: 12px;
+background: var(--accent);
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 25px;
 }
 
 .desktop-icon span {
-    display: block;
-    margin-top: 6px;
-    font-size: 13px;
+ display: block;
+ margin-top: 6px;
+ font-size: 13px;
 }
 
-/* windows */
+
 
 .window {
-    position: absolute;
-    width: 520px;
-    min-height: 300px;
-    background: rgba(25,25,35,0.97);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 12px;
-    box-shadow: 0 15px 45px rgba(0,0,0,0.5);
-    display: none;
-    overflow: hidden;
+ position: absolute;
+ width: 520px;
+
+   min-height: 300px;
+
+ background: rgba(25,25,35,0.97);
+  border: 1px solid rgba(255,255,255,0.15);
+ border-radius: 12px;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+ display: none;
+  overflow: hidden;
 }
 
 .window.active {
-    display: block;
+  display: block;
 }
 
 .title-bar {
-    height: 42px;
-    background: rgba(255,255,255,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 12px;
-    cursor: move;
-    user-select: none;
+  height: 42px;
+ background: rgba(255,255,255,0.08);
+ display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  cursor: move;
+ user-select: none;
 }
 
 .title {
-    font-weight: bold;
+font-weight: bold;
 }
 
 .close-button {
-    border: 0;
-    background: #ff4d5a;
-    color: white;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    cursor: pointer;
+border: 0;
+background: #ff4d5a;
+ color: white;
+ width: 25px;
+height: 25px;
+ border-radius: 50%;
+cursor: pointer;
 }
 
 .window-content {
-    padding: 20px;
-    max-height: 70vh;
-    overflow-y: auto;
+padding: 20px;
+max-height: 70vh;
+overflow-y: auto;
 }
 
-/* buttons */
+
 
 button {
-    background: var(--accent);
-    border: none;
-    color: white;
-    padding: 9px 14px;
-    border-radius: 7px;
-    cursor: pointer;
-    margin: 4px;
+  background: var(--accent);
+  border: none;
+  color: white;
+  padding: 9px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 4px;
 }
 
 button:hover {
-    opacity: 0.85;
+  opacity: 0.85;
 }
 
 input,
 textarea,
 select {
-    background: #181820;
-    color: white;
-    border: 1px solid #444;
-    border-radius: 7px;
-    padding: 9px;
+  background: #181820;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 7px;
+  padding: 9px;
 }
 
 textarea {
-    width: 100%;
-    min-height: 220px;
-    resize: vertical;
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
 }
 
-/* welcome */
+
 
 .welcome-title {
-    font-size: 28px;
-    margin-top: 0;
+  font-size: 28px;
+  margin-top: 0;
 }
 
 .feature-box {
-    background: rgba(255,255,255,0.07);
-    border-radius: 10px;
-    padding: 15px;
-    margin-top: 15px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 10px;
+  padding: 15px;
+  margin-top: 15px;
 }
 
 .feature-box h3 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
-/* files */
+
 
 .file-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255,255,255,0.06);
-    padding: 10px;
-    margin: 7px 0;
-    border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.06);
+  padding: 10px;
+  margin: 7px 0;
+  border-radius: 7px;
 }
 
 .file-row button {
-    background: #d64550;
-    padding: 6px 10px;
+  background: #d64550;
+  padding: 6px 10px;
 }
 
-/* music */
+
 
 .song {
-    background: rgba(255,255,255,0.07);
-    padding: 14px;
-    margin: 10px 0;
-    border-radius: 9px;
-    cursor: pointer;
+  background: rgba(255,255,255,0.07);
+  padding: 14px;
+  margin: 10px 0;
+  border-radius: 9px;
+  cursor: pointer;
 }
 
 .song:hover {
-    background: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.14);
 }
 
 .song-name {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .song-description {
-    font-size: 12px;
-    opacity: 0.7;
-    margin-top: 4px;
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 4px;
 }
 
 #songStatus {
-    margin: 15px 0;
-    padding: 12px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 8px;
+  margin: 15px 0;
+  padding: 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 8px;
 }
 
-/* calculator */
+
 
 .calculator {
-    width: 280px;
+  width: 280px;
 }
 
-#calcDisplay {
-    width: 100%;
-    height: 55px;
-    font-size: 22px;
-    text-align: right;
-    margin-bottom: 8px;
+#display {
+  width: 100%;
+  height: 55px;
+  font-size: 22px;
+  text-align: right;
+  margin-bottom: 8px;
 }
 
 .calc-buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .calc-buttons button {
-    height: 50px;
-    font-size: 17px;
+  height: 50px;
+  font-size: 17px;
 }
-
-/* theme */
 
 .color-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-#accentPicker {
-    width: 55px;
-    height: 35px;
-    padding: 2px;
+#accent {
+  width: 55px;
+  height: 35px;
+  padding: 2px;
 }
 
-/* settings */
+
 
 .setting-row {
-    background: rgba(255,255,255,0.06);
-    padding: 14px;
-    border-radius: 9px;
-    margin-bottom: 10px;
+  background: rgba(255,255,255,0.06);
+  padding: 14px;
+  border-radius: 9px;
+  margin-bottom: 10px;
 }
 
 .setting-row h3 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
-/* taskbar */
+
 
 #taskbar {
-    position: absolute;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 62px;
-    padding: 7px 10px;
-    border-radius: 16px;
-    background: rgba(15,15,20,0.85);
-    backdrop-filter: blur(15px);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 62px;
+  padding: 7px 10px;
+  border-radius: 16px;
+  background: rgba(15,15,20,0.85);
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
 }
 
 .task-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 22px;
+  width: auto;
+  min-width: 48px;
+  height: 48px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 8px;
 }
 
 .task-icon:hover {
-    background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.15);
 }
 
 #clock {
-    margin-left: 10px;
-    padding: 0 10px;
-    font-size: 14px;
+  margin-left: 10px;
+  padding: 0 10px;
+  font-size: 14px;
 }
 
-/* toast */
+
 
 #toast {
-    position: fixed;
-    bottom: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(20,20,25,0.95);
-    padding: 12px 18px;
-    border-radius: 9px;
-    display: none;
-    z-index: 9999;
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20,20,25,0.95);
+  padding: 12px 18px;
+  border-radius: 9px;
+  display: none;
+  z-index: 9999;
 }
 
-/* toggles */
 
 .toggle {
-    display: inline-block;
-    width: 48px;
-    height: 25px;
-    background: #555;
-    border-radius: 20px;
-    cursor: pointer;
-    vertical-align: middle;
-    margin-left: 10px;
+  display: inline-block;
+  width: 48px;
+  height: 25px;
+  background: #555;
+  border-radius: 20px;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 10px;
 }
 
 .toggle.on {
-    background: var(--accent);
+  background: var(--accent);
 }
 
 .toggle-circle {
-    width: 21px;
-    height: 21px;
-    background: white;
-    border-radius: 50%;
-    margin: 2px;
-    transition: 0.2s;
+  width: 21px;
+  height: 21px;
+  background: white;
+  border-radius: 50%;
+  margin: 2px;
+  transition: 0.2s;
 }
 
 .toggle.on .toggle-circle {
-    transform: translateX(23px);
+  transform: translateX(23px);
 }
 </style>
 </head>
@@ -360,369 +362,350 @@ textarea {
 
 <div id="desktop">
 
-    <!-- Desktop icons -->
+  <div class="desktop-icons">
 
-    <div class="desktop-icons">
+    <div class="desktop-icon" data-open="welcome">
+      <div class="icon-picture"></div>
+      <span>Welcome</span>
+    </div>
 
-        <div class="desktop-icon" data-open="welcome">
-            <div class="icon-picture">👋</div>
-            <span>Welcome</span>
-        </div>
+    <div class="desktop-icon" data-open="notes">
+      <div class="icon-picture"></div>
+      <span>Notes</span>
+    </div>
 
-        <div class="desktop-icon" data-open="notes">
-            <div class="icon-picture">📝</div>
-            <span>Notes</span>
-        </div>
+    <div class="desktop-icon" data-open="calculator">
+      <div class="icon-picture"></div>
+      <span>Calculator</span>
+    </div>
 
-        <div class="desktop-icon" data-open="calculator">
-            <div class="icon-picture">🧮</div>
-            <span>Calculator</span>
-        </div>
+    <div class="desktop-icon" data-open="theme">
+      <div class="icon-picture"></div>
+      <span>Theme Lab</span>
+    </div>
 
-        <div class="desktop-icon" data-open="theme">
-            <div class="icon-picture">🎨</div>
-            <span>Theme Lab</span>
-        </div>
+    <div class="desktop-icon" data-open="files">
+      <div class="icon-picture"></div>
+      <span>Files</span>
+    </div>
 
-        <div class="desktop-icon" data-open="files">
-            <div class="icon-picture">📁</div>
-            <span>Files</span>
-        </div>
+    <div class="desktop-icon" data-open="music">
+      <div class="icon-picture"></div>
+      <span>Music</span>
+    </div>
 
-        <div class="desktop-icon" data-open="music">
-            <div class="icon-picture">🎵</div>
-            <span>Music</span>
-        </div>
+    <div class="desktop-icon" data-open="settings">
+      <div class="icon-picture">️</div>
+      <span>Settings</span>
+    </div>
 
-        <div class="desktop-icon" data-open="settings">
-            <div class="icon-picture">⚙️</div>
-            <span>Settings</span>
-        </div>
+  </div>
+
+
+  <section class="window active" id="welcome" style="left: 170px; top: 80px;">
+
+    <div class="title-bar">
+      <span class="title">Welcome</span>
+      <button class="close-button">×</button>
+    </div>
+
+    <div class="window-content">
+
+      <h1 class="welcome-title">Welcome to PixelOS </h1>
+
+      <p>
+        This is my own browser-based OS for the WebOS 2 mission.
+        Windows can be moved around, apps can be opened from the
+        desktop or dock, and notes are saved in the browser.
+      </p>
+
+      <div class="feature-box">
+        <h3>WebOS 2 Features</h3>
+        <p> File Manager</p>
+        <p> Music Player</p>
+        <p> Settings</p>
+        <p> Theme Lab</p>
+        <p> Saved Notes</p>
+        <p> Calculator</p>
+      </div>
 
     </div>
 
+  </section>
 
-    <!-- Welcome -->
 
-    <section class="window active" id="welcome" style="left: 170px; top: 80px;">
+  <section class="window" id="notes" style="left: 250px; top: 100px;">
 
-        <div class="title-bar">
-            <span class="title">Welcome</span>
-            <button class="close-button">×</button>
-        </div>
+    <div class="title-bar">
+      <span class="title">Notes</span>
+      <button class="close-button">×</button>
+    </div>
 
-        <div class="window-content">
+    <div class="window-content">
 
-            <h1 class="welcome-title">Welcome to PixelOS 👋</h1>
+      <h2>Notes</h2>
 
-            <p>
-                This is my own browser-based OS for the WebOS 2 mission.
-                Windows can be moved around, apps can be opened from the
-                desktop or dock, and notes are saved in the browser.
-            </p>
+      <textarea id="notesText" placeholder="Write something..."></textarea>
 
-            <div class="feature-box">
-                <h3>WebOS 2 Features</h3>
-                <p>📁 File Manager</p>
-                <p>🎵 Music Player</p>
-                <p>⚙️ Settings</p>
-                <p>🎨 Theme Lab</p>
-                <p>📝 Saved Notes</p>
-                <p>🧮 Calculator</p>
-            </div>
+      <br>
 
-        </div>
-
-    </section>
-
-
-    <!-- Notes -->
-
-    <section class="window" id="notes" style="left: 250px; top: 100px;">
-
-        <div class="title-bar">
-            <span class="title">Notes</span>
-            <button class="close-button">×</button>
-        </div>
-
-        <div class="window-content">
-
-            <h2>Notes</h2>
-
-            <textarea id="notesText" placeholder="Write something..."></textarea>
-
-            <br>
-
-            <button id="saveNotes">Save Notes</button>
-            <button id="clearNotes">Clear</button>
-
-        </div>
-
-    </section>
-
-
-    <!-- Calculator -->
-
-    <section class="window" id="calculator" style="left: 350px; top: 130px;">
-
-        <div class="title-bar">
-            <span class="title">Calculator</span>
-            <button class="close-button">×</button>
-        </div>
-
-        <div class="window-content calculator">
-
-            <input id="calcDisplay" readonly>
-
-            <div class="calc-buttons">
-
-                <button data-calc="7">7</button>
-                <button data-calc="8">8</button>
-                <button data-calc="9">9</button>
-                <button data-calc="/">÷</button>
-
-                <button data-calc="4">4</button>
-                <button data-calc="5">5</button>
-                <button data-calc="6">6</button>
-                <button data-calc="*">×</button>
-
-                <button data-calc="1">1</button>
-                <button data-calc="2">2</button>
-                <button data-calc="3">3</button>
-                <button data-calc="-">−</button>
-
-                <button data-calc="0">0</button>
-                <button data-calc=".">.</button>
-                <button id="calculate">=</button>
-                <button data-calc="+">+</button>
-
-            </div>
-
-            <button id="calcClear">Clear</button>
-
-        </div>
-
-    </section>
-
-
-    <!-- Theme Lab -->
-
-    <section class="window" id="theme" style="left: 400px; top: 90px;">
-
-        <div class="title-bar">
-            <span class="title">Theme Lab</span>
-            <button class="close-button">×</button>
-        </div>
-
-        <div class="window-content">
-
-            <h2>Theme Lab 🎨</h2>
-
-            <div class="color-row">
-                <label>Accent Color:</label>
-                <input type="color" id="accentPicker" value="#6c63ff">
-            </div>
-
-            <h3>Wallpaper</h3>
-
-            <button data-wallpaper="default">Default</button>
-            <button data-wallpaper="blue">Blue</button>
-            <button data-wallpaper="green">Green</button>
-            <button data-wallpaper="sunset">Sunset</button>
-
-            <br><br>
-
-            <button id="randomTheme">Random Theme</button>
-            <button id="resetTheme">Reset Theme</button>
-
-        </div>
-
-    </section>
-
-
-    <!-- Files -->
-
-    <section class="window" id="files" style="left: 290px; top: 160px;">
-
-        <div class="title-bar">
-            <span class="title">Files</span>
-            <button class="close-button">×</button>
-        </div>
-
-        <div class="window-content">
-
-            <h2>File Manager 📁</h2>
-
-            <input id="fileName" placeholder="Enter file name">
-
-            <button id="newFile">Create File</button>
-
-            <div id="fileList"></div>
-
-        </div>
-
-    </section>
-
-
-    <!-- Music -->
-
-    <section class="window" id="music" style="left: 450px; top: 150px;">
-
-        <div class="title-bar">
-            <span class="title">Music</span>
-            <button class="close-button">×</button>
-        </div>
-
-        <div class="window-content">
-
-            <h2>Music Player 🎵</h2>
-
-            <div id="songStatus">
-                No song selected
-            </div>
-
-            <div class="song" id="pixelosSong">
-
-                <div class="song-name">
-                    🎵 PixelOS Theme
-                </div>
-
-                <div class="song-description">
-                    The PixelOS theme song
-                </div>
-
-            </div>
-
-            <div class="song" id="dreamsSong">
-
-                <div class="song-name">
-                    🎶 Digital Dreams
-                </div>
-
-                <div class="song-description">
-                    A digital style track
-                </div>
-
-            </div>
-
-            <button id="playMusic">▶ Play</button>
-            <button id="pauseMusic">⏸ Pause</button>
-
-            <audio id="pixelosAudio" src="pixelos-theme.mp3"></audio>
-            <audio id="dreamsAudio" src="digital-dreams.mp3"></audio>
-
-        </div>
-
-    </section>
-
-
-    <!-- Settings -->
-
-    <section class="window" id="settings" style="left: 500px; top: 100px;">
-
-        <div class="title-bar">
-            <span class="title">Settings</span>
-            <button class="close-button">×</button>
-        </div>
-
-        <div class="window-content">
-
-            <h2>Settings ⚙️</h2>
-
-            <div class="setting-row">
-
-                <h3>Wallpaper</h3>
-
-                <button data-wallpaper="default">Default</button>
-                <button data-wallpaper="blue">Ocean</button>
-                <button data-wallpaper="green">Green</button>
-                <button data-wallpaper="sunset">Sunset</button>
-
-            </div>
-
-
-            <div class="setting-row">
-
-                <h3>Theme Lab</h3>
-
-                <p>
-                    Change the look of PixelOS using the Theme Lab.
-                </p>
-
-                <button data-open="theme">Open Theme Lab</button>
-
-            </div>
-
-
-            <div class="setting-row">
-
-                <h3>Notifications</h3>
-
-                <p>
-                    Turn PixelOS notifications on or off.
-                </p>
-
-                <div class="toggle on" id="notificationToggle">
-                    <div class="toggle-circle"></div>
-                </div>
-
-            </div>
-
-
-            <div class="setting-row">
-
-                <h3>Sound</h3>
-
-                <p>
-                    Sound setting for PixelOS.
-                </p>
-
-                <div class="toggle on" id="soundToggle">
-                    <div class="toggle-circle"></div>
-                </div>
-
-            </div>
-
-
-            <div class="setting-row">
-
-                <h3>About</h3>
-
-                <p>
-                    PixelOS WebOS 2
-                </p>
-
-                <p>
-                    A browser-based operating system project.
-                </p>
-
-            </div>
-
-
-            <button id="resetSettings">
-                Reset Settings
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- Taskbar -->
-
-    <div id="taskbar">
-
-        <div class="task-icon" data-open="welcome">👋</div>
-        <div class="task-icon" data-open="notes">📝</div>
-        <div class="task-icon" data-open="calculator">🧮</div>
-        <div class="task-icon" data-open="theme">🎨</div>
-        <div class="task-icon" data-open="files">📁</div>
-        <div class="task-icon" data-open="music">🎵</div>
-        <div class="task-icon" data-open="settings">⚙️</div>
-
-        <div id="clock"></div>
+      <button id="saveNotes">Save Notes</button>
+      <button id="clearNotes">Clear</button>
 
     </div>
+
+  </section>
+
+
+  <section class="window" id="calculator" style="left: 350px; top: 130px;">
+
+    <div class="title-bar">
+      <span class="title">Calculator</span>
+      <button class="close-button">×</button>
+    </div>
+
+    <div class="window-content calculator">
+
+      <input id="display" readonly>
+
+      <div class="calc-buttons">
+
+        <button data-calc="7">7</button>
+        <button data-calc="8">8</button>
+        <button data-calc="9">9</button>
+        <button data-calc="/">÷</button>
+
+        <button data-calc="4">4</button>
+        <button data-calc="5">5</button>
+        <button data-calc="6">6</button>
+        <button data-calc="*">×</button>
+
+        <button data-calc="1">1</button>
+        <button data-calc="2">2</button>
+        <button data-calc="3">3</button>
+        <button data-calc="-">−</button>
+
+        <button data-calc="0">0</button>
+        <button data-calc=".">.</button>
+        <button id="calculate">=</button>
+        <button data-calc="+">+</button>
+
+      </div>
+
+      <button id="calcClear">Clear</button>
+
+    </div>
+
+  </section>
+
+
+  <section class="window" id="theme" style="left: 400px; top: 90px;">
+
+    <div class="title-bar">
+      <span class="title">Theme Lab</span>
+      <button class="close-button">×</button>
+    </div>
+
+    <div class="window-content">
+
+      <h2>Theme Lab </h2>
+
+      <div class="color-row">
+        <label>Accent Color:</label>
+        <input type="color" id="accent" value="#6c63ff">
+      </div>
+
+      <h3>Wallpaper</h3>
+
+      <button data-wallpaper="default">Default</button>
+      <button data-wallpaper="blue">Blue</button>
+      <button data-wallpaper="green">Green</button>
+      <button data-wallpaper="sunset">Sunset</button>
+
+      <br><br>
+
+      <button id="randomTheme">Random Theme</button>
+      <button id="resetTheme">Reset Theme</button>
+
+    </div>
+
+  </section>
+
+
+  <section class="window" id="files" style="left: 290px; top: 160px;">
+
+    <div class="title-bar">
+      <span class="title">Files</span>
+      <button class="close-button">×</button>
+    </div>
+
+    <div class="window-content">
+
+      <h2>File Manager </h2>
+
+      <input id="fileName" placeholder="Enter file name">
+
+      <button id="newFile">Create File</button>
+
+      <div id="fileList"></div>
+
+    </div>
+
+  </section>
+
+
+  <section class="window" id="music" style="left: 450px; top: 150px;">
+
+    <div class="title-bar">
+      <span class="title">Music</span>
+      <button class="close-button">×</button>
+    </div>
+
+    <div class="window-content">
+
+      <h2>Music Player </h2>
+
+      <div id="songStatus">
+        No song selected
+      </div>
+
+      <div class="song" id="pixelosSong">
+
+        <div class="song-name">
+           PixelOS Theme
+        </div>
+
+        <div class="song-description">
+          The PixelOS theme song
+        </div>
+
+      </div>
+
+      <div class="song" id="dreamsSong">
+
+        <div class="song-name">
+           Digital Dreams
+        </div>
+
+        <div class="song-description">
+          A digital style track
+        </div>
+
+      </div>
+
+      <button id="playMusic">▶ Play</button>
+      <button id="pauseMusic">⏸ Pause</button>
+
+      <audio id="pixelosAudio" src="pixelos-theme.mp3"></audio>
+      <audio id="dreamsAudio" src="digital-dreams.mp3"></audio>
+
+    </div>
+
+  </section>
+
+  <section class="window" id="settings" style="left: 500px; top: 100px;">
+
+    <div class="title-bar">
+      <span class="title">Settings</span>
+      <button class="close-button">×</button>
+    </div>
+
+    <div class="window-content">
+
+      <h2>Settings ️</h2>
+
+      <div class="setting-row">
+
+        <h3>Wallpaper</h3>
+
+        <button data-wallpaper="default">Default</button>
+        <button data-wallpaper="blue">Ocean</button>
+        <button data-wallpaper="green">Green</button>
+        <button data-wallpaper="sunset">Sunset</button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <h3>Theme Lab</h3>
+
+        <p>
+          Change the look of PixelOS using the Theme Lab.
+        </p>
+
+        <button data-open="theme">Open Theme Lab</button>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <h3>Notifications</h3>
+
+        <p>
+          Turn PixelOS notifications on or off.
+        </p>
+
+        <div class="toggle on" id="notifyToggle">
+          <div class="toggle-circle"></div>
+        </div>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <h3>Sound</h3>
+
+        <p>
+          Sound setting for PixelOS.
+        </p>
+
+        <div class="toggle on" id="soundToggle">
+          <div class="toggle-circle"></div>
+        </div>
+
+      </div>
+
+
+      <div class="setting-row">
+
+        <h3>About</h3>
+
+        <p>
+          PixelOS WebOS 2
+        </p>
+
+        <p>
+          A browser-based operating system project.
+        </p>
+
+      </div>
+
+
+      <button id="resetSettings">
+        Reset Settings
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <div id="taskbar">
+
+    <div class="task-icon" data-open="welcome">Home</div>
+    <div class="task-icon" data-open="notes">Notes</div>
+    <div class="task-icon" data-open="calculator">Calc</div>
+    <div class="task-icon" data-open="theme">Theme</div>
+    <div class="task-icon" data-open="files">Files</div>
+    <div class="task-icon" data-open="music">Music</div>
+    <div class="task-icon" data-open="settings">Settings️</div>
+
+    <div id="clock"></div>
+
+  </div>
 
 </div>
 
@@ -732,7 +715,7 @@ textarea {
 
 <script>
 
-/* Basic variables */
+
 
 var desktop = document.getElementById("desktop");
 var zIndex = 10;
@@ -741,85 +724,81 @@ var notificationsOn = true;
 var soundOn = true;
 
 
-/* toast */
+
 
 function showToast(message) {
 
-    if (!notificationsOn) {
-        return;
-    }
+  if (!notificationsOn) {
+    return;
+  }
 
-    var toast = document.getElementById("toast");
+  var toast = document.getElementById("toast");
 
-    toast.textContent = message;
-    toast.style.display = "block";
+  toast.textContent = message;
+  toast.style.display = "block";
 
-    setTimeout(function () {
-        toast.style.display = "none";
-    }, 2000);
+  setTimeout(function () {
+    toast.style.display = "none";
+  }, 2000);
 }
 
 
-/* Open windows */
 
 function openWindow(id) {
 
-    var windowElement = document.getElementById(id);
+  var win = document.getElementById(id);
 
-    if (!windowElement) {
-        return;
-    }
+  if (!win) {
+    return;
+  }
 
-    windowElement.classList.add("active");
+  win.classList.add("active");
 
-    zIndex++;
-    windowElement.style.zIndex = zIndex;
+  zIndex++;
+  win.style.zIndex = zIndex;
 }
 
 
-/* Close windows */
 
-function closeWindow(windowElement) {
+function closeWindow(win) {
 
-    windowElement.classList.remove("active");
+  win.classList.remove("active");
 
 }
 
 
-/* app buttons */
 
-var openButtons = document.querySelectorAll("[data-open]");
+var openBtns = document.querySelectorAll("[data-open]");
 
-openButtons.forEach(function(button) {
+openBtns.forEach(function(button) {
 
-    button.addEventListener("click", function(event) {
+  button.addEventListener("click", function(event) {
 
-        event.stopPropagation();
+    event.stopPropagation();
 
-        openWindow(button.getAttribute("data-open"));
+    openWindow(button.getAttribute("data-open"));
 
-    });
+  });
 
 });
 
 
-/* close buttons */
 
-var closeButtons = document.querySelectorAll(".close-button");
+var closeBtns = document.querySelectorAll(".close-button");
 
-closeButtons.forEach(function(button) {
+closeBtns.forEach(function(button) {
 
-    button.addEventListener("click", function() {
+  button.addEventListener("click", function() {
 
-        var windowElement = button.closest(".window");
+    var win = button.closest(".window");
 
-        closeWindow(windowElement);
+    closeWindow(win);
 
-    });
+  });
 
 });
-var selectedSong = "";
-var currentAudio = null;
+var song = "";
+var audio = null;
 
 var pixelosAudio = document.getElementById("pixelosAudio");
 var dreamsAudio = document.getElementById("dreamsAudio");
@@ -830,76 +809,76 @@ var pauseMusic = document.getElementById("pauseMusic");
 var songStatus = document.getElementById("songStatus");
 
 
-function selectSong(name, audio) {
+function selectSong(name, selectedAudio) {
 
-    if (currentAudio) {
-        currentAudio.pause();
-        currentAudio.currentTime = 0;
-    }
+  if (audio) {
+    audio.pause();
+    audio.currentTime = 0;
+  }
 
-    selectedSong = name;
-    currentAudio = audio;
+  song = name;
+  audio = selectedAudio;
 
-    songStatus.textContent = selectedSong;
+  songStatus.textContent = song;
 
-    showToast(name + " selected 🎵");
+  showToast(name + " selected");
 }
 
 
 document.getElementById("pixelosSong").addEventListener("click", function() {
 
-    selectSong("PixelOS Theme", pixelosAudio);
+  selectSong("PixelOS Theme", pixelosAudio);
 
 });
 
 
 document.getElementById("dreamsSong").addEventListener("click", function() {
 
-    selectSong("Digital Dreams", dreamsAudio);
+  selectSong("Digital Dreams", dreamsAudio);
 
 });
 
 
 playMusic.addEventListener("click", function() {
 
-    if (selectedSong == "") {
+  if (song == "") {
 
-        showToast("Select a song first");
+    showToast("Select a song first");
 
-        return;
-    }
+    return;
+  }
 
-    if (!currentAudio) {
-        return;
-    }
+  if (!audio) {
+    return;
+  }
 
-    songStatus.textContent = "▶ Playing: " + selectedSong;
+  songStatus.textContent = "▶ Playing: " + song;
 
-    currentAudio.play().catch(function() {
+  audio.play().catch(function() {
 
-        showToast("Could not play the song");
+    showToast("Could not play the song");
 
-    });
+  });
 
 });
 
 
 pauseMusic.addEventListener("click", function() {
 
-    if (selectedSong == "") {
+  if (song == "") {
 
-        showToast("No song selected");
+    showToast("No song selected");
 
-        return;
-    }
+    return;
+  }
 
-    if (!currentAudio) {
-        return;
-    }
+  if (!audio) {
+    return;
+  }
 
-    currentAudio.pause();
+  audio.pause();
 
-    songStatus.textContent = "⏸ Paused: " + selectedSong;
+  songStatus.textContent = "⏸ Paused: " + song;
 
 });
 var notesText = document.getElementById("notesText");
@@ -908,32 +887,31 @@ var savedNotes = localStorage.getItem("pixelos-notes");
 
 if (savedNotes !== null) {
 
-    notesText.value = savedNotes;
+  notesText.value = savedNotes;
 
 }
 
 
 document.getElementById("saveNotes").addEventListener("click", function() {
 
-    localStorage.setItem("pixelos-notes", notesText.value);
+  localStorage.setItem("pixelos-notes", notesText.value);
 
-    showToast("Notes saved 📝");
+  showToast("Notes saved ");
 
 });
 
 
 document.getElementById("clearNotes").addEventListener("click", function() {
 
-    notesText.value = "";
+  notesText.value = "";
 
-    localStorage.removeItem("pixelos-notes");
+  localStorage.removeItem("pixelos-notes");
 
-    showToast("Notes cleared");
+  showToast("Notes cleared");
 
 });
 
 
-/* files */
 
 var files = [];
 
@@ -941,103 +919,103 @@ var savedFiles = localStorage.getItem("pixelos-files");
 
 if (savedFiles) {
 
-    try {
+  try {
 
-        files = JSON.parse(savedFiles);
+    files = JSON.parse(savedFiles);
 
-    } catch (error) {
+  } catch (error) {
 
-        files = [];
+    files = [];
 
-    }
+  }
 
 }
 
 
 function saveFiles() {
 
-    localStorage.setItem("pixelos-files", JSON.stringify(files));
+  localStorage.setItem("pixelos-files", JSON.stringify(files));
 
 }
 
 
 function displayFiles() {
 
-    var fileList = document.getElementById("fileList");
+  var fileList = document.getElementById("fileList");
 
-    fileList.innerHTML = "";
+  fileList.innerHTML = "";
 
-    if (files.length == 0) {
+  if (files.length == 0) {
 
-        fileList.innerHTML = "<p>No files yet.</p>";
+    fileList.innerHTML = "<p>No files yet.</p>";
 
-        return;
-    }
-
-
-    files.forEach(function(file, index) {
-
-        var row = document.createElement("div");
-
-        row.className = "file-row";
+    return;
+  }
 
 
-        var name = document.createElement("span");
+  files.forEach(function(file, index) {
 
-        name.textContent = "📄 " + file;
+    var row = document.createElement("div");
 
-
-        var deleteButton = document.createElement("button");
-
-        deleteButton.textContent = "Delete";
+    row.className = "file-row";
 
 
-        deleteButton.addEventListener("click", function() {
+    var name = document.createElement("span");
 
-            files.splice(index, 1);
-
-            saveFiles();
-
-            displayFiles();
-
-            showToast("File deleted");
-
-        });
+    name.textContent = " " + file;
 
 
-        row.appendChild(name);
-        row.appendChild(deleteButton);
+    var deleteButton = document.createElement("button");
 
-        fileList.appendChild(row);
+    deleteButton.textContent = "Delete";
+
+
+    deleteButton.addEventListener("click", function() {
+
+      files.splice(index, 1);
+
+      saveFiles();
+
+      displayFiles();
+
+      showToast("File deleted");
 
     });
+
+
+    row.appendChild(name);
+    row.appendChild(deleteButton);
+
+    fileList.appendChild(row);
+
+  });
 
 }
 
 
 document.getElementById("newFile").addEventListener("click", function() {
 
-    var input = document.getElementById("fileName");
+  var input = document.getElementById("fileName");
 
-    var fileName = input.value.trim();
+  var fileName = input.value.trim();
 
-    if (fileName == "") {
+  if (fileName == "") {
 
-        showToast("Enter a file name");
+    showToast("Enter a file name");
 
-        return;
-    }
+    return;
+  }
 
 
-    files.push(fileName);
+  files.push(fileName);
 
-    saveFiles();
+  saveFiles();
 
-    displayFiles();
+  displayFiles();
 
-    input.value = "";
+  input.value = "";
 
-    showToast("File created 📄");
+  showToast("File created ");
 
 });
 
@@ -1045,115 +1023,113 @@ document.getElementById("newFile").addEventListener("click", function() {
 displayFiles();
 
 
-/* calculator */
 
-var calcDisplay = document.getElementById("calcDisplay");
+var display = document.getElementById("display");
 
-var calcButtons = document.querySelectorAll("[data-calc]");
+var calcBtns = document.querySelectorAll("[data-calc]");
 
 
-calcButtons.forEach(function(button) {
+calcBtns.forEach(function(button) {
 
-    button.addEventListener("click", function() {
+  button.addEventListener("click", function() {
 
-        calcDisplay.value += button.getAttribute("data-calc");
+    display.value += button.getAttribute("data-calc");
 
-    });
+  });
 
 });
 
 
 document.getElementById("calcClear").addEventListener("click", function() {
 
-    calcDisplay.value = "";
+  display.value = "";
 
 });
 
 
 document.getElementById("calculate").addEventListener("click", function() {
 
-    calculate();
+  calculate();
 
 });
 
 
 function calculate() {
 
-    var expression = calcDisplay.value;
+  var expression = display.value;
 
-    if (expression == "") {
-        return;
-    }
+  if (expression == "") {
+    return;
+  }
 
-    try {
+  try {
 
-        if (!/^[0-9+\-*/.() ]+$/.test(expression)) {
+    if (!/^[0-9+\-*/.() ]+$/.test(expression)) {
 
-            throw new Error();
-
-        }
-
-        var result = Function("return " + expression)();
-
-        calcDisplay.value = result;
-
-    } catch (error) {
-
-        calcDisplay.value = "Error";
+      throw new Error();
 
     }
+
+    var result = Function("return " + expression)();
+
+    display.value = result;
+
+  } catch (error) {
+
+    display.value = "Error";
+
+  }
 
 }
 
 
 document.addEventListener("keydown", function(event) {
 
-    var calculatorWindow = document.getElementById("calculator");
+  var calculatorWindow = document.getElementById("calculator");
 
-    if (!calculatorWindow.classList.contains("active")) {
-        return;
-    }
+  if (!calculatorWindow.classList.contains("active")) {
+    return;
+  }
 
-    if (
-        /[0-9+\-*/().]/.test(event.key) &&
-        event.key.length == 1
-    ) {
+  if (
+    /[0-9+\-*/().]/.test(event.key) &&
+    event.key.length == 1
+  ) {
 
-        calcDisplay.value += event.key;
+    display.value += event.key;
 
-    }
+  }
 
-    if (event.key == "Enter") {
+  if (event.key == "Enter") {
 
-        calculate();
+    calculate();
 
-    }
+  }
 
-    if (event.key == "Escape") {
+  if (event.key == "Escape") {
 
-        calcDisplay.value = "";
+    display.value = "";
 
-    }
+  }
 
 });
 
 
-/* theme */
 
-var accentPicker = document.getElementById("accentPicker");
+var accent = document.getElementById("accent");
 
 
-accentPicker.addEventListener("input", function() {
+accent.addEventListener("input", function() {
 
-    document.documentElement.style.setProperty(
-        "--accent",
-        accentPicker.value
-    );
+  document.documentElement.style.setProperty(
+    "--accent",
+    accent.value
+  );
 
-    localStorage.setItem(
-        "pixelos-accent",
-        accentPicker.value
-    );
+  localStorage.setItem(
+    "pixelos-accent",
+    accent.value
+  );
 
 });
 
@@ -1162,62 +1138,62 @@ var savedAccent = localStorage.getItem("pixelos-accent");
 
 if (savedAccent) {
 
-    accentPicker.value = savedAccent;
+  accent.value = savedAccent;
 
-    document.documentElement.style.setProperty(
-        "--accent",
-        savedAccent
-    );
+  document.documentElement.style.setProperty(
+    "--accent",
+    savedAccent
+  );
 
 }
 var wallpapers = {
 
-    default: "linear-gradient(135deg, #111827, #312e81)",
+  default: "linear-gradient(135deg, #111827, #312e81)",
 
-    blue: "linear-gradient(135deg, #0f172a, #0369a1, #2563eb)",
+  blue: "linear-gradient(135deg, #0f172a, #0369a1, #2563eb)",
 
-    green: "linear-gradient(135deg, #052e16, #166534, #22c55e)",
+  green: "linear-gradient(135deg, #052e16, #166534, #22c55e)",
 
-    sunset: "linear-gradient(135deg, #431407, #c2410c, #f97316)"
+  sunset: "linear-gradient(135deg, #431407, #c2410c, #f97316)"
 
 };
 
 
 function changeWallpaper(name) {
 
-    if (!wallpapers[name]) {
-        return;
-    }
+  if (!wallpapers[name]) {
+    return;
+  }
 
-    document.documentElement.style.setProperty(
-        "--wallpaper",
-        wallpapers[name]
-    );
+  document.documentElement.style.setProperty(
+    "--wallpaper",
+    wallpapers[name]
+  );
 
-    localStorage.setItem(
-        "pixelos-wallpaper",
-        name
-    );
+  localStorage.setItem(
+    "pixelos-wallpaper",
+    name
+  );
 
-    showToast("Wallpaper changed");
+  showToast("Wallpaper changed");
 
 }
 
 
-var wallpaperButtons = document.querySelectorAll(
-    "[data-wallpaper]"
+var wallBtns = document.querySelectorAll(
+  "[data-wallpaper]"
 );
 
 
-wallpaperButtons.forEach(function(button) {
+wallBtns.forEach(function(button) {
 
-    button.addEventListener("click", function() {
+  button.addEventListener("click", function() {
 
-        changeWallpaper(
-            button.getAttribute("data-wallpaper")
-        );
+    changeWallpaper(
+      button.getAttribute("data-wallpaper")
+    );
 
-    });
+  });
 
 });
 
@@ -1226,266 +1202,260 @@ var savedWallpaper = localStorage.getItem("pixelos-wallpaper");
 
 if (savedWallpaper && wallpapers[savedWallpaper]) {
 
-    document.documentElement.style.setProperty(
-        "--wallpaper",
-        wallpapers[savedWallpaper]
-    );
+  document.documentElement.style.setProperty(
+    "--wallpaper",
+    wallpapers[savedWallpaper]
+  );
 
 }
 
 
-/* random theme */
 
 document.getElementById("randomTheme").addEventListener("click", function() {
 
-    var colors = [
-        "#6c63ff",
-        "#00a8ff",
-        "#00c853",
-        "#ff7043",
-        "#e91e63",
-        "#9c27b0",
-        "#00bcd4"
+  var colors = [
+    "#6c63ff",
+    "#00a8ff",
+    "#00c853",
+    "#ff7043",
+    "#e91e63",
+    "#9c27b0",
+    "#00bcd4"
+  ];
+
+  var wallpaperNames = [
+    "default",
+    "blue",
+    "green",
+    "sunset"
+  ];
+
+  var randomColor =
+    colors[Math.floor(Math.random() * colors.length)];
+
+  var randomWallpaper =
+    wallpaperNames[
+      Math.floor(Math.random() * wallpaperNames.length)
     ];
 
-    var wallpaperNames = [
-        "default",
-        "blue",
-        "green",
-        "sunset"
-    ];
 
-    var randomColor =
-        colors[Math.floor(Math.random() * colors.length)];
+  accent.value = randomColor;
 
-    var randomWallpaper =
-        wallpaperNames[
-            Math.floor(Math.random() * wallpaperNames.length)
-        ];
+  document.documentElement.style.setProperty(
+    "--accent",
+    randomColor
+  );
+
+  localStorage.setItem(
+    "pixelos-accent",
+    randomColor
+  );
 
 
-    accentPicker.value = randomColor;
+  changeWallpaper(randomWallpaper);
 
-    document.documentElement.style.setProperty(
-        "--accent",
-        randomColor
-    );
-
-    localStorage.setItem(
-        "pixelos-accent",
-        randomColor
-    );
-
-
-    changeWallpaper(randomWallpaper);
-
-    showToast("Random theme applied 🎨");
+  showToast("Random theme applied ");
 
 });
 
 
-/* reset theme */
 
 document.getElementById("resetTheme").addEventListener("click", function() {
 
-    accentPicker.value = "#6c63ff";
+  accent.value = "#6c63ff";
 
-    document.documentElement.style.setProperty(
-        "--accent",
-        "#6c63ff"
-    );
+  document.documentElement.style.setProperty(
+    "--accent",
+    "#6c63ff"
+  );
 
-    document.documentElement.style.setProperty(
-        "--wallpaper",
-        wallpapers.default
-    );
+  document.documentElement.style.setProperty(
+    "--wallpaper",
+    wallpapers.default
+  );
 
-    localStorage.removeItem("pixelos-accent");
-    localStorage.removeItem("pixelos-wallpaper");
+  localStorage.removeItem("pixelos-accent");
+  localStorage.removeItem("pixelos-wallpaper");
 
-    showToast("Theme reset");
+  showToast("Theme reset");
 
 });
 
 
-/* notifications */
 
-var notificationToggle =
-    document.getElementById("notificationToggle");
+var notifyToggle =
+  document.getElementById("notifyToggle");
 
 
-notificationToggle.addEventListener("click", function() {
+notifyToggle.addEventListener("click", function() {
 
-    notificationsOn = !notificationsOn;
+  notificationsOn = !notificationsOn;
 
-    if (notificationsOn) {
+  if (notificationsOn) {
 
-        notificationToggle.classList.add("on");
+    notifyToggle.classList.add("on");
 
-        showToast("Notifications on");
+    showToast("Notifications on");
 
-    } else {
+  } else {
 
-        notificationToggle.classList.remove("on");
+    notifyToggle.classList.remove("on");
 
-    }
+  }
 
 });
 var soundToggle =
-    document.getElementById("soundToggle");
+  document.getElementById("soundToggle");
 
 
 soundToggle.addEventListener("click", function() {
 
-    soundOn = !soundOn;
+  soundOn = !soundOn;
 
-    if (soundOn) {
+  if (soundOn) {
 
-        soundToggle.classList.add("on");
+    soundToggle.classList.add("on");
 
-        showToast("Sound on");
+    showToast("Sound on");
 
-    } else {
+  } else {
 
-        soundToggle.classList.remove("on");
+    soundToggle.classList.remove("on");
 
-        showToast("Sound off");
+    showToast("Sound off");
 
-    }
+  }
 
 });
 
 
-/* reset */
 
 document.getElementById("resetSettings").addEventListener("click", function() {
 
-    notificationsOn = true;
-    soundOn = true;
+  notificationsOn = true;
+  soundOn = true;
 
-    notificationToggle.classList.add("on");
-    soundToggle.classList.add("on");
-
-
-    accentPicker.value = "#6c63ff";
-
-    document.documentElement.style.setProperty(
-        "--accent",
-        "#6c63ff"
-    );
-
-    document.documentElement.style.setProperty(
-        "--wallpaper",
-        wallpapers.default
-    );
+  notifyToggle.classList.add("on");
+  soundToggle.classList.add("on");
 
 
-    localStorage.removeItem("pixelos-accent");
-    localStorage.removeItem("pixelos-wallpaper");
+  accent.value = "#6c63ff";
 
-    showToast("Settings reset ⚙️");
+  document.documentElement.style.setProperty(
+    "--accent",
+    "#6c63ff"
+  );
+
+  document.documentElement.style.setProperty(
+    "--wallpaper",
+    wallpapers.default
+  );
+
+
+  localStorage.removeItem("pixelos-accent");
+  localStorage.removeItem("pixelos-wallpaper");
+
+  showToast("Settings reset ️");
 
 });
 
 
-/* moving windows */
 
 var windows = document.querySelectorAll(".window");
 
 
-windows.forEach(function(windowElement) {
+windows.forEach(function(win) {
 
-    var titleBar = windowElement.querySelector(".title-bar");
+  var titleBar = win.querySelector(".title-bar");
 
-    var dragging = false;
+  var dragging = false;
 
-    var offsetX = 0;
-    var offsetY = 0;
-
-
-    titleBar.addEventListener("mousedown", function(event) {
-
-        dragging = true;
-
-        zIndex++;
-
-        windowElement.style.zIndex = zIndex;
+  var offsetX = 0;
+  var offsetY = 0;
 
 
-        var rect = windowElement.getBoundingClientRect();
+  titleBar.addEventListener("mousedown", function(event) {
 
-        offsetX = event.clientX - rect.left;
-        offsetY = event.clientY - rect.top;
+    dragging = true;
 
-    });
+    zIndex++;
 
-
-    document.addEventListener("mousemove", function(event) {
-
-        if (!dragging) {
-            return;
-        }
-
-        var x = event.clientX - offsetX;
-        var y = event.clientY - offsetY;
+    win.style.zIndex = zIndex;
 
 
-        if (x < 0) {
-            x = 0;
-        }
+    var rect = win.getBoundingClientRect();
 
-        if (y < 0) {
-            y = 0;
-        }
+    offsetX = event.clientX - rect.left;
+    offsetY = event.clientY - rect.top;
 
-
-        windowElement.style.left = x + "px";
-        windowElement.style.top = y + "px";
-
-    });
+  });
 
 
-    document.addEventListener("mouseup", function() {
+  document.addEventListener("mousemove", function(event) {
 
-        dragging = false;
+    if (!dragging) {
+      return;
+    }
 
-    });
+    var x = event.clientX - offsetX;
+    var y = event.clientY - offsetY;
 
 
-    windowElement.addEventListener("mousedown", function() {
+    if (x < 0) {
+      x = 0;
+    }
 
-        zIndex++;
+    if (y < 0) {
+      y = 0;
+    }
 
-        windowElement.style.zIndex = zIndex;
 
-    });
+    win.style.left = x + "px";
+    win.style.top = y + "px";
+
+  });
+
+
+  document.addEventListener("mouseup", function() {
+
+    dragging = false;
+
+  });
+
+
+  win.addEventListener("mousedown", function() {
+
+    zIndex++;
+
+    win.style.zIndex = zIndex;
+
+  });
 
 });
 
 
-/* clock */
 
 function updateClock() {
 
-    var now = new Date();
+  var now = new Date();
 
-    var hours = now.getHours();
-    var minutes = now.getMinutes();
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
 
-    var suffix = hours >= 12 ? "PM" : "AM";
+  var suffix = hours >= 12 ? "PM" : "AM";
 
-    hours = hours % 12;
+  hours = hours % 12;
 
-    if (hours == 0) {
-        hours = 12;
-    }
+  if (hours == 0) {
+    hours = 12;
+  }
 
-    if (minutes < 10) {
-        minutes = "0" + minutes;
-    }
+  if (minutes < 10) {
+    minutes = "0" + minutes;
+  }
 
-    document.getElementById("clock").textContent =
-        hours + ":" + minutes + " " + suffix;
+  document.getElementById("clock").textContent =
+    hours + ":" + minutes + " " + suffix;
 
 }
 
@@ -1495,9 +1465,7 @@ updateClock();
 setInterval(updateClock, 1000);
 
 
-/* start */
-
-showToast("Welcome to PixelOS 👋");
+showToast("Welcome to PixelOS ");
 
 </script>
 
