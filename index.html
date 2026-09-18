@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +8,8 @@
 
 <style>
 :root {
-  --accent: #6c63ff;
- --wallpaper: linear-gradient(135deg, #111827, #312e81);
+  --accent: #7568e8;
+  --wallpaper: linear-gradient(135deg, #151827, #302b63);
 }
 
 * {
@@ -18,75 +18,65 @@
 
 body {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, sans-serif;
   background: #111;
-  overflow: hidden;
   color: white;
+  overflow: hidden;
 }
 
 #desktop {
- width: 100vw;
+  width: 100vw;
   height: 100vh;
-       background: var(--wallpaper);
+  background: var(--wallpaper);
   position: relative;
-                overflow: hidden;
 }
 
-
-
 .desktop-icons {
-     padding: 20px;
- display: flex;
-                flex-direction: column;
- gap: 18px;
-  width: 110px;
+  padding: 20px;
 }
 
 .desktop-icon {
- width: 90px;
- padding: 8px;
- text-align: center;
-  border-radius: 10px;
- cursor: pointer;
- user-select: none;
+  width: 85px;
+  padding: 8px;
+  text-align: center;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 8px;
 }
 
 .desktop-icon:hover {
- background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.12);
 }
 
 .icon-picture {
-width: 50px;
-   height: 50px;
-   margin: auto;
-  border-radius: 12px;
-background: var(--accent);
-display: flex;
-justify-content: center;
-align-items: center;
-font-size: 25px;
+  width: 48px;
+  height: 48px;
+  margin: auto;
+  background: var(--accent);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 21px;
 }
 
 .desktop-icon span {
- display: block;
- margin-top: 6px;
- font-size: 13px;
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
 }
 
-
-
 .window {
- position: absolute;
- width: 520px;
-
-   min-height: 300px;
-
- background: rgba(25,25,35,0.97);
-  border: 1px solid rgba(255,255,255,0.15);
- border-radius: 12px;
-  box-shadow: 0 15px 45px rgba(0,0,0,0.5);
- display: none;
+  position: absolute;
+  width: 520px;
+  min-height: 300px;
+  background: #20212b;
+  border: 1px solid #444;
+  border-radius: 9px;
+  display: none;
   overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.4);
 }
 
 .window.active {
@@ -94,46 +84,44 @@ font-size: 25px;
 }
 
 .title-bar {
-  height: 42px;
- background: rgba(255,255,255,0.08);
- display: flex;
+  height: 40px;
+  padding: 0 10px;
+  background: #292a35;
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 12px;
   cursor: move;
- user-select: none;
 }
 
 .title {
-font-weight: bold;
+  font-weight: bold;
 }
 
 .close-button {
-border: 0;
-background: #ff4d5a;
- color: white;
- width: 25px;
-height: 25px;
- border-radius: 50%;
-cursor: pointer;
+  width: 25px;
+  height: 25px;
+  border: none;
+  border-radius: 6px;
+  background: #d94d59;
+  color: white;
+  font-size: 17px;
+  cursor: pointer;
 }
 
 .window-content {
-padding: 20px;
-max-height: 70vh;
-overflow-y: auto;
+  padding: 18px;
+  max-height: 70vh;
+  overflow-y: auto;
 }
-
-
 
 button {
   background: var(--accent);
   border: none;
   color: white;
-  padding: 9px 14px;
-  border-radius: 7px;
+  padding: 8px 12px;
+  border-radius: 6px;
   cursor: pointer;
-  margin: 4px;
+  margin: 3px;
 }
 
 button:hover {
@@ -143,30 +131,29 @@ button:hover {
 input,
 textarea,
 select {
-  background: #181820;
+  background: #171820;
   color: white;
   border: 1px solid #444;
-  border-radius: 7px;
+  border-radius: 6px;
   padding: 9px;
 }
 
 textarea {
   width: 100%;
-  min-height: 220px;
+  min-height: 210px;
   resize: vertical;
 }
 
-
-
 .welcome-title {
-  font-size: 28px;
+  font-size: 27px;
   margin-top: 0;
 }
 
 .feature-box {
-  background: rgba(255,255,255,0.07);
-  border-radius: 10px;
-  padding: 15px;
+  background: #292a35;
+  border-left: 4px solid var(--accent);
+  border-radius: 6px;
+  padding: 14px;
   margin-top: 15px;
 }
 
@@ -174,35 +161,30 @@ textarea {
   margin-top: 0;
 }
 
-
-
 .file-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255,255,255,0.06);
-  padding: 10px;
+  background: #292a35;
+  padding: 9px;
   margin: 7px 0;
-  border-radius: 7px;
+  border-radius: 6px;
 }
 
 .file-row button {
-  background: #d64550;
-  padding: 6px 10px;
+  background: #c94752;
 }
 
-
-
 .song {
-  background: rgba(255,255,255,0.07);
-  padding: 14px;
-  margin: 10px 0;
-  border-radius: 9px;
+  background: #292a35;
+  padding: 12px;
+  margin: 9px 0;
+  border-radius: 7px;
   cursor: pointer;
 }
 
 .song:hover {
-  background: rgba(255,255,255,0.14);
+  background: #343540;
 }
 
 .song-name {
@@ -211,18 +193,16 @@ textarea {
 
 .song-description {
   font-size: 12px;
-  opacity: 0.7;
+  color: #aaa;
   margin-top: 4px;
 }
 
 #songStatus {
-  margin: 15px 0;
-  padding: 12px;
-  background: rgba(255,255,255,0.06);
-  border-radius: 8px;
+  margin: 12px 0;
+  padding: 11px;
+  background: #171820;
+  border-radius: 6px;
 }
-
-
 
 .calculator {
   width: 280px;
@@ -230,8 +210,8 @@ textarea {
 
 #display {
   width: 100%;
-  height: 55px;
-  font-size: 22px;
+  height: 54px;
+  font-size: 21px;
   text-align: right;
   margin-bottom: 8px;
 }
@@ -239,17 +219,19 @@ textarea {
 .calc-buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
 }
 
 .calc-buttons button {
-  height: 50px;
-  font-size: 17px;
+  height: 48px;
+  margin: 0;
+  font-size: 16px;
 }
 
 .color-row {
   display: flex;
-  gap: 10px;
   align-items: center;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
@@ -259,12 +241,10 @@ textarea {
   padding: 2px;
 }
 
-
-
 .setting-row {
-  background: rgba(255,255,255,0.06);
-  padding: 14px;
-  border-radius: 9px;
+  background: #292a35;
+  padding: 13px;
+  border-radius: 7px;
   margin-bottom: 10px;
 }
 
@@ -272,71 +252,15 @@ textarea {
   margin-top: 0;
 }
 
-
-
-#taskbar {
-  position: absolute;
-  bottom: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 62px;
-  padding: 7px 10px;
-  border-radius: 16px;
-  background: rgba(15,15,20,0.85);
-  backdrop-filter: blur(15px);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.35);
-}
-
-.task-icon {
-  width: auto;
-  min-width: 48px;
-  height: 48px;
-  border-radius: 11px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 14px;
-  padding: 0 8px;
-}
-
-.task-icon:hover {
-  background: rgba(255,255,255,0.15);
-}
-
-#clock {
-  margin-left: 10px;
-  padding: 0 10px;
-  font-size: 14px;
-}
-
-
-
-#toast {
-  position: fixed;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(20,20,25,0.95);
-  padding: 12px 18px;
-  border-radius: 9px;
-  display: none;
-  z-index: 9999;
-}
-
-
 .toggle {
   display: inline-block;
-  width: 48px;
-  height: 25px;
+  width: 46px;
+  height: 24px;
   background: #555;
   border-radius: 20px;
   cursor: pointer;
   vertical-align: middle;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 
 .toggle.on {
@@ -344,16 +268,66 @@ textarea {
 }
 
 .toggle-circle {
-  width: 21px;
-  height: 21px;
+  width: 20px;
+  height: 20px;
   background: white;
   border-radius: 50%;
   margin: 2px;
-  transition: 0.2s;
 }
 
 .toggle.on .toggle-circle {
-  transform: translateX(23px);
+  margin-left: 24px;
+}
+
+#taskbar {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 58px;
+  padding: 5px;
+  background: #181920;
+  border: 1px solid #3b3c46;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.task-icon {
+  height: 44px;
+  min-width: 48px;
+  padding: 0 8px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.task-icon:hover {
+  background: #30313c;
+}
+
+#clock {
+  margin-left: 5px;
+  padding: 0 10px;
+  border-left: 1px solid #444;
+  font-size: 13px;
+}
+
+#toast {
+  position: fixed;
+  bottom: 85px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #20212a;
+  border: 1px solid #444;
+  padding: 10px 16px;
+  border-radius: 7px;
+  display: none;
+  z-index: 9999;
 }
 </style>
 </head>
@@ -365,44 +339,43 @@ textarea {
   <div class="desktop-icons">
 
     <div class="desktop-icon" data-open="welcome">
-      <div class="icon-picture"></div>
+      <div class="icon-picture">W</div>
       <span>Welcome</span>
     </div>
 
     <div class="desktop-icon" data-open="notes">
-      <div class="icon-picture"></div>
+      <div class="icon-picture">N</div>
       <span>Notes</span>
     </div>
 
     <div class="desktop-icon" data-open="calculator">
-      <div class="icon-picture"></div>
+      <div class="icon-picture">C</div>
       <span>Calculator</span>
     </div>
 
     <div class="desktop-icon" data-open="theme">
-      <div class="icon-picture"></div>
+      <div class="icon-picture">T</div>
       <span>Theme Lab</span>
     </div>
 
     <div class="desktop-icon" data-open="files">
-      <div class="icon-picture"></div>
+      <div class="icon-picture">F</div>
       <span>Files</span>
     </div>
 
     <div class="desktop-icon" data-open="music">
-      <div class="icon-picture"></div>
+      <div class="icon-picture">M</div>
       <span>Music</span>
     </div>
 
     <div class="desktop-icon" data-open="settings">
-      <div class="icon-picture">️</div>
+      <div class="icon-picture">S</div>
       <span>Settings</span>
     </div>
 
   </div>
 
-
-  <section class="window active" id="welcome" style="left: 170px; top: 80px;">
+  <section class="window active" id="welcome" style="left:170px; top:80px;">
 
     <div class="title-bar">
       <span class="title">Welcome</span>
@@ -411,30 +384,28 @@ textarea {
 
     <div class="window-content">
 
-      <h1 class="welcome-title">Welcome to PixelOS </h1>
+      <h1 class="welcome-title">Welcome to PixelOS</h1>
 
       <p>
-        This is my own browser-based OS for the WebOS 2 mission.
-        Windows can be moved around, apps can be opened from the
-        desktop or dock, and notes are saved in the browser.
+        PixelOS is my WebOS 2 project. I wanted it to feel like
+        a small computer that you can use right in your browser.
       </p>
 
       <div class="feature-box">
-        <h3>WebOS 2 Features</h3>
-        <p> File Manager</p>
-        <p> Music Player</p>
-        <p> Settings</p>
-        <p> Theme Lab</p>
-        <p> Saved Notes</p>
-        <p> Calculator</p>
+        <h3>PixelOS Features</h3>
+        <p>File Manager</p>
+        <p>Music Player</p>
+        <p>Settings</p>
+        <p>Theme Lab</p>
+        <p>Saved Notes</p>
+        <p>Calculator</p>
       </div>
 
     </div>
 
   </section>
 
-
-  <section class="window" id="notes" style="left: 250px; top: 100px;">
+  <section class="window" id="notes" style="left:250px; top:100px;">
 
     <div class="title-bar">
       <span class="title">Notes</span>
@@ -456,8 +427,7 @@ textarea {
 
   </section>
 
-
-  <section class="window" id="calculator" style="left: 350px; top: 130px;">
+  <section class="window" id="calculator" style="left:350px; top:130px;">
 
     <div class="title-bar">
       <span class="title">Calculator</span>
@@ -498,8 +468,7 @@ textarea {
 
   </section>
 
-
-  <section class="window" id="theme" style="left: 400px; top: 90px;">
+  <section class="window" id="theme" style="left:400px; top:90px;">
 
     <div class="title-bar">
       <span class="title">Theme Lab</span>
@@ -508,11 +477,11 @@ textarea {
 
     <div class="window-content">
 
-      <h2>Theme Lab </h2>
+      <h2>Theme Lab</h2>
 
       <div class="color-row">
         <label>Accent Color:</label>
-        <input type="color" id="accent" value="#6c63ff">
+        <input type="color" id="accent" value="#7568e8">
       </div>
 
       <h3>Wallpaper</h3>
@@ -531,8 +500,7 @@ textarea {
 
   </section>
 
-
-  <section class="window" id="files" style="left: 290px; top: 160px;">
+  <section class="window" id="files" style="left:290px; top:160px;">
 
     <div class="title-bar">
       <span class="title">Files</span>
@@ -541,7 +509,7 @@ textarea {
 
     <div class="window-content">
 
-      <h2>File Manager </h2>
+      <h2>File Manager</h2>
 
       <input id="fileName" placeholder="Enter file name">
 
@@ -553,8 +521,7 @@ textarea {
 
   </section>
 
-
-  <section class="window" id="music" style="left: 450px; top: 150px;">
+  <section class="window" id="music" style="left:450px; top:150px;">
 
     <div class="title-bar">
       <span class="title">Music</span>
@@ -563,7 +530,7 @@ textarea {
 
     <div class="window-content">
 
-      <h2>Music Player </h2>
+      <h2>Music Player</h2>
 
       <div id="songStatus">
         No song selected
@@ -572,7 +539,7 @@ textarea {
       <div class="song" id="pixelosSong">
 
         <div class="song-name">
-           PixelOS Theme
+          PixelOS Theme
         </div>
 
         <div class="song-description">
@@ -584,7 +551,7 @@ textarea {
       <div class="song" id="dreamsSong">
 
         <div class="song-name">
-           Digital Dreams
+          Digital Dreams
         </div>
 
         <div class="song-description">
@@ -603,7 +570,7 @@ textarea {
 
   </section>
 
-  <section class="window" id="settings" style="left: 500px; top: 100px;">
+  <section class="window" id="settings" style="left:500px; top:100px;">
 
     <div class="title-bar">
       <span class="title">Settings</span>
@@ -612,7 +579,7 @@ textarea {
 
     <div class="window-content">
 
-      <h2>Settings ️</h2>
+      <h2>Settings</h2>
 
       <div class="setting-row">
 
@@ -625,7 +592,6 @@ textarea {
 
       </div>
 
-
       <div class="setting-row">
 
         <h3>Theme Lab</h3>
@@ -637,7 +603,6 @@ textarea {
         <button data-open="theme">Open Theme Lab</button>
 
       </div>
-
 
       <div class="setting-row">
 
@@ -653,7 +618,6 @@ textarea {
 
       </div>
 
-
       <div class="setting-row">
 
         <h3>Sound</h3>
@@ -668,21 +632,17 @@ textarea {
 
       </div>
 
-
       <div class="setting-row">
 
         <h3>About</h3>
 
-        <p>
-          PixelOS WebOS 2
-        </p>
+        <p>PixelOS WebOS 2</p>
 
         <p>
           A browser-based operating system project.
         </p>
 
       </div>
-
 
       <button id="resetSettings">
         Reset Settings
@@ -692,7 +652,6 @@ textarea {
 
   </section>
 
-
   <div id="taskbar">
 
     <div class="task-icon" data-open="welcome">Home</div>
@@ -701,7 +660,7 @@ textarea {
     <div class="task-icon" data-open="theme">Theme</div>
     <div class="task-icon" data-open="files">Files</div>
     <div class="task-icon" data-open="music">Music</div>
-    <div class="task-icon" data-open="settings">Settings️</div>
+    <div class="task-icon" data-open="settings">Settings</div>
 
     <div id="clock"></div>
 
@@ -709,22 +668,15 @@ textarea {
 
 </div>
 
-
 <div id="toast"></div>
 
-
 <script>
-
-
 
 var desktop = document.getElementById("desktop");
 var zIndex = 10;
 
 var notificationsOn = true;
 var soundOn = true;
-
-
-
 
 function showToast(message) {
 
@@ -737,12 +689,10 @@ function showToast(message) {
   toast.textContent = message;
   toast.style.display = "block";
 
-  setTimeout(function () {
+  setTimeout(function() {
     toast.style.display = "none";
   }, 2000);
 }
-
-
 
 function openWindow(id) {
 
@@ -758,15 +708,9 @@ function openWindow(id) {
   win.style.zIndex = zIndex;
 }
 
-
-
 function closeWindow(win) {
-
   win.classList.remove("active");
-
 }
-
-
 
 var openBtns = document.querySelectorAll("[data-open]");
 
@@ -782,8 +726,6 @@ openBtns.forEach(function(button) {
 
 });
 
-
-
 var closeBtns = document.querySelectorAll(".close-button");
 
 closeBtns.forEach(function(button) {
@@ -797,6 +739,7 @@ closeBtns.forEach(function(button) {
   });
 
 });
+
 var song = "";
 var audio = null;
 
@@ -807,7 +750,6 @@ var playMusic = document.getElementById("playMusic");
 var pauseMusic = document.getElementById("pauseMusic");
 
 var songStatus = document.getElementById("songStatus");
-
 
 function selectSong(name, selectedAudio) {
 
@@ -824,20 +766,17 @@ function selectSong(name, selectedAudio) {
   showToast(name + " selected");
 }
 
-
 document.getElementById("pixelosSong").addEventListener("click", function() {
 
   selectSong("PixelOS Theme", pixelosAudio);
 
 });
 
-
 document.getElementById("dreamsSong").addEventListener("click", function() {
 
   selectSong("Digital Dreams", dreamsAudio);
 
 });
-
 
 playMusic.addEventListener("click", function() {
 
@@ -852,6 +791,13 @@ playMusic.addEventListener("click", function() {
     return;
   }
 
+  if (soundOn == false) {
+
+    showToast("Sound is turned off");
+
+    return;
+  }
+
   songStatus.textContent = "▶ Playing: " + song;
 
   audio.play().catch(function() {
@@ -861,7 +807,6 @@ playMusic.addEventListener("click", function() {
   });
 
 });
-
 
 pauseMusic.addEventListener("click", function() {
 
@@ -881,25 +826,22 @@ pauseMusic.addEventListener("click", function() {
   songStatus.textContent = "⏸ Paused: " + song;
 
 });
+
 var notesText = document.getElementById("notesText");
 
 var savedNotes = localStorage.getItem("pixelos-notes");
 
 if (savedNotes !== null) {
-
   notesText.value = savedNotes;
-
 }
-
 
 document.getElementById("saveNotes").addEventListener("click", function() {
 
   localStorage.setItem("pixelos-notes", notesText.value);
 
-  showToast("Notes saved ");
+  showToast("Notes saved");
 
 });
-
 
 document.getElementById("clearNotes").addEventListener("click", function() {
 
@@ -911,8 +853,6 @@ document.getElementById("clearNotes").addEventListener("click", function() {
 
 });
 
-
-
 var files = [];
 
 var savedFiles = localStorage.getItem("pixelos-files");
@@ -920,24 +860,16 @@ var savedFiles = localStorage.getItem("pixelos-files");
 if (savedFiles) {
 
   try {
-
     files = JSON.parse(savedFiles);
-
   } catch (error) {
-
     files = [];
-
   }
 
 }
 
-
 function saveFiles() {
-
   localStorage.setItem("pixelos-files", JSON.stringify(files));
-
 }
-
 
 function displayFiles() {
 
@@ -952,36 +884,30 @@ function displayFiles() {
     return;
   }
 
-
   files.forEach(function(file, index) {
 
     var row = document.createElement("div");
 
     row.className = "file-row";
 
-
     var name = document.createElement("span");
 
-    name.textContent = " " + file;
-
+    name.textContent = file;
 
     var deleteButton = document.createElement("button");
 
     deleteButton.textContent = "Delete";
-
 
     deleteButton.addEventListener("click", function() {
 
       files.splice(index, 1);
 
       saveFiles();
-
       displayFiles();
 
       showToast("File deleted");
 
     });
-
 
     row.appendChild(name);
     row.appendChild(deleteButton);
@@ -991,7 +917,6 @@ function displayFiles() {
   });
 
 }
-
 
 document.getElementById("newFile").addEventListener("click", function() {
 
@@ -1006,28 +931,22 @@ document.getElementById("newFile").addEventListener("click", function() {
     return;
   }
 
-
   files.push(fileName);
 
   saveFiles();
-
   displayFiles();
 
   input.value = "";
 
-  showToast("File created ");
+  showToast("File created");
 
 });
 
-
 displayFiles();
-
-
 
 var display = document.getElementById("display");
 
 var calcBtns = document.querySelectorAll("[data-calc]");
-
 
 calcBtns.forEach(function(button) {
 
@@ -1039,20 +958,13 @@ calcBtns.forEach(function(button) {
 
 });
 
-
 document.getElementById("calcClear").addEventListener("click", function() {
-
   display.value = "";
-
 });
-
 
 document.getElementById("calculate").addEventListener("click", function() {
-
   calculate();
-
 });
-
 
 function calculate() {
 
@@ -1065,9 +977,7 @@ function calculate() {
   try {
 
     if (!/^[0-9+\-*/.() ]+$/.test(expression)) {
-
       throw new Error();
-
     }
 
     var result = Function("return " + expression)();
@@ -1082,7 +992,6 @@ function calculate() {
 
 }
 
-
 document.addEventListener("keydown", function(event) {
 
   var calculatorWindow = document.getElementById("calculator");
@@ -1091,48 +1000,29 @@ document.addEventListener("keydown", function(event) {
     return;
   }
 
-  if (
-    /[0-9+\-*/().]/.test(event.key) &&
-    event.key.length == 1
-  ) {
-
+  if (/[0-9+\-*/().]/.test(event.key) && event.key.length == 1) {
     display.value += event.key;
-
   }
 
   if (event.key == "Enter") {
-
     calculate();
-
   }
 
   if (event.key == "Escape") {
-
     display.value = "";
-
   }
 
 });
 
-
-
 var accent = document.getElementById("accent");
-
 
 accent.addEventListener("input", function() {
 
-  document.documentElement.style.setProperty(
-    "--accent",
-    accent.value
-  );
+  document.documentElement.style.setProperty("--accent", accent.value);
 
-  localStorage.setItem(
-    "pixelos-accent",
-    accent.value
-  );
+  localStorage.setItem("pixelos-accent", accent.value);
 
 });
-
 
 var savedAccent = localStorage.getItem("pixelos-accent");
 
@@ -1146,18 +1036,18 @@ if (savedAccent) {
   );
 
 }
+
 var wallpapers = {
 
-  default: "linear-gradient(135deg, #111827, #312e81)",
+  default: "linear-gradient(135deg, #151827, #302b63)",
 
-  blue: "linear-gradient(135deg, #0f172a, #0369a1, #2563eb)",
+  blue: "linear-gradient(135deg, #0f172a, #075985, #2563eb)",
 
   green: "linear-gradient(135deg, #052e16, #166534, #22c55e)",
 
   sunset: "linear-gradient(135deg, #431407, #c2410c, #f97316)"
 
 };
-
 
 function changeWallpaper(name) {
 
@@ -1170,20 +1060,13 @@ function changeWallpaper(name) {
     wallpapers[name]
   );
 
-  localStorage.setItem(
-    "pixelos-wallpaper",
-    name
-  );
+  localStorage.setItem("pixelos-wallpaper", name);
 
   showToast("Wallpaper changed");
 
 }
 
-
-var wallBtns = document.querySelectorAll(
-  "[data-wallpaper]"
-);
-
+var wallBtns = document.querySelectorAll("[data-wallpaper]");
 
 wallBtns.forEach(function(button) {
 
@@ -1197,7 +1080,6 @@ wallBtns.forEach(function(button) {
 
 });
 
-
 var savedWallpaper = localStorage.getItem("pixelos-wallpaper");
 
 if (savedWallpaper && wallpapers[savedWallpaper]) {
@@ -1209,12 +1091,10 @@ if (savedWallpaper && wallpapers[savedWallpaper]) {
 
 }
 
-
-
 document.getElementById("randomTheme").addEventListener("click", function() {
 
   var colors = [
-    "#6c63ff",
+    "#7568e8",
     "#00a8ff",
     "#00c853",
     "#ff7043",
@@ -1238,7 +1118,6 @@ document.getElementById("randomTheme").addEventListener("click", function() {
       Math.floor(Math.random() * wallpaperNames.length)
     ];
 
-
   accent.value = randomColor;
 
   document.documentElement.style.setProperty(
@@ -1251,22 +1130,19 @@ document.getElementById("randomTheme").addEventListener("click", function() {
     randomColor
   );
 
-
   changeWallpaper(randomWallpaper);
 
-  showToast("Random theme applied ");
+  showToast("Random theme applied");
 
 });
 
-
-
 document.getElementById("resetTheme").addEventListener("click", function() {
 
-  accent.value = "#6c63ff";
+  accent.value = "#7568e8";
 
   document.documentElement.style.setProperty(
     "--accent",
-    "#6c63ff"
+    "#7568e8"
   );
 
   document.documentElement.style.setProperty(
@@ -1281,11 +1157,7 @@ document.getElementById("resetTheme").addEventListener("click", function() {
 
 });
 
-
-
-var notifyToggle =
-  document.getElementById("notifyToggle");
-
+var notifyToggle = document.getElementById("notifyToggle");
 
 notifyToggle.addEventListener("click", function() {
 
@@ -1294,7 +1166,6 @@ notifyToggle.addEventListener("click", function() {
   if (notificationsOn) {
 
     notifyToggle.classList.add("on");
-
     showToast("Notifications on");
 
   } else {
@@ -1304,9 +1175,8 @@ notifyToggle.addEventListener("click", function() {
   }
 
 });
-var soundToggle =
-  document.getElementById("soundToggle");
 
+var soundToggle = document.getElementById("soundToggle");
 
 soundToggle.addEventListener("click", function() {
 
@@ -1315,20 +1185,16 @@ soundToggle.addEventListener("click", function() {
   if (soundOn) {
 
     soundToggle.classList.add("on");
-
     showToast("Sound on");
 
   } else {
 
     soundToggle.classList.remove("on");
-
     showToast("Sound off");
 
   }
 
 });
-
-
 
 document.getElementById("resetSettings").addEventListener("click", function() {
 
@@ -1338,12 +1204,11 @@ document.getElementById("resetSettings").addEventListener("click", function() {
   notifyToggle.classList.add("on");
   soundToggle.classList.add("on");
 
-
-  accent.value = "#6c63ff";
+  accent.value = "#7568e8";
 
   document.documentElement.style.setProperty(
     "--accent",
-    "#6c63ff"
+    "#7568e8"
   );
 
   document.documentElement.style.setProperty(
@@ -1351,37 +1216,29 @@ document.getElementById("resetSettings").addEventListener("click", function() {
     wallpapers.default
   );
 
-
   localStorage.removeItem("pixelos-accent");
   localStorage.removeItem("pixelos-wallpaper");
 
-  showToast("Settings reset ️");
+  showToast("Settings reset");
 
 });
 
-
-
 var windows = document.querySelectorAll(".window");
-
 
 windows.forEach(function(win) {
 
   var titleBar = win.querySelector(".title-bar");
 
   var dragging = false;
-
   var offsetX = 0;
   var offsetY = 0;
-
 
   titleBar.addEventListener("mousedown", function(event) {
 
     dragging = true;
 
     zIndex++;
-
     win.style.zIndex = zIndex;
-
 
     var rect = win.getBoundingClientRect();
 
@@ -1389,7 +1246,6 @@ windows.forEach(function(win) {
     offsetY = event.clientY - rect.top;
 
   });
-
 
   document.addEventListener("mousemove", function(event) {
 
@@ -1400,7 +1256,6 @@ windows.forEach(function(win) {
     var x = event.clientX - offsetX;
     var y = event.clientY - offsetY;
 
-
     if (x < 0) {
       x = 0;
     }
@@ -1409,12 +1264,10 @@ windows.forEach(function(win) {
       y = 0;
     }
 
-
     win.style.left = x + "px";
     win.style.top = y + "px";
 
   });
-
 
   document.addEventListener("mouseup", function() {
 
@@ -1422,18 +1275,14 @@ windows.forEach(function(win) {
 
   });
 
-
   win.addEventListener("mousedown", function() {
 
     zIndex++;
-
     win.style.zIndex = zIndex;
 
   });
 
 });
-
-
 
 function updateClock() {
 
@@ -1459,15 +1308,14 @@ function updateClock() {
 
 }
 
-
 updateClock();
 
 setInterval(updateClock, 1000);
 
-
-showToast("Welcome to PixelOS ");
+showToast("PixelOS is ready!");
 
 </script>
 
 </body>
 </html>
+```
