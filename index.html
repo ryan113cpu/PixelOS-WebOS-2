@@ -1,972 +1,635 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PixelOS - WebOS 2</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PixelOS // NEXUS</title>
 <style>
-* {
- box-sizing: border-box;
+:root{
+  --accent:#a78bfa;
+  --accent2:#67e8f9;
+  --bg:#070912;
+  --surface:rgba(16,19,32,.88);
+  --surface2:rgba(24,28,46,.9);
+  --line:rgba(255,255,255,.1);
+  --text:#f6f4ff;
+  --muted:#969ab0;
+  --danger:#fb7185;
+  --shadow:0 24px 70px rgba(0,0,0,.45);
 }
-
-body {
- margin: 0;
- font-family: Arial;
- color: white;
- background: #111;
- overflow: hidden;
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden}
+body{
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+  background:var(--bg);
 }
-
-#desktop {
- width: 100vw;
- height: 100vh;
- position: relative;
- background: #24243a;
+button,input,textarea{font:inherit}
+button{border:0}
+#desktop{
+  position:relative;width:100vw;height:100vh;overflow:hidden;
+  background:
+    radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(167,139,250,.14),transparent 24%),
+    radial-gradient(circle at 82% 85%,rgba(103,232,249,.09),transparent 28%),
+    linear-gradient(135deg,#090b16 0%,#0d1020 48%,#080a13 100%);
 }
-
-.desktop-icons {
- padding: 15px;
+#desktop::before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:linear-gradient(to bottom,black,transparent 82%);
 }
-
-.desktop-icon {
- width: 80px;
- text-align: center;
- padding: 6px;
- margin-bottom: 8px;
- cursor: pointer;
+#desktop::after{
+  content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(167,139,250,.1);
+  border-radius:50%;right:-150px;top:-180px;box-shadow:0 0 0 50px rgba(167,139,250,.025),0 0 0 100px rgba(167,139,250,.018);
+  pointer-events:none;
 }
-
-.desktop-icon:hover {
- background: #ffffff20;
- border-radius: 6px;
+#topbar{
+  position:absolute;z-index:100;top:18px;left:22px;right:22px;
+  display:flex;align-items:center;justify-content:space-between;
+  pointer-events:none;
 }
-
-.icon-picture {
- width: 45px;
- height: 45px;
- margin: auto;
- background: #7568e8;
- border-radius: 8px;
- display: flex;
- align-items: center;
- justify-content: center;
- font-weight: bold;
+.brand{
+  pointer-events:auto;display:flex;align-items:center;gap:11px;
+  padding:8px 12px;border:1px solid var(--line);border-radius:12px;
+  background:rgba(10,12,21,.7);backdrop-filter:blur(18px);
 }
-
-.desktop-icon span {
- display: block;
- font-size: 12px;
- margin-top: 5px;
+.brand-mark{
+  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#090a11;font-weight:900;font-size:12px;
 }
-
-.window {
- position: absolute;
- width: 500px;
- min-height: 280px;
- background: #20212b;
- border: 1px solid #444;
- border-radius: 7px;
- overflow: hidden;
- display: none;
+.brand strong{font-size:13px;letter-spacing:.12em}
+.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.14em}
+.status{
+  pointer-events:auto;display:flex;align-items:center;gap:8px;
+  padding:8px 12px;border:1px solid var(--line);border-radius:12px;
+  background:rgba(10,12,21,.7);backdrop-filter:blur(18px);font-size:11px;color:var(--muted)
 }
-
-.window.active {
- display: block;
+.live{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80}
+#orbit{
+  position:absolute;left:50%;top:48%;width:430px;height:430px;
+  transform:translate(-50%,-50%);pointer-events:none;
 }
-
-.title-bar {
- height: 40px;
- padding: 0 10px;
- background: #292a35;
- display: flex;
- align-items: center;
- justify-content: space-between;
- cursor: move;
+.orbit-ring{
+  position:absolute;inset:0;border:1px solid rgba(167,139,250,.09);border-radius:50%;
+  animation:spin 28s linear infinite;
 }
-
-.title {
- font-weight: bold;
+.orbit-ring:nth-child(2){inset:46px;animation-duration:38s;animation-direction:reverse}
+.orbit-ring:nth-child(3){inset:105px;animation-duration:55s}
+.orbit-dot{
+  position:absolute;width:5px;height:5px;border-radius:50%;background:var(--accent);
+  box-shadow:0 0 14px var(--accent);left:50%;top:-3px
 }
-
-.close-button {
- background: #d94d59;
- color: white;
- border: 0;
- border-radius: 5px;
- width: 25px;
- height: 25px;
- cursor: pointer;
+@keyframes spin{to{transform:rotate(360deg)}}
+.core{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:150px;height:150px;border-radius:50%;pointer-events:auto;cursor:pointer;
+  display:grid;place-items:center;text-align:center;
+  border:1px solid rgba(255,255,255,.13);
+  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.16),rgba(167,139,250,.12) 35%,rgba(9,11,20,.92) 70%);
+  box-shadow:0 0 70px rgba(167,139,250,.13),inset 0 0 35px rgba(167,139,250,.08);
 }
-
-.window-content {
- padding: 15px;
- max-height: 70vh;
- overflow-y: auto;
+.core::before{
+  content:"";position:absolute;inset:10px;border:1px solid rgba(167,139,250,.22);border-radius:50%;
+  animation:pulse 3s ease-in-out infinite;
 }
-
-button {
- background: #7568e8;
- color: white;
- border: 0;
- border-radius: 5px;
- padding: 8px 11px;
- cursor: pointer;
- margin: 3px;
+@keyframes pulse{50%{transform:scale(1.06);opacity:.55}}
+.core span{font-size:9px;letter-spacing:.2em;color:var(--muted)}
+.core b{display:block;font-size:20px;letter-spacing:.05em}
+.app-node{
+  position:absolute;z-index:20;pointer-events:auto;cursor:pointer;
+  width:100px;padding:10px 8px;text-align:center;border-radius:14px;
+  border:1px solid var(--line);background:rgba(13,16,27,.68);backdrop-filter:blur(14px);
+  transition:.18s ease;box-shadow:0 10px 30px rgba(0,0,0,.18)
 }
-
-button:hover {
- opacity: .8;
+.app-node:hover{transform:translateY(-5px) scale(1.03);border-color:rgba(255,255,255,.2);background:rgba(24,28,46,.9)}
+.app-icon{
+  width:40px;height:40px;margin:0 auto 7px;display:grid;place-items:center;border-radius:12px;
+  background:color-mix(in srgb,var(--accent) 18%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
+  color:var(--accent);font-weight:800;font-size:12px
 }
-
-input, textarea {
- background: #171820;
- color: white;
- border: 1px solid #444;
- border-radius: 5px;
- padding: 8px;
+.app-node span{font-size:10px;color:#dddbea}
+.node-notes{left:4%;top:29%}
+.node-files{left:12%;top:63%}
+.node-music{right:9%;top:30%}
+.node-theme{right:4%;top:64%}
+.node-calc{left:43%;bottom:8%}
+#dock{
+  position:absolute;z-index:500;left:50%;bottom:17px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:5px;padding:7px;
+  border:1px solid var(--line);border-radius:16px;background:rgba(9,11,19,.84);
+  backdrop-filter:blur(20px);box-shadow:var(--shadow)
 }
-
-textarea {
- width: 100%;
- height: 210px;
- resize: vertical;
+.dock-item{
+  min-width:48px;height:42px;padding:0 9px;border-radius:11px;background:transparent;color:#c8c6d4;
+  cursor:pointer;font-size:10px;transition:.15s
 }
-
-.welcome-title {
- margin-top: 0;
+.dock-item:hover{background:rgba(255,255,255,.08);color:white;transform:translateY(-2px)}
+.dock-item.active{background:rgba(167,139,250,.14);color:var(--accent)}
+#clock{padding:0 10px;border-left:1px solid var(--line);font-size:11px;color:var(--muted)}
+.window{
+  position:absolute;z-index:200;display:none;width:560px;max-width:calc(100vw - 30px);
+  max-height:calc(100vh - 110px);overflow:hidden;border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;background:var(--surface);backdrop-filter:blur(24px);box-shadow:var(--shadow)
 }
-
-.feature-box {
- background: #292a35;
- border-left: 4px solid #7568e8;
- padding: 12px;
- margin-top: 15px;
+.window.open{display:block}
+.window.max{inset:70px 15px 80px!important;width:auto!important;max-width:none;max-height:none}
+.titlebar{
+  height:45px;padding:0 9px 0 14px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);
+  cursor:grab;user-select:none
 }
-
-.feature-box h3 {
- margin-top: 0;
+.titlebar:active{cursor:grabbing}
+.window-title{flex:1;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
+.window-title i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent)}
+.window-controls{display:flex;gap:4px}
+.window-controls button{
+  width:27px;height:27px;border-radius:7px;background:transparent;color:#bdbac8;cursor:pointer
 }
-
-.file-row {
- display: flex;
- justify-content: space-between;
- align-items: center;
- background: #292a35;
- padding: 8px;
- margin: 6px 0;
- border-radius: 5px;
+.window-controls button:hover{background:rgba(255,255,255,.09)}
+.window-controls .x:hover{background:var(--danger);color:white}
+.content{padding:17px;overflow:auto;max-height:calc(100vh - 155px)}
+h1,h2,h3,p{margin-top:0}
+h2{font-size:19px;margin-bottom:6px}
+h3{font-size:12px;margin-bottom:7px}
+p{font-size:13px;line-height:1.55;color:#bbb9c8}
+.btn{
+  padding:8px 11px;border-radius:8px;background:var(--accent);color:#0a0a11;font-weight:700;cursor:pointer;font-size:12px
 }
-
-.file-row button {
- background: #c94752;
+.btn.alt{background:#323546;color:#eee}
+.btn.red{background:var(--danger);color:white}
+.btn:hover{filter:brightness(1.1)}
+input,textarea{
+  width:100%;border:1px solid var(--line);outline:0;border-radius:8px;
+  background:#0b0d15;color:var(--text);padding:10px
 }
-
-.song {
- background: #292a35;
- padding: 10px;
- margin: 7px 0;
- border-radius: 5px;
- cursor: pointer;
+input:focus,textarea:focus{border-color:var(--accent)}
+textarea{min-height:170px;resize:vertical;line-height:1.5}
+.hero{
+  padding:18px;border:1px solid var(--line);border-radius:12px;
+  background:linear-gradient(135deg,rgba(167,139,250,.11),rgba(103,232,249,.04))
 }
-
-.song:hover {
- background: #343540;
+.hero h1{font-size:28px;margin:0 0 5px}
+.hero .tag{color:var(--accent2);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.stat{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}
+.stat b{display:block;font-size:16px}.stat span{color:var(--muted);font-size:10px}
+.toolbar{display:flex;gap:7px;margin:12px 0}
+.toolbar input{flex:1}
+.file{
+  display:flex;align-items:center;gap:10px;padding:10px;margin:7px 0;border:1px solid var(--line);
+  border-radius:9px;background:rgba(255,255,255,.025)
 }
-
-.song-name {
- font-weight: bold;
+.file-badge{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:rgba(167,139,250,.12);color:var(--accent);font-size:9px;font-weight:800}
+.file-main{flex:1;min-width:0}.file-main b{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-main small{color:var(--muted);font-size:9px}
+.file-actions{display:flex;gap:4px}
+.editor{display:none;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025);margin-bottom:12px}
+.editor.show{display:block}
+.editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:11px}
+.empty{padding:30px 10px;text-align:center;color:var(--muted);font-size:12px}
+.note-actions{display:flex;gap:7px;margin-top:9px}
+.song{padding:12px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025);cursor:pointer}
+.song.selected{border-color:var(--accent);background:rgba(167,139,250,.08)}
+.song b{font-size:12px}.song small{display:block;color:var(--muted);margin-top:3px;font-size:10px}
+.player-status{padding:11px;border-radius:9px;background:#0b0d15;color:#ccc;font-size:11px;margin-bottom:10px}
+.palette{
+  position:absolute;z-index:1000;left:50%;top:18%;transform:translateX(-50%);
+  display:none;width:min(580px,calc(100vw - 30px));border:1px solid var(--line);border-radius:14px;
+  background:rgba(12,14,24,.94);backdrop-filter:blur(25px);box-shadow:var(--shadow);overflow:hidden
 }
-
-.song-description {
- font-size: 12px;
- color: #aaa;
+.palette.show{display:block}
+.palette input{border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px}
+.command{padding:11px 14px;font-size:12px;color:#ccc;cursor:pointer}.command:hover{background:rgba(255,255,255,.06)}
+.command kbd{float:right;color:var(--muted)}
+.color-line{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
+#accent{width:52px;height:34px;padding:2px}
+.wallpapers{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.wall{height:54px;border:2px solid transparent;border-radius:9px;cursor:pointer}
+.wall:hover{border-color:white}.wall[data-wall="void"]{background:#090b16}.wall[data-wall="violet"]{background:#17132c}.wall[data-wall="ocean"]{background:#0a2630}.wall[data-wall="ember"]{background:#2b1718}
+.toggle{width:44px;height:24px;padding:2px;border-radius:20px;background:#444856;cursor:pointer}.toggle.on{background:var(--accent)}
+.toggle i{display:block;width:20px;height:20px;border-radius:50%;background:white;transition:.15s}.toggle.on i{transform:translateX(20px)}
+.setting{padding:12px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}
+.setting-line{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.toast{
+  position:fixed;z-index:3000;left:50%;bottom:82px;transform:translateX(-50%);
+  display:none;padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:#151824;box-shadow:var(--shadow);font-size:11px
 }
-
-#songStatus {
- background: #171820;
- padding: 10px;
- margin: 10px 0;
-}
-
-.calculator {
- width: 280px;
-}
-
-#display {
- width: 100%;
- height: 50px;
- text-align: right;
- font-size: 20px;
- margin-bottom: 7px;
-}
-
-.calc-buttons {
- display: grid;
- grid-template-columns: repeat(4, 1fr);
- gap: 4px;
-}
-
-.calc-buttons button {
- height: 45px;
- margin: 0;
-}
-
-.color-row {
- display: flex;
- align-items: center;
- gap: 8px;
- margin-bottom: 12px;
-}
-
-#accent {
- width: 55px;
- height: 35px;
- padding: 2px;
-}
-
-.setting-row {
- background: #292a35;
- padding: 11px;
- margin-bottom: 9px;
- border-radius: 5px;
-}
-
-.setting-row h3 {
- margin-top: 0;
-}
-
-.toggle {
- width: 45px;
- height: 23px;
- background: #555;
- border-radius: 15px;
- display: inline-block;
- cursor: pointer;
- padding: 2px;
-}
-
-.toggle.on {
- background: #7568e8;
-}
-
-.toggle-circle {
- width: 19px;
- height: 19px;
- background: white;
- border-radius: 50%;
-}
-
-.toggle.on .toggle-circle {
- margin-left: 21px;
-}
-
-#taskbar {
- position: absolute;
- bottom: 10px;
- left: 50%;
- transform: translateX(-50%);
- background: #181920;
- border: 1px solid #444;
- border-radius: 8px;
- padding: 5px;
- display: flex;
- align-items: center;
-}
-
-.task-icon {
- padding: 12px 9px;
- cursor: pointer;
- font-size: 12px;
-}
-
-.task-icon:hover {
- background: #30313c;
- border-radius: 5px;
-}
-
-#clock {
- padding: 0 10px;
- border-left: 1px solid #444;
- font-size: 13px;
-}
-
-#toast {
- position: fixed;
- bottom: 80px;
- left: 50%;
- transform: translateX(-50%);
- background: #20212a;
- border: 1px solid #444;
- padding: 10px 15px;
- border-radius: 5px;
- display: none;
+@media(max-width:760px){
+  #orbit{opacity:.25;transform:translate(-50%,-50%) scale(.7)}
+  .app-node{width:84px}.node-notes{left:2%;top:23%}.node-files{left:4%;top:60%}.node-music{right:2%;top:23%}.node-theme{right:4%;top:60%}.node-calc{bottom:13%}
+  #dock{max-width:calc(100vw - 12px);overflow:auto}.dock-item{min-width:44px}
+  .window{left:15px!important;top:72px!important;width:calc(100vw - 30px)}
 }
 </style>
 </head>
-
 <body>
 
 <div id="desktop">
-
- <div class="desktop-icons">
-
-  <div class="desktop-icon" data-open="welcome">
-   <div class="icon-picture">W</div>
-   <span>Welcome</span>
-  </div>
-
-  <div class="desktop-icon" data-open="notes">
-   <div class="icon-picture">N</div>
-   <span>Notes</span>
-  </div>
-
-  <div class="desktop-icon" data-open="calculator">
-   <div class="icon-picture">C</div>
-   <span>Calculator</span>
-  </div>
-
-  <div class="desktop-icon" data-open="theme">
-   <div class="icon-picture">T</div>
-   <span>Theme Lab</span>
-  </div>
-
-  <div class="desktop-icon" data-open="files">
-   <div class="icon-picture">F</div>
-   <span>Files</span>
-  </div>
-
-  <div class="desktop-icon" data-open="music">
-   <div class="icon-picture">M</div>
-   <span>Music</span>
-  </div>
-
-  <div class="desktop-icon" data-open="settings">
-   <div class="icon-picture">S</div>
-   <span>Settings</span>
-  </div>
-
- </div>
-
- <section class="window active" id="welcome" style="left:170px;top:80px;">
-  <div class="title-bar">
-   <span class="title">Welcome</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content">
-   <h1 class="welcome-title">Welcome to PixelOS</h1>
-
-   <p>
-    PixelOS is my WebOS 2 project. I wanted it to feel like
-    a small computer that you can use right in your browser.
-   </p>
-
-   <div class="feature-box">
-    <h3>PixelOS Features</h3>
-    <p>File Manager</p>
-    <p>Music Player</p>
-    <p>Settings</p>
-    <p>Theme Lab</p>
-    <p>Saved Notes</p>
-    <p>Calculator</p>
-   </div>
-  </div>
- </section>
-
- <section class="window" id="notes" style="left:250px;top:100px;">
-  <div class="title-bar">
-   <span class="title">Notes</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content">
-   <h2>Notes</h2>
-
-   <textarea id="notesText" placeholder="Write something..."></textarea>
-   <br>
-
-   <button id="saveNotes">Save Notes</button>
-   <button id="clearNotes">Clear</button>
-  </div>
- </section>
-
- <section class="window" id="calculator" style="left:350px;top:130px;">
-  <div class="title-bar">
-   <span class="title">Calculator</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content calculator">
-   <input id="display" readonly>
-
-   <div class="calc-buttons">
-    <button data-calc="7">7</button>
-    <button data-calc="8">8</button>
-    <button data-calc="9">9</button>
-    <button data-calc="/">÷</button>
-
-    <button data-calc="4">4</button>
-    <button data-calc="5">5</button>
-    <button data-calc="6">6</button>
-    <button data-calc="*">×</button>
-
-    <button data-calc="1">1</button>
-    <button data-calc="2">2</button>
-    <button data-calc="3">3</button>
-    <button data-calc="-">−</button>
-
-    <button data-calc="0">0</button>
-    <button data-calc=".">.</button>
-    <button id="calculate">=</button>
-    <button data-calc="+">+</button>
-   </div>
-
-   <button id="calcClear">Clear</button>
-  </div>
- </section>
-
- <section class="window" id="theme" style="left:400px;top:90px;">
-  <div class="title-bar">
-   <span class="title">Theme Lab</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content">
-   <h2>Theme Lab</h2>
-
-   <div class="color-row">
-    <label>Accent Color:</label>
-    <input type="color" id="accent" value="#7568e8">
-   </div>
-
-   <h3>Wallpaper</h3>
-
-   <button data-wallpaper="default">Default</button>
-   <button data-wallpaper="blue">Blue</button>
-   <button data-wallpaper="green">Green</button>
-   <button data-wallpaper="sunset">Sunset</button>
-
-   <br><br>
-
-   <button id="randomTheme">Random Theme</button>
-   <button id="resetTheme">Reset Theme</button>
-  </div>
- </section>
-
- <section class="window" id="files" style="left:290px;top:160px;">
-  <div class="title-bar">
-   <span class="title">Files</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content">
-   <h2>File Manager</h2>
-
-   <input id="fileName" placeholder="Enter file name">
-   <button id="newFile">Create File</button>
-
-   <div id="fileList"></div>
-  </div>
- </section>
-
- <section class="window" id="music" style="left:450px;top:150px;">
-  <div class="title-bar">
-   <span class="title">Music</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content">
-   <h2>Music Player</h2>
-
-   <div id="songStatus">No song selected</div>
-
-   <div class="song" id="pixelosSong">
-    <div class="song-name">PixelOS Theme</div>
-    <div class="song-description">The PixelOS theme song</div>
-   </div>
-
-   <div class="song" id="dreamsSong">
-    <div class="song-name">Digital Dreams</div>
-    <div class="song-description">A digital style track</div>
-   </div>
-
-   <button id="playMusic">▶ Play</button>
-   <button id="pauseMusic">⏸ Pause</button>
-
-   <audio id="pixelosAudio" src="pixelos-theme.mp3"></audio>
-   <audio id="dreamsAudio" src="digital-dreams.mp3"></audio>
-  </div>
- </section>
-
- <section class="window" id="settings" style="left:500px;top:100px;">
-  <div class="title-bar">
-   <span class="title">Settings</span>
-   <button class="close-button">×</button>
-  </div>
-
-  <div class="window-content">
-   <h2>Settings</h2>
-
-   <div class="setting-row">
-    <h3>Wallpaper</h3>
-
-    <button data-wallpaper="default">Default</button>
-    <button data-wallpaper="blue">Blue</button>
-    <button data-wallpaper="green">Green</button>
-    <button data-wallpaper="sunset">Sunset</button>
-   </div>
-
-   <div class="setting-row">
-    <h3>Theme Lab</h3>
-    <p>Change the look of PixelOS using the Theme Lab.</p>
-    <button data-open="theme">Open Theme Lab</button>
-   </div>
-
-   <div class="setting-row">
-    <h3>Notifications</h3>
-    <p>Turn PixelOS notifications on or off.</p>
-
-    <div class="toggle on" id="notifyToggle">
-     <div class="toggle-circle"></div>
+  <div id="topbar">
+    <div class="brand">
+      <div class="brand-mark">PX</div>
+      <div><strong>PIXEL//OS</strong><small>NEXUS DESKTOP</small></div>
     </div>
-   </div>
-
-   <div class="setting-row">
-    <h3>Sound</h3>
-    <p>Sound setting for PixelOS.</p>
-
-    <div class="toggle on" id="soundToggle">
-     <div class="toggle-circle"></div>
-    </div>
-   </div>
-
-   <div class="setting-row">
-    <h3>About</h3>
-    <p>PixelOS WebOS 2</p>
-    <p>A browser-based operating system project.</p>
-   </div>
-
-   <button id="resetSettings">Reset Settings</button>
+    <div class="status"><span class="live"></span><span id="statusText">CORE ONLINE</span></div>
   </div>
- </section>
 
- <div id="taskbar">
-  <div class="task-icon" data-open="welcome">Home</div>
-  <div class="task-icon" data-open="notes">Notes</div>
-  <div class="task-icon" data-open="calculator">Calc</div>
-  <div class="task-icon" data-open="theme">Theme</div>
-  <div class="task-icon" data-open="files">Files</div>
-  <div class="task-icon" data-open="music">Music</div>
-  <div class="task-icon" data-open="settings">Settings</div>
-  <div id="clock"></div>
- </div>
+  <div id="orbit">
+    <div class="orbit-ring"><span class="orbit-dot"></span></div>
+    <div class="orbit-ring"><span class="orbit-dot"></span></div>
+    <div class="orbit-ring"><span class="orbit-dot"></span></div>
+    <div class="core" id="core">
+      <div><span>SYSTEM CORE</span><b>PIXEL</b><span id="coreTime">00:00</span></div>
+    </div>
+  </div>
 
+  <div class="app-node node-notes" data-open="notes"><div class="app-icon">N</div><span>Memory</span></div>
+  <div class="app-node node-files" data-open="files"><div class="app-icon">F</div><span>Archive</span></div>
+  <div class="app-node node-music" data-open="music"><div class="app-icon">♫</div><span>Radio</span></div>
+  <div class="app-node node-theme" data-open="theme"><div class="app-icon">◆</div><span>Atmosphere</span></div>
+  <div class="app-node node-calc" data-open="calculator"><div class="app-icon">Σ</div><span>Compute</span></div>
+
+  <div class="palette" id="palette">
+    <input id="commandInput" placeholder="Type a command or app name..." autocomplete="off">
+    <div id="commandList">
+      <div class="command" data-command="welcome">Open System Overview <kbd>Enter</kbd></div>
+      <div class="command" data-command="notes">Open Memory</div>
+      <div class="command" data-command="files">Open Archive</div>
+      <div class="command" data-command="music">Open Radio</div>
+      <div class="command" data-command="theme">Open Atmosphere</div>
+      <div class="command" data-command="calculator">Open Compute</div>
+      <div class="command" data-command="settings">Open Control Center</div>
+    </div>
+  </div>
+
+  <section class="window open" id="welcome" style="left:170px;top:95px;width:570px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>System Overview</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <div class="hero">
+        <div class="tag">browser operating environment</div>
+        <h1>Good evening.</h1>
+        <p>PixelOS turns the browser into a tiny desktop you can actually play with. The apps, files and theme live together instead of feeling like separate demos.</p>
+        <div class="stats">
+          <div class="stat"><b id="fileCount">0</b><span>stored files</span></div>
+          <div class="stat"><b id="noteState">EMPTY</b><span>memory status</span></div>
+          <div class="stat"><b id="sessionTime">0m</b><span>session</span></div>
+        </div>
+      </div>
+      <p style="margin:13px 0 0">Try the center core, drag a window, or press <b>Ctrl + K</b> to open the command palette.</p>
+    </div>
+  </section>
+
+  <section class="window" id="notes" style="left:250px;top:125px;width:520px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>Memory</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <h2>Memory</h2>
+      <p>A single note that survives a refresh.</p>
+      <textarea id="notesText" placeholder="Leave something for future-you..."></textarea>
+      <div class="note-actions"><button class="btn" id="saveNotes">Save memory</button><button class="btn alt" id="clearNotes">Clear</button></div>
+    </div>
+  </section>
+
+  <section class="window" id="files" style="left:300px;top:155px;width:590px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>Archive</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <h2>Archive</h2>
+      <p>Small text files stored locally in this browser.</p>
+      <div class="toolbar"><input id="fileName" placeholder="Name your file..."><button class="btn" id="newFile">Create</button></div>
+      <div class="editor" id="editor">
+        <div class="editor-head"><b id="editingName">Untitled</b><button class="btn alt" id="closeEditor">Close</button></div>
+        <textarea id="fileContent" placeholder="Start writing..."></textarea>
+        <div class="note-actions"><button class="btn" id="saveFile">Save file</button></div>
+      </div>
+      <div id="fileList"></div>
+    </div>
+  </section>
+
+  <section class="window" id="music" style="left:440px;top:120px;width:480px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>Radio</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <h2>Radio</h2>
+      <div class="player-status" id="songStatus">Nothing playing</div>
+      <div class="song" data-song="pixel"><b>PixelOS Theme</b><small>main system signal</small></div>
+      <div class="song" data-song="dreams"><b>Digital Dreams</b><small>late-night transmission</small></div>
+      <div class="note-actions"><button class="btn" id="playMusic">▶ Play</button><button class="btn alt" id="pauseMusic">⏸ Pause</button></div>
+      <audio id="pixelAudio" src="pixelos-theme.mp3"></audio>
+      <audio id="dreamAudio" src="digital-dreams.mp3"></audio>
+    </div>
+  </section>
+
+  <section class="window" id="calculator" style="left:390px;top:155px;width:390px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>Compute</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <h2>Compute</h2>
+      <input id="display" readonly style="height:52px;text-align:right;font-size:20px">
+      <div id="calc" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px"></div>
+      <div class="note-actions" style="justify-content:flex-end"><button class="btn alt" id="calcClear">Clear</button></div>
+    </div>
+  </section>
+
+  <section class="window" id="theme" style="left:480px;top:100px;width:500px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>Atmosphere</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <h2>Atmosphere</h2>
+      <div class="color-line"><span>Core accent</span><input type="color" id="accent" value="#a78bfa"></div>
+      <h3>Worlds</h3>
+      <div class="wallpapers">
+        <button class="wall" data-wall="void"></button>
+        <button class="wall" data-wall="violet"></button>
+        <button class="wall" data-wall="ocean"></button>
+        <button class="wall" data-wall="ember"></button>
+      </div>
+      <div class="note-actions"><button class="btn" id="randomTheme">Surprise me</button><button class="btn alt" id="resetTheme">Restore</button></div>
+    </div>
+  </section>
+
+  <section class="window" id="settings" style="left:520px;top:130px;width:500px">
+    <div class="titlebar">
+      <div class="window-title"><i></i>Control Center</div>
+      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
+    </div>
+    <div class="content">
+      <h2>Control Center</h2>
+      <div class="setting">
+        <div class="setting-line"><div><h3>Notifications</h3><p>Show system messages.</p></div><div class="toggle on" id="notify"><i></i></div></div>
+      </div>
+      <div class="setting">
+        <div class="setting-line"><div><h3>Audio</h3><p>Allow the radio to play sound.</p></div><div class="toggle on" id="sound"><i></i></div></div>
+      </div>
+      <div class="setting">
+        <h3>Command palette</h3><p>Press Ctrl + K from anywhere to jump between apps.</p>
+        <button class="btn" id="openPalette">Open palette</button>
+      </div>
+      <div class="setting">
+        <h3>PixelOS // NEXUS</h3><p>A little browser desktop built around a system core instead of a normal app grid.</p>
+      </div>
+      <button class="btn red" id="resetAll">Reset local data</button>
+    </div>
+  </section>
+
+  <div id="dock">
+    <button class="dock-item active" data-open="welcome">CORE</button>
+    <button class="dock-item" data-open="notes">MEM</button>
+    <button class="dock-item" data-open="files">FILES</button>
+    <button class="dock-item" data-open="music">RADIO</button>
+    <button class="dock-item" data-open="calculator">CALC</button>
+    <button class="dock-item" data-open="theme">LOOK</button>
+    <button class="dock-item" data-open="settings">CTRL</button>
+    <div id="clock">00:00</div>
+  </div>
 </div>
 
-<div id="toast"></div>
+<div class="toast" id="toast"></div>
 
 <script>
-var z = 10;
-var notify = true;
-var sound = true;
+const desktop=document.getElementById("desktop");
+const toastBox=document.getElementById("toast");
+let z=300, toastTimer, notifications=true, sound=true;
+const opened=new Set(["welcome"]);
 
-function toast(text) {
- if (!notify) return;
-
- var box = document.getElementById("toast");
- box.textContent = text;
- box.style.display = "block";
-
- setTimeout(function() {
-  box.style.display = "none";
- }, 2000);
+function toast(text){
+  if(!notifications)return;
+  clearTimeout(toastTimer);
+  toastBox.textContent=text;
+  toastBox.style.display="block";
+  toastTimer=setTimeout(()=>toastBox.style.display="none",2100);
 }
-
-function openWin(id) {
- var win = document.getElementById(id);
- if (!win) return;
-
- win.classList.add("active");
- z++;
- win.style.zIndex = z;
+function openWindow(id){
+  const win=document.getElementById(id);
+  if(!win)return;
+  win.classList.add("open");
+  opened.add(id);
+  z++;
+  win.style.zIndex=z;
+  document.querySelectorAll(".dock-item").forEach(x=>x.classList.toggle("active",x.dataset.open===id));
 }
-
-function closeWin(win) {
- win.classList.remove("active");
+function closeWindow(win){
+  win.classList.remove("open");
+  opened.delete(win.id);
 }
-
-document.querySelectorAll("[data-open]").forEach(function(button) {
- button.onclick = function(e) {
-  e.stopPropagation();
-  openWin(button.getAttribute("data-open"));
- };
+document.querySelectorAll("[data-open]").forEach(el=>{
+  el.addEventListener("click",()=>openWindow(el.dataset.open));
+});
+document.querySelectorAll(".window").forEach(win=>{
+  win.addEventListener("mousedown",()=>{z++;win.style.zIndex=z});
+  win.querySelector(".x").addEventListener("click",e=>{e.stopPropagation();closeWindow(win)});
+  win.querySelector(".max").addEventListener("click",e=>{e.stopPropagation();win.classList.toggle("max");});
+  const bar=win.querySelector(".titlebar");
+  let drag=false,ox=0,oy=0;
+  bar.addEventListener("mousedown",e=>{
+    if(e.target.closest("button")||win.classList.contains("max"))return;
+    drag=true;const r=win.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;
+    e.preventDefault();
+  });
+  document.addEventListener("mousemove",e=>{
+    if(!drag)return;
+    const maxX=Math.max(0,innerWidth-win.offsetWidth),maxY=Math.max(45,innerHeight-75-win.offsetHeight);
+    win.style.left=Math.min(maxX,Math.max(0,e.clientX-ox))+"px";
+    win.style.top=Math.min(maxY,Math.max(50,e.clientY-oy))+"px";
+  });
+  document.addEventListener("mouseup",()=>drag=false);
 });
 
-document.querySelectorAll(".close-button").forEach(function(button) {
- button.onclick = function() {
-  closeWin(button.parentElement.parentElement);
- };
+desktop.addEventListener("mousemove",e=>{
+  desktop.style.setProperty("--mx",(e.clientX/innerWidth*100)+"%");
+  desktop.style.setProperty("--my",(e.clientY/innerHeight*100)+"%");
 });
 
-var song = "";
-var audio = null;
-
-var audio1 = document.getElementById("pixelosAudio");
-var audio2 = document.getElementById("dreamsAudio");
-
-function chooseSong(name, file) {
- if (audio) {
-  audio.pause();
-  audio.currentTime = 0;
- }
-
- song = name;
- audio = file;
- document.getElementById("songStatus").textContent = song;
-
- toast(name + " selected");
-}
-
-document.getElementById("pixelosSong").onclick = function() {
- chooseSong("PixelOS Theme", audio1);
-};
-
-document.getElementById("dreamsSong").onclick = function() {
- chooseSong("Digital Dreams", audio2);
-};
-
-document.getElementById("playMusic").onclick = function() {
- if (!song) {
-  toast("Select a song first");
-  return;
- }
-
- if (!sound) {
-  toast("Sound is turned off");
-  return;
- }
-
- document.getElementById("songStatus").textContent = "Playing: " + song;
-
- audio.play().catch(function() {
-  toast("Could not play the song");
- });
-};
-
-document.getElementById("pauseMusic").onclick = function() {
- if (!audio) {
-  toast("No song selected");
-  return;
- }
-
- audio.pause();
- document.getElementById("songStatus").textContent = "Paused: " + song;
-};
-
-var notes = document.getElementById("notesText");
-var oldNotes = localStorage.getItem("pixelos-notes");
-
-if (oldNotes) notes.value = oldNotes;
-
-document.getElementById("saveNotes").onclick = function() {
- localStorage.setItem("pixelos-notes", notes.value);
- toast("Notes saved");
-};
-
-document.getElementById("clearNotes").onclick = function() {
- notes.value = "";
- localStorage.removeItem("pixelos-notes");
- toast("Notes cleared");
-};
-
-var files = [];
-var oldFiles = localStorage.getItem("pixelos-files");
-
-if (oldFiles) {
- try {
-  files = JSON.parse(oldFiles);
- } catch {
-  files = [];
- }
-}
-
-function saveFiles() {
- localStorage.setItem("pixelos-files", JSON.stringify(files));
-}
-
-function showFiles() {
- var list = document.getElementById("fileList");
- list.innerHTML = "";
-
- if (files.length === 0) {
-  list.innerHTML = "<p>No files yet.</p>";
-  return;
- }
-
- files.forEach(function(file, i) {
-  var row = document.createElement("div");
-  row.className = "file-row";
-
-  var name = document.createElement("span");
-  name.textContent = file;
-
-  var del = document.createElement("button");
-  del.textContent = "Delete";
-
-  del.onclick = function() {
-   files.splice(i, 1);
-   saveFiles();
-   showFiles();
-   toast("File deleted");
-  };
-
-  row.appendChild(name);
-  row.appendChild(del);
-  list.appendChild(row);
- });
-}
-
-document.getElementById("newFile").onclick = function() {
- var input = document.getElementById("fileName");
- var name = input.value.trim();
-
- if (!name) {
-  toast("Enter a file name");
-  return;
- }
-
- files.push(name);
- saveFiles();
- showFiles();
-
- input.value = "";
- toast("File created");
-};
-
-showFiles();
-
-var display = document.getElementById("display");
-
-document.querySelectorAll("[data-calc]").forEach(function(button) {
- button.onclick = function() {
-  display.value += button.getAttribute("data-calc");
- };
+document.getElementById("core").addEventListener("click",()=>{
+  openWindow("welcome");
+  toast("Core diagnostics: all systems normal");
 });
 
-document.getElementById("calcClear").onclick = function() {
- display.value = "";
+const notes=document.getElementById("notesText");
+notes.value=localStorage.getItem("px-notes")||"";
+function updateNoteState(){
+  const has=notes.value.trim().length>0;
+  document.getElementById("noteState").textContent=has?"READY":"EMPTY";
+}
+updateNoteState();
+notes.addEventListener("input",updateNoteState);
+document.getElementById("saveNotes").onclick=()=>{
+  localStorage.setItem("px-notes",notes.value);
+  updateNoteState();toast("Memory saved");
+};
+document.getElementById("clearNotes").onclick=()=>{
+  notes.value="";localStorage.removeItem("px-notes");updateNoteState();toast("Memory cleared");
 };
 
-document.getElementById("calculate").onclick = function() {
- if (!display.value) return;
+let files=[];
+try{files=JSON.parse(localStorage.getItem("px-files"))||[]}catch{files=[]}
+let editing=null;
+const list=document.getElementById("fileList");
+function saveFiles(){localStorage.setItem("px-files",JSON.stringify(files));}
+function renderFiles(){
+  list.innerHTML="";
+  document.getElementById("fileCount").textContent=files.length;
+  if(!files.length){list.innerHTML='<div class="empty">Archive is empty.<br>Create a file to begin.</div>';return}
+  [...files].sort((a,b)=>b.updated-a.updated).forEach(file=>{
+    const row=document.createElement("div");row.className="file";
+    row.innerHTML='<div class="file-badge">TXT</div><div class="file-main"><b></b><small></small></div><div class="file-actions"></div>';
+    row.querySelector("b").textContent=file.name;
+    row.querySelector("small").textContent="edited "+new Date(file.updated).toLocaleString();
+    const open=document.createElement("button");open.className="btn alt";open.textContent="Open";open.onclick=()=>openFile(file.id);
+    const del=document.createElement("button");del.className="btn red";del.textContent="Delete";del.onclick=()=>deleteFile(file.id);
+    row.querySelector(".file-actions").append(open,del);list.appendChild(row);
+  });
+}
+function openFile(id){
+  const file=files.find(x=>x.id===id);if(!file)return;
+  editing=id;document.getElementById("editingName").textContent=file.name;
+  document.getElementById("fileContent").value=file.content;
+  document.getElementById("editor").classList.add("show");
+}
+function deleteFile(id){
+  const file=files.find(x=>x.id===id);files=files.filter(x=>x.id!==id);
+  if(editing===id){editing=null;document.getElementById("editor").classList.remove("show")}
+  saveFiles();renderFiles();toast(file.name+" removed");
+}
+document.getElementById("newFile").onclick=()=>{
+  const input=document.getElementById("fileName"),name=input.value.trim();
+  if(!name){toast("Name the file first");return}
+  if(files.some(x=>x.name.toLowerCase()===name.toLowerCase())){toast("That file already exists");return}
+  const file={id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36),name,content:"",updated:Date.now()};
+  files.push(file);saveFiles();renderFiles();openFile(file.id);input.value="";toast("File created");
+};
+document.getElementById("saveFile").onclick=()=>{
+  const file=files.find(x=>x.id===editing);if(!file)return;
+  file.content=document.getElementById("fileContent").value;file.updated=Date.now();
+  saveFiles();renderFiles();toast("File saved");
+};
+document.getElementById("closeEditor").onclick=()=>{
+  editing=null;document.getElementById("editor").classList.remove("show");
+};
+renderFiles();
 
- try {
-  if (!/^[0-9+\-*/.() ]+$/.test(display.value)) {
-   throw new Error();
+const display=document.getElementById("display");
+const calc=document.getElementById("calc");
+["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].forEach(key=>{
+  const b=document.createElement("button");b.className="btn"+(["/","*","-","+"].includes(key)?" alt":"");
+  b.style.height="48px";b.textContent=key==="*"?"×":key==="/"?"÷":key;
+  b.onclick=()=>key==="="?calculate():appendCalc(key);calc.appendChild(b);
+});
+function appendCalc(v){display.value=display.value==="Error"?v:display.value+v}
+function calculate(){
+  if(!display.value)return;
+  if(!/^[0-9+\-*/(). ]+$/.test(display.value)){display.value="Error";return}
+  try{const result=Function("return ("+display.value+")")();if(!Number.isFinite(result))throw 0;display.value=result}catch{display.value="Error"}
+}
+document.getElementById("calcClear").onclick=()=>display.value="";
+document.addEventListener("keydown",e=>{
+  if(e.ctrlKey&&e.key.toLowerCase()==="k"){e.preventDefault();togglePalette();return}
+  if(!document.getElementById("calculator").classList.contains("open")||e.target.matches("input,textarea"))return;
+  if(e.key.length===1&&/[0-9+\-*/().]/.test(e.key))appendCalc(e.key);
+  if(e.key==="Enter")calculate();
+  if(e.key==="Escape")display.value="";
+});
+
+const walls={void:["#090b16","#0d1020"],violet:["#17132c","#0e1020"],ocean:["#0a2630","#07151f"],ember:["#2b1718","#130d12"]};
+function setWall(name,save=true){
+  if(!walls[name])return;
+  desktop.style.background=`radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(167,139,250,.13),transparent 24%),linear-gradient(135deg,${walls[name][0]},${walls[name][1]})`;
+  if(save)localStorage.setItem("px-wall",name);
+}
+document.querySelectorAll("[data-wall]").forEach(x=>x.onclick=()=>{setWall(x.dataset.wall);toast("Atmosphere changed")});
+document.getElementById("accent").oninput=e=>{
+  document.documentElement.style.setProperty("--accent",e.target.value);
+  localStorage.setItem("px-accent",e.target.value);
+};
+document.getElementById("randomTheme").onclick=()=>{
+  const colors=["#a78bfa","#67e8f9","#4ade80","#fb7185","#fbbf24","#f472b6"];
+  const names=Object.keys(walls);
+  const c=colors[Math.floor(Math.random()*colors.length)],w=names[Math.floor(Math.random()*names.length)];
+  document.getElementById("accent").value=c;document.documentElement.style.setProperty("--accent",c);localStorage.setItem("px-accent",c);
+  setWall(w);toast("Atmosphere randomized");
+};
+document.getElementById("resetTheme").onclick=()=>{
+  document.getElementById("accent").value="#a78bfa";document.documentElement.style.setProperty("--accent","#a78bfa");
+  localStorage.removeItem("px-accent");setWall("void");localStorage.removeItem("px-wall");toast("Atmosphere restored");
+};
+const ac=localStorage.getItem("px-accent");if(ac){document.getElementById("accent").value=ac;document.documentElement.style.setProperty("--accent",ac)}
+setWall(localStorage.getItem("px-wall")||"void",false);
+
+function toggle(el,value){el.classList.toggle("on",value)}
+document.getElementById("notify").onclick=()=>{notifications=!notifications;toggle(document.getElementById("notify"),notifications);if(notifications)toast("Notifications on")};
+document.getElementById("sound").onclick=()=>{sound=!sound;toggle(document.getElementById("sound"),sound);if(sound)toast("Audio on")};
+
+let currentSong=null;
+const songs={pixel:{name:"PixelOS Theme",audio:document.getElementById("pixelAudio")},dreams:{name:"Digital Dreams",audio:document.getElementById("dreamAudio")}};
+document.querySelectorAll(".song").forEach(item=>item.onclick=()=>{
+  if(currentSong)currentSong.audio.pause();
+  currentSong=songs[item.dataset.song];
+  document.querySelectorAll(".song").forEach(x=>x.classList.remove("selected"));item.classList.add("selected");
+  document.getElementById("songStatus").textContent=currentSong.name;toast(currentSong.name+" selected");
+});
+document.getElementById("playMusic").onclick=()=>{
+  if(!currentSong){toast("Choose a signal first");return}
+  if(!sound){toast("Audio is muted");return}
+  currentSong.audio.play().then(()=>document.getElementById("songStatus").textContent="Playing: "+currentSong.name).catch(()=>toast("Audio file not found"));
+};
+document.getElementById("pauseMusic").onclick=()=>{
+  if(!currentSong){toast("Nothing is selected");return}
+  currentSong.audio.pause();document.getElementById("songStatus").textContent="Paused: "+currentSong.name;
+};
+
+const palette=document.getElementById("palette"),commandInput=document.getElementById("commandInput");
+function togglePalette(){
+  palette.classList.toggle("show");
+  if(palette.classList.contains("show")){commandInput.value="";commandInput.focus()}
+}
+document.getElementById("openPalette").onclick=togglePalette;
+document.querySelectorAll(".command").forEach(x=>x.onclick=()=>{openWindow(x.dataset.command);palette.classList.remove("show")});
+commandInput.addEventListener("keydown",e=>{
+  if(e.key==="Escape")palette.classList.remove("show");
+  if(e.key==="Enter"){
+    const first=[...document.querySelectorAll(".command")].find(x=>x.style.display!=="none");
+    if(first){openWindow(first.dataset.command);palette.classList.remove("show")}
   }
-
-  display.value = Function("return " + display.value)();
- } catch {
-  display.value = "Error";
- }
-};
-
-document.addEventListener("keydown", function(e) {
- var calc = document.getElementById("calculator");
-
- if (!calc.classList.contains("active")) return;
-
- if (/[0-9+\-*/().]/.test(e.key) && e.key.length === 1) {
-  display.value += e.key;
- }
-
- if (e.key === "Enter") {
-  document.getElementById("calculate").click();
- }
-
- if (e.key === "Escape") {
-  display.value = "";
- }
+});
+commandInput.addEventListener("input",()=>{
+  const q=commandInput.value.toLowerCase();
+  document.querySelectorAll(".command").forEach(x=>x.style.display=x.textContent.toLowerCase().includes(q)?"block":"none");
+});
+document.addEventListener("mousedown",e=>{
+  if(palette.classList.contains("show")&&!palette.contains(e.target)&&!e.target.closest("#openPalette"))palette.classList.remove("show");
 });
 
-var color = document.getElementById("accent");
+document.getElementById("resetAll").onclick=()=>{
+  localStorage.removeItem("px-notes");localStorage.removeItem("px-files");localStorage.removeItem("px-wall");localStorage.removeItem("px-accent");
+  files=[];notes.value="";renderFiles();updateNoteState();
+  document.getElementById("accent").value="#a78bfa";document.documentElement.style.setProperty("--accent","#a78bfa");setWall("void",false);
+  toast("Local data reset");
+};
 
-function changeAccent(newColor) {
- color.value = newColor;
-
- document.documentElement.style.setProperty("--accent", newColor);
-
- document.querySelectorAll(".icon-picture").forEach(function(icon) {
-  icon.style.background = newColor;
- });
-
- localStorage.setItem("pixelos-accent", newColor);
+const started=Date.now();
+function clock(){
+  const now=new Date();
+  const time=now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+  document.getElementById("clock").textContent=time;
+  document.getElementById("coreTime").textContent=time;
+  document.getElementById("sessionTime").textContent=Math.floor((Date.now()-started)/60000)+"m";
 }
-
-color.oninput = function() {
- changeAccent(color.value);
-};
-
-var oldColor = localStorage.getItem("pixelos-accent");
-
-if (oldColor) {
- changeAccent(oldColor);
-}
-
-var walls = {
- default: "#24243a",
- blue: "#19324a",
- green: "#21402b",
- sunset: "#4a2920"
-};
-
-function wall(name) {
- if (!walls[name]) return;
-
- document.getElementById("desktop").style.background = walls[name];
- localStorage.setItem("pixelos-wallpaper", name);
-
- toast("Wallpaper changed");
-}
-
-document.querySelectorAll("[data-wallpaper]").forEach(function(button) {
- button.onclick = function() {
-  wall(button.getAttribute("data-wallpaper"));
- };
-});
-
-var oldWall = localStorage.getItem("pixelos-wallpaper");
-
-if (oldWall && walls[oldWall]) {
- document.getElementById("desktop").style.background = walls[oldWall];
-}
-
-document.getElementById("randomTheme").onclick = function() {
- var colors = [
-  "#7568e8",
-  "#00a8ff",
-  "#00c853",
-  "#ff7043",
-  "#e91e63"
- ];
-
- var names = ["default", "blue", "green", "sunset"];
-
- var c = colors[Math.floor(Math.random() * colors.length)];
- var w = names[Math.floor(Math.random() * names.length)];
-
- changeAccent(c);
- wall(w);
-
- toast("Random theme applied");
-};
-
-document.getElementById("resetTheme").onclick = function() {
- changeAccent("#7568e8");
-
- document.getElementById("desktop").style.background = walls.default;
-
- localStorage.removeItem("pixelos-accent");
- localStorage.removeItem("pixelos-wallpaper");
-
- toast("Theme reset");
-};
-
-document.getElementById("notifyToggle").onclick = function() {
- notify = !notify;
-
- if (notify) {
-  this.classList.add("on");
-  toast("Notifications on");
- } else {
-  this.classList.remove("on");
- }
-};
-
-document.getElementById("soundToggle").onclick = function() {
- sound = !sound;
-
- if (sound) {
-  this.classList.add("on");
-  toast("Sound on");
- } else {
-  this.classList.remove("on");
- }
-};
-
-document.getElementById("resetSettings").onclick = function() {
- notify = true;
- sound = true;
-
- document.getElementById("notifyToggle").classList.add("on");
- document.getElementById("soundToggle").classList.add("on");
-
- changeAccent("#7568e8");
-
- document.getElementById("desktop").style.background = walls.default;
-
- localStorage.removeItem("pixelos-accent");
- localStorage.removeItem("pixelos-wallpaper");
-
- toast("Settings reset");
-};
-
-document.querySelectorAll(".window").forEach(function(win) {
- var bar = win.querySelector(".title-bar");
- var moving = false;
- var x = 0;
- var y = 0;
-
- bar.addEventListener("mousedown", function(e) {
-  moving = true;
-
-  z++;
-  win.style.zIndex = z;
-
-  var box = win.getBoundingClientRect();
-
-  x = e.clientX - box.left;
-  y = e.clientY - box.top;
- });
-
- document.addEventListener("mousemove", function(e) {
-  if (!moving) return;
-
-  win.style.left = e.clientX - x + "px";
-  win.style.top = e.clientY - y + "px";
- });
-
- document.addEventListener("mouseup", function() {
-  moving = false;
- });
-
- win.addEventListener("mousedown", function() {
-  z++;
-  win.style.zIndex = z;
- });
-});
-
-function clock() {
- var now = new Date();
- var h = now.getHours();
- var m = now.getMinutes();
- var am = h >= 12 ? "PM" : "AM";
-
- h = h % 12;
-
- if (h === 0) h = 12;
- if (m < 10) m = "0" + m;
-
- document.getElementById("clock").textContent =
-  h + ":" + m + " " + am;
-}
-
-clock();
-setInterval(clock, 1000);
-
-toast("PixelOS is ready!");
+clock();setInterval(clock,1000);
 </script>
-
 </body>
 </html>
