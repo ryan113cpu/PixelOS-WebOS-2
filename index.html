@@ -1,635 +1,952 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="#0b0d15" name="theme-color"/>
 <title>PixelOS // NEXUS</title>
 <style>
-:root{
-  --accent:#a78bfa;
-  --accent2:#67e8f9;
-  --bg:#070912;
-  --surface:rgba(16,19,32,.88);
-  --surface2:rgba(24,28,46,.9);
-  --line:rgba(255,255,255,.1);
-  --text:#f6f4ff;
-  --muted:#969ab0;
-  --danger:#fb7185;
-  --shadow:0 24px 70px rgba(0,0,0,.45);
-}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{
-  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  color:var(--text);
-  background:var(--bg);
-}
-button,input,textarea{font:inherit}
-button{border:0}
-#desktop{
-  position:relative;width:100vw;height:100vh;overflow:hidden;
-  background:
-    radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(167,139,250,.14),transparent 24%),
-    radial-gradient(circle at 82% 85%,rgba(103,232,249,.09),transparent 28%),
-    linear-gradient(135deg,#090b16 0%,#0d1020 48%,#080a13 100%);
-}
-#desktop::before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;
-  background-image:
-    linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-  background-size:48px 48px;
-  mask-image:linear-gradient(to bottom,black,transparent 82%);
-}
-#desktop::after{
-  content:"";position:absolute;width:420px;height:420px;border:1px solid rgba(167,139,250,.1);
-  border-radius:50%;right:-150px;top:-180px;box-shadow:0 0 0 50px rgba(167,139,250,.025),0 0 0 100px rgba(167,139,250,.018);
-  pointer-events:none;
-}
-#topbar{
-  position:absolute;z-index:100;top:18px;left:22px;right:22px;
-  display:flex;align-items:center;justify-content:space-between;
-  pointer-events:none;
-}
-.brand{
-  pointer-events:auto;display:flex;align-items:center;gap:11px;
-  padding:8px 12px;border:1px solid var(--line);border-radius:12px;
-  background:rgba(10,12,21,.7);backdrop-filter:blur(18px);
-}
-.brand-mark{
-  width:28px;height:28px;border-radius:9px;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  color:#090a11;font-weight:900;font-size:12px;
-}
-.brand strong{font-size:13px;letter-spacing:.12em}
-.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.14em}
-.status{
-  pointer-events:auto;display:flex;align-items:center;gap:8px;
-  padding:8px 12px;border:1px solid var(--line);border-radius:12px;
-  background:rgba(10,12,21,.7);backdrop-filter:blur(18px);font-size:11px;color:var(--muted)
-}
-.live{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80}
-#orbit{
-  position:absolute;left:50%;top:48%;width:430px;height:430px;
-  transform:translate(-50%,-50%);pointer-events:none;
-}
-.orbit-ring{
-  position:absolute;inset:0;border:1px solid rgba(167,139,250,.09);border-radius:50%;
-  animation:spin 28s linear infinite;
-}
-.orbit-ring:nth-child(2){inset:46px;animation-duration:38s;animation-direction:reverse}
-.orbit-ring:nth-child(3){inset:105px;animation-duration:55s}
-.orbit-dot{
-  position:absolute;width:5px;height:5px;border-radius:50%;background:var(--accent);
-  box-shadow:0 0 14px var(--accent);left:50%;top:-3px
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.core{
-  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:150px;height:150px;border-radius:50%;pointer-events:auto;cursor:pointer;
-  display:grid;place-items:center;text-align:center;
-  border:1px solid rgba(255,255,255,.13);
-  background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.16),rgba(167,139,250,.12) 35%,rgba(9,11,20,.92) 70%);
-  box-shadow:0 0 70px rgba(167,139,250,.13),inset 0 0 35px rgba(167,139,250,.08);
-}
-.core::before{
-  content:"";position:absolute;inset:10px;border:1px solid rgba(167,139,250,.22);border-radius:50%;
-  animation:pulse 3s ease-in-out infinite;
-}
-@keyframes pulse{50%{transform:scale(1.06);opacity:.55}}
-.core span{font-size:9px;letter-spacing:.2em;color:var(--muted)}
-.core b{display:block;font-size:20px;letter-spacing:.05em}
-.app-node{
-  position:absolute;z-index:20;pointer-events:auto;cursor:pointer;
-  width:100px;padding:10px 8px;text-align:center;border-radius:14px;
-  border:1px solid var(--line);background:rgba(13,16,27,.68);backdrop-filter:blur(14px);
-  transition:.18s ease;box-shadow:0 10px 30px rgba(0,0,0,.18)
-}
-.app-node:hover{transform:translateY(-5px) scale(1.03);border-color:rgba(255,255,255,.2);background:rgba(24,28,46,.9)}
-.app-icon{
-  width:40px;height:40px;margin:0 auto 7px;display:grid;place-items:center;border-radius:12px;
-  background:color-mix(in srgb,var(--accent) 18%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
-  color:var(--accent);font-weight:800;font-size:12px
-}
-.app-node span{font-size:10px;color:#dddbea}
-.node-notes{left:4%;top:29%}
-.node-files{left:12%;top:63%}
-.node-music{right:9%;top:30%}
-.node-theme{right:4%;top:64%}
-.node-calc{left:43%;bottom:8%}
-#dock{
-  position:absolute;z-index:500;left:50%;bottom:17px;transform:translateX(-50%);
-  display:flex;align-items:center;gap:5px;padding:7px;
-  border:1px solid var(--line);border-radius:16px;background:rgba(9,11,19,.84);
-  backdrop-filter:blur(20px);box-shadow:var(--shadow)
-}
-.dock-item{
-  min-width:48px;height:42px;padding:0 9px;border-radius:11px;background:transparent;color:#c8c6d4;
-  cursor:pointer;font-size:10px;transition:.15s
-}
-.dock-item:hover{background:rgba(255,255,255,.08);color:white;transform:translateY(-2px)}
-.dock-item.active{background:rgba(167,139,250,.14);color:var(--accent)}
-#clock{padding:0 10px;border-left:1px solid var(--line);font-size:11px;color:var(--muted)}
-.window{
-  position:absolute;z-index:200;display:none;width:560px;max-width:calc(100vw - 30px);
-  max-height:calc(100vh - 110px);overflow:hidden;border:1px solid rgba(255,255,255,.12);
-  border-radius:14px;background:var(--surface);backdrop-filter:blur(24px);box-shadow:var(--shadow)
-}
-.window.open{display:block}
-.window.max{inset:70px 15px 80px!important;width:auto!important;max-width:none;max-height:none}
-.titlebar{
-  height:45px;padding:0 9px 0 14px;display:flex;align-items:center;gap:10px;
-  border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);
-  cursor:grab;user-select:none
-}
-.titlebar:active{cursor:grabbing}
-.window-title{flex:1;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}
-.window-title i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent)}
-.window-controls{display:flex;gap:4px}
-.window-controls button{
-  width:27px;height:27px;border-radius:7px;background:transparent;color:#bdbac8;cursor:pointer
-}
-.window-controls button:hover{background:rgba(255,255,255,.09)}
-.window-controls .x:hover{background:var(--danger);color:white}
-.content{padding:17px;overflow:auto;max-height:calc(100vh - 155px)}
-h1,h2,h3,p{margin-top:0}
-h2{font-size:19px;margin-bottom:6px}
-h3{font-size:12px;margin-bottom:7px}
-p{font-size:13px;line-height:1.55;color:#bbb9c8}
-.btn{
-  padding:8px 11px;border-radius:8px;background:var(--accent);color:#0a0a11;font-weight:700;cursor:pointer;font-size:12px
-}
-.btn.alt{background:#323546;color:#eee}
-.btn.red{background:var(--danger);color:white}
-.btn:hover{filter:brightness(1.1)}
-input,textarea{
-  width:100%;border:1px solid var(--line);outline:0;border-radius:8px;
-  background:#0b0d15;color:var(--text);padding:10px
-}
-input:focus,textarea:focus{border-color:var(--accent)}
-textarea{min-height:170px;resize:vertical;line-height:1.5}
-.hero{
-  padding:18px;border:1px solid var(--line);border-radius:12px;
-  background:linear-gradient(135deg,rgba(167,139,250,.11),rgba(103,232,249,.04))
-}
-.hero h1{font-size:28px;margin:0 0 5px}
-.hero .tag{color:var(--accent2);font-size:10px;letter-spacing:.16em;text-transform:uppercase}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.stat{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}
-.stat b{display:block;font-size:16px}.stat span{color:var(--muted);font-size:10px}
-.toolbar{display:flex;gap:7px;margin:12px 0}
-.toolbar input{flex:1}
-.file{
-  display:flex;align-items:center;gap:10px;padding:10px;margin:7px 0;border:1px solid var(--line);
-  border-radius:9px;background:rgba(255,255,255,.025)
-}
-.file-badge{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:rgba(167,139,250,.12);color:var(--accent);font-size:9px;font-weight:800}
-.file-main{flex:1;min-width:0}.file-main b{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-main small{color:var(--muted);font-size:9px}
-.file-actions{display:flex;gap:4px}
-.editor{display:none;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025);margin-bottom:12px}
-.editor.show{display:block}
-.editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:11px}
-.empty{padding:30px 10px;text-align:center;color:var(--muted);font-size:12px}
-.note-actions{display:flex;gap:7px;margin-top:9px}
-.song{padding:12px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025);cursor:pointer}
-.song.selected{border-color:var(--accent);background:rgba(167,139,250,.08)}
-.song b{font-size:12px}.song small{display:block;color:var(--muted);margin-top:3px;font-size:10px}
-.player-status{padding:11px;border-radius:9px;background:#0b0d15;color:#ccc;font-size:11px;margin-bottom:10px}
-.palette{
-  position:absolute;z-index:1000;left:50%;top:18%;transform:translateX(-50%);
-  display:none;width:min(580px,calc(100vw - 30px));border:1px solid var(--line);border-radius:14px;
-  background:rgba(12,14,24,.94);backdrop-filter:blur(25px);box-shadow:var(--shadow);overflow:hidden
-}
-.palette.show{display:block}
-.palette input{border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px}
-.command{padding:11px 14px;font-size:12px;color:#ccc;cursor:pointer}.command:hover{background:rgba(255,255,255,.06)}
-.command kbd{float:right;color:var(--muted)}
-.color-line{display:flex;align-items:center;justify-content:space-between;padding:10px 0}
-#accent{width:52px;height:34px;padding:2px}
-.wallpapers{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
-.wall{height:54px;border:2px solid transparent;border-radius:9px;cursor:pointer}
-.wall:hover{border-color:white}.wall[data-wall="void"]{background:#090b16}.wall[data-wall="violet"]{background:#17132c}.wall[data-wall="ocean"]{background:#0a2630}.wall[data-wall="ember"]{background:#2b1718}
-.toggle{width:44px;height:24px;padding:2px;border-radius:20px;background:#444856;cursor:pointer}.toggle.on{background:var(--accent)}
-.toggle i{display:block;width:20px;height:20px;border-radius:50%;background:white;transition:.15s}.toggle.on i{transform:translateX(20px)}
-.setting{padding:12px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}
-.setting-line{display:flex;align-items:center;justify-content:space-between;gap:15px}
-.toast{
-  position:fixed;z-index:3000;left:50%;bottom:82px;transform:translateX(-50%);
-  display:none;padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:#151824;box-shadow:var(--shadow);font-size:11px
-}
-@media(max-width:760px){
-  #orbit{opacity:.25;transform:translate(-50%,-50%) scale(.7)}
-  .app-node{width:84px}.node-notes{left:2%;top:23%}.node-files{left:4%;top:60%}.node-music{right:2%;top:23%}.node-theme{right:4%;top:60%}.node-calc{bottom:13%}
-  #dock{max-width:calc(100vw - 12px);overflow:auto}.dock-item{min-width:44px}
-  .window{left:15px!important;top:72px!important;width:calc(100vw - 30px)}
-}
+:root{--accent:#a78bfa;--accent2:#67e8f9;--bg1:#090b16;--bg2:#0d1020;--surface:rgba(16,19,32,.9);--surface2:rgba(24,28,46,.94);--line:rgba(255,255,255,.11);--text:#f6f4ff;--muted:#969ab0;--danger:#fb7185;--shadow:0 24px 70px rgba(0,0,0,.45);--terminal:#86efac}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text);background:#070912}button,input,textarea{font:inherit}button{border:0}
+#desktop{position:relative;width:100vw;height:100vh;overflow:hidden;background:radial-gradient(ellipse at 8% 82%,rgba(50,231,255,.16),transparent 30%),radial-gradient(ellipse at 78% 18%,rgba(172,85,255,.22),transparent 31%),radial-gradient(ellipse at 54% 58%,rgba(255,71,185,.10),transparent 28%),radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(255,255,255,.07),transparent 24%),linear-gradient(118deg,#010208 0%,#060914 34%,#0b0717 64%,#020208 100%)}
+#desktop::before{content:"";position:absolute;inset:-16%;z-index:1;pointer-events:none;background:radial-gradient(ellipse at 35% 60%,transparent 0 23%,rgba(103,232,249,.055) 34%,transparent 48%),radial-gradient(ellipse at 72% 39%,transparent 0 21%,rgba(167,139,250,.06) 35%,transparent 51%);filter:blur(30px);transform:rotate(-8deg);animation:fieldDrift 20s ease-in-out infinite alternate}
+#desktop::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(115deg,transparent 0 26%,rgba(255,255,255,.018) 38%,transparent 48% 62%,rgba(103,232,249,.018) 74%,transparent 83%),radial-gradient(circle at 50% 45%,transparent 0 35%,rgba(0,0,0,.16) 76%,rgba(0,0,0,.38) 100%);mix-blend-mode:screen}
+#spaceCanvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;mix-blend-mode:screen;opacity:.98;filter:saturate(1.2) contrast(1.08)}
+@keyframes fieldDrift{to{transform:translate3d(1.5vw,-1vh,0) rotate(-5deg) scale(1.04)}}
+.grid-overlay{position:absolute;inset:0;z-index:4;opacity:.18;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:54px 54px;mask-image:linear-gradient(to bottom,transparent 4%,black 32%,transparent 100%);transform:perspective(900px) rotateX(62deg) scale(1.55) translateY(38%);transform-origin:center bottom}
+.ambient{position:absolute;border:1px solid rgba(167,139,250,.08);pointer-events:none;z-index:1}.ambient-a{width:78vw;height:28vw;right:-22vw;top:-9vw;border-radius:50%;transform:rotate(17deg);box-shadow:0 0 0 2px rgba(167,139,250,.02),0 0 90px rgba(167,139,250,.06);opacity:.8}.ambient-b{width:62vw;height:18vw;left:-24vw;bottom:-8vw;border-radius:50%;transform:rotate(-14deg);box-shadow:0 0 110px rgba(103,232,249,.06);opacity:.55}
+\.glass,.glass-button{background:rgba(10,12,21,.7);border:1px solid var(--line);backdrop-filter:blur(18px)}#topbar{position:absolute;z-index:1000;top:18px;left:22px;right:22px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}.brand{pointer-events:auto;display:flex;align-items:center;gap:11px;padding:8px 12px;border-radius:12px;color:var(--text);cursor:pointer}.brand strong{display:block;font-size:13px;letter-spacing:.12em}.brand small{display:block;color:var(--muted);font-size:9px;letter-spacing:.14em}.brand-mark{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#090a11;font-weight:900;font-size:12px}.status{pointer-events:auto;display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:12px;font-size:11px;color:var(--muted)}.live{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80}
+#workspace{position:absolute;inset:65px 0 80px;z-index:5}.app-node{position:absolute;z-index:30;width:94px;padding:9px 8px;text-align:center;border-radius:14px;border:1px solid var(--line);background:rgba(13,16,27,.68);backdrop-filter:blur(14px);cursor:pointer;transition:.18s ease;box-shadow:0 10px 30px rgba(0,0,0,.18)}.app-node:hover{transform:translateY(-5px) scale(1.03);border-color:rgba(255,255,255,.23);background:rgba(24,28,46,.94)}.app-node{touch-action:none;user-select:none;cursor:grab}.app-node.dragging{cursor:grabbing;transform:scale(1.04);border-color:var(--accent);box-shadow:0 16px 38px rgba(0,0,0,.28),0 0 24px color-mix(in srgb,var(--accent) 18%,transparent)}.app-node.dragging:hover{transform:scale(1.04)}.app-icon{width:40px;height:40px;margin:0 auto 7px;display:grid;place-items:center;border-radius:12px;background:color-mix(in srgb,var(--accent) 18%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);color:var(--accent);font-weight:800;font-size:11px}.app-node span{font-size:10px;color:#dddbea}.node-overview{left:4%;top:8%}.node-browser{left:14%;top:13%}.node-notes{left:6%;top:44%}.node-files{left:17%;top:72%}.node-music{right:8%;top:10%}.node-theme{right:4%;top:46%}.node-calc{left:44%;bottom:2%}.node-terminal{left:24%;top:13%}.node-monitor{right:22%;top:70%}.node-tasks{right:6%;top:73%}
+#orbit{position:absolute;left:50%;top:47%;width:min(430px,62vh);height:min(430px,62vh);transform:translate(-50%,-50%);pointer-events:none}.orbit-ring{position:absolute;inset:0;border:1px solid rgba(167,139,250,.09);border-radius:50%;animation:spin 28s linear infinite}.orbit-ring:nth-child(2){inset:46px;animation-duration:38s;animation-direction:reverse}.orbit-ring:nth-child(3){inset:105px;animation-duration:55s}.orbit-dot{position:absolute;width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);left:50%;top:-3px}@keyframes spin{to{transform:rotate(360deg)}}.core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:150px;height:150px;border-radius:50%;display:grid;place-items:center;text-align:center;border:1px solid rgba(255,255,255,.13);background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.16),rgba(167,139,250,.12) 35%,rgba(9,11,20,.94) 70%);box-shadow:0 0 70px rgba(167,139,250,.13),inset 0 0 35px rgba(167,139,250,.08);color:var(--text);cursor:pointer}.core:before{content:"";position:absolute;inset:10px;border:1px solid rgba(167,139,250,.22);border-radius:50%;animation:pulse 3s ease-in-out infinite}@keyframes pulse{50%{transform:scale(1.06);opacity:.55}}.core span{display:block;font-size:9px;letter-spacing:.2em;color:var(--muted)}.core b{display:block;font-size:20px;letter-spacing:.05em}
+
+.browser-window{width:760px}.browser-shell{padding:12px;background:rgba(3,5,11,.72)}.browser-toolbar{display:grid;grid-template-columns:auto auto auto 1fr auto auto;gap:6px;align-items:center}.browser-nav,.browser-tool{min-width:34px;height:34px;padding:0 10px;border-radius:9px;background:#1a1e2d;border:1px solid var(--line);color:#d9d7e6;cursor:pointer}.browser-nav:hover,.browser-tool:hover{background:#262b3e;color:#fff}.browser-address{height:34px}.browser-viewport{position:relative;margin-top:9px;border:1px solid var(--line);border-radius:11px;overflow:hidden;background:#070a10;min-height:430px}.browser-viewport iframe{display:block;width:100%;height:430px;border:0;background:#fff}.browser-home{padding:34px;min-height:430px;background:radial-gradient(circle at 20% 20%,rgba(103,232,249,.10),transparent 25%),radial-gradient(circle at 80% 70%,rgba(167,139,250,.12),transparent 28%),linear-gradient(135deg,#070910,#0e1020)}.browser-home h3{font-size:24px;margin-bottom:8px}.browser-home p{max-width:560px}.browser-links{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:20px}.browser-link{padding:14px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.03);color:var(--text);text-align:left;cursor:pointer}.browser-link b{display:block;font-size:11px}.browser-link span{display:block;margin-top:4px;color:var(--muted);font-size:9px}.browser-note{margin-top:16px;padding:11px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025);color:var(--muted);font-size:10px;line-height:1.5}.browser-actions{display:flex;gap:7px;margin-top:10px}.browser-message{padding:26px;min-height:430px;background:linear-gradient(135deg,#070910,#0e1020)}.browser-message strong{display:block;font-size:15px;margin-bottom:6px}.browser-message span{display:block;color:var(--muted);font-size:11px;line-height:1.5}.browser-message .btn{margin-top:14px}
+.window{position:absolute;z-index:200;display:none;max-width:calc(100vw - 30px);max-height:calc(100vh - 110px);overflow:hidden;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:var(--surface);backdrop-filter:blur(24px);box-shadow:var(--shadow)}.window.open{display:block}.window.max{inset:70px 15px 80px!important;width:auto!important;max-width:none;max-height:none}.window.minimized{display:none!important}.titlebar{height:45px;padding:0 9px 0 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.025);cursor:grab;user-select:none}.titlebar:active{cursor:grabbing}.window-title{flex:1;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700}.window-title i{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 9px var(--accent)}.window-controls{display:flex;gap:4px}.window-controls button{width:27px;height:27px;border-radius:7px;background:transparent;color:#bdbac8;cursor:pointer}.window-controls button:hover{background:rgba(255,255,255,.09)}.window-controls .x:hover{background:var(--danger);color:#fff}.content{padding:17px;overflow:auto;max-height:calc(100vh - 155px)}h1,h2,h3,p{margin-top:0}h2{font-size:19px;margin-bottom:6px}h3{font-size:12px;margin-bottom:7px}p{font-size:13px;line-height:1.55;color:#bbb9c8}
+.hero{padding:18px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(135deg,rgba(167,139,250,.11),rgba(103,232,249,.04))}.hero h1{font-size:28px;margin:0 0 5px}.hero .tag{color:var(--accent2);font-size:10px;letter-spacing:.16em;text-transform:uppercase}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.stat{padding:11px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}.stat b{display:block;font-size:16px}.stat span{color:var(--muted);font-size:10px}.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.quick-card{padding:12px;border:1px solid var(--line);border-radius:10px;text-align:left;background:rgba(255,255,255,.025);color:var(--text);cursor:pointer}.quick-card:hover{border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.07)}.quick-card b{display:block;font-size:11px}.quick-card span{font-size:9px;color:var(--muted)}.hint{margin:12px 0 0}
+.btn{padding:8px 11px;border-radius:8px;background:var(--accent);color:#0a0a11;font-weight:700;cursor:pointer;font-size:12px}.btn.alt{background:#323546;color:#eee}.btn.red{background:var(--danger);color:#fff}.btn:hover{filter:brightness(1.1)}input,textarea{width:100%;border:1px solid var(--line);outline:0;border-radius:8px;background:#0b0d15;color:var(--text);padding:10px}input:focus,textarea:focus{border-color:var(--accent)}textarea{min-height:170px;resize:vertical;line-height:1.5}.toolbar{display:flex;gap:7px;margin:12px 0}.toolbar input{flex:1}.toolbar.compact{margin-top:0}.count-chip,.save-state{padding:7px 9px;border-radius:8px;border:1px solid var(--line);color:var(--muted);font-size:10px;white-space:nowrap}.file{display:flex;align-items:center;gap:10px;padding:10px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}.file-badge{width:32px;height:32px;display:grid;place-items:center;border-radius:8px;background:rgba(167,139,250,.12);color:var(--accent);font-size:9px;font-weight:800}.file-main{flex:1;min-width:0}.file-main b{display:block;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.file-main small{color:var(--muted);font-size:9px}.file-actions{display:flex;gap:4px}.editor{display:none;padding:12px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025);margin-bottom:12px}.editor.show{display:block}.editor-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:11px}.empty{padding:30px 10px;text-align:center;color:var(--muted);font-size:12px}
+.song{padding:12px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025);cursor:pointer}.song.selected{border-color:var(--accent);background:rgba(167,139,250,.08)}.song b{font-size:12px}.song small{display:block;color:var(--muted);margin-top:3px;font-size:10px}.player-status{padding:11px;border-radius:9px;background:#0b0d15;color:#ccc;font-size:11px;margin-bottom:10px}.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px}.calc-grid .btn{height:48px}.color-line{display:flex;align-items:center;justify-content:space-between;padding:10px 0}.wallpapers{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.wall{height:54px;border:2px solid transparent;border-radius:9px;cursor:pointer}.wall:hover,.wall.selected{border-color:#fff}.wall[data-wall="cosmos"]{background:radial-gradient(circle at 70% 25%,#7c3aed 0 6%,transparent 18%),radial-gradient(circle at 25% 70%,#0891b2 0 4%,transparent 16%),linear-gradient(135deg,#02030a,#11162d)}.wall[data-wall="void"]{background:#090b16}.wall[data-wall="violet"]{background:#17132c}.wall[data-wall="ocean"]{background:#0a2630}.wall[data-wall="ember"]{background:#2b1718}.wall[data-wall="terminal"]{background:linear-gradient(135deg,#031108,#062a14)}.terminal-presets{display:flex;gap:7px;flex-wrap:wrap}.preset{padding:8px 10px;border-radius:8px;background:#12161f;border:1px solid var(--line);color:var(--muted);cursor:pointer;font-size:10px}.preset.active{border-color:var(--terminal);color:var(--terminal)}
+.toggle{width:44px;height:24px;padding:2px;border-radius:20px;background:#444856;cursor:pointer}.toggle.on{background:var(--accent)}.toggle i{display:block;width:20px;height:20px;border-radius:50%;background:#fff;transition:.15s}.toggle.on i{transform:translateX(20px)}.setting{padding:12px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}.setting-line{display:flex;align-items:center;justify-content:space-between;gap:15px}.setting p{margin-bottom:0}
+.palette{position:absolute;z-index:1500;left:50%;top:12%;transform:translateX(-50%);display:none;width:min(620px,calc(100vw - 30px));border:1px solid var(--line);border-radius:14px;background:rgba(12,14,24,.96);backdrop-filter:blur(25px);box-shadow:var(--shadow);overflow:hidden}.palette.show{display:block}.palette-head{display:flex;justify-content:space-between;padding:10px 14px;border-bottom:1px solid var(--line);font-size:9px;letter-spacing:.12em;color:var(--accent2)}.palette-head kbd{font-family:inherit;letter-spacing:0;color:var(--muted)}.palette input{border:0;border-bottom:1px solid var(--line);border-radius:0;padding:14px}.command{padding:11px 14px;font-size:12px;color:#ccc;cursor:pointer}.command:hover,.command.active{background:rgba(255,255,255,.06);color:#fff}.command small{display:block;color:var(--muted);font-size:9px;margin-top:2px}
+.terminal-content{background:#071009}.terminal-output{height:300px;overflow:auto;font:12px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--terminal);white-space:pre-wrap}.terminal-input-row{display:flex;align-items:center;gap:8px;margin-top:10px;font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--terminal)}.terminal-input-row input{font:inherit;border-color:rgba(134,239,172,.2);color:var(--terminal);background:#030603}.terminal-input-row .btn{margin-left:auto}.terminal-output .muted{color:#6b8b73}.terminal-output .accent{color:var(--accent2)}
+.monitor-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.monitor-card{padding:12px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}.monitor-card b{display:block;font-size:18px}.monitor-card span{color:var(--muted);font-size:10px}.meter{height:7px;border-radius:9px;background:#202431;margin-top:12px;overflow:hidden}.meter span{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+.task{display:flex;align-items:center;gap:9px;padding:10px;margin:7px 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025)}.task input{width:auto}.task.done .task-text{text-decoration:line-through;color:var(--muted)}.task-text{flex:1;font-size:12px}.task-del{background:transparent;color:var(--muted);cursor:pointer;font-size:16px}.task-del:hover{color:var(--danger)}
+#dock{position:absolute;z-index:1200;left:50%;bottom:17px;transform:translateX(-50%);display:flex;align-items:center;gap:5px;padding:7px;border:1px solid var(--line);border-radius:16px;background:rgba(9,11,19,.84);backdrop-filter:blur(20px);box-shadow:var(--shadow);max-width:calc(100vw - 12px);overflow:auto}.dock-item{min-width:47px;height:42px;padding:0 8px;border-radius:11px;background:transparent;color:#c8c6d4;cursor:pointer;font-size:10px;transition:.15s}.dock-item:hover{background:rgba(255,255,255,.08);color:#fff;transform:translateY(-2px)}.dock-item.active{background:rgba(167,139,250,.14);color:var(--accent)}#clock{padding:0 10px;border-left:1px solid var(--line);font-size:11px;color:var(--muted);white-space:nowrap}
+.toast{position:fixed;z-index:3000;left:50%;bottom:82px;transform:translateX(-50%);display:none;padding:10px 14px;border:1px solid var(--line);border-radius:9px;background:#151824;box-shadow:var(--shadow);font-size:11px}.toast.show{display:block}
+body.terminal-theme{--bg1:#030705;--bg2:#08140c;--accent:#86efac;--accent2:#34d399;--surface:rgba(4,10,6,.94);--surface2:rgba(7,18,10,.96);--terminal:#86efac}body.terminal-theme #desktop{background:radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(134,239,172,.1),transparent 25%),linear-gradient(135deg,#030705,#08140c 48%,#020503)}body.terminal-theme .grid-overlay{opacity:.2}
+@media(max-width:900px){.app-node{transform:scale(.92)}.node-monitor{right:15%;top:70%}.node-terminal{left:18%;top:12%}.node-tasks{right:3%;top:75%}.stats{grid-template-columns:repeat(2,1fr)}.quick-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){ .browser-window{width:calc(100vw - 30px)!important}.browser-toolbar{grid-template-columns:repeat(3,auto) 1fr auto auto}.browser-links{grid-template-columns:repeat(2,1fr)}.browser-viewport iframe{height:52vh}.browser-viewport{min-height:52vh}.browser-home{min-height:52vh;padding:24px} #topbar{left:10px;right:10px;top:10px}.status{padding:7px}.brand{padding:7px 9px}.brand strong{font-size:11px}.brand small{font-size:8px}#orbit{opacity:.28;width:360px;height:360px}.app-node{width:78px}.node-overview{left:2%;top:5%}.node-notes{left:2%;top:36%}.node-files{left:3%;top:74%}.node-terminal{left:16%;top:5%}.node-music{right:2%;top:5%}.node-theme{right:2%;top:37%}.node-monitor{right:15%;top:72%}.node-tasks{right:2%;top:76%}.node-calc{left:45%;bottom:0}.window{left:15px!important;top:70px!important;width:calc(100vw - 30px)!important;max-height:calc(100vh - 145px)}.content{max-height:calc(100vh - 190px)}.quick-grid{grid-template-columns:1fr 1fr}.stats{grid-template-columns:1fr 1fr}.monitor-grid{grid-template-columns:1fr}.file-actions{flex-direction:column}.palette{top:10%}}
+
+
+.boot-screen{position:fixed;inset:0;z-index:5000;display:grid;place-items:center;background:#05060d;color:#fff;transition:opacity .6s ease,visibility .6s ease}.boot-screen.hide{opacity:0;visibility:hidden;pointer-events:none}.boot-core{width:min(320px,78vw);text-align:center}.boot-mark{width:58px;height:58px;margin:0 auto 14px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#090a11;font-weight:900;letter-spacing:.08em;box-shadow:0 0 55px color-mix(in srgb,var(--accent) 32%,transparent)}.boot-name{font-size:22px;font-weight:800;letter-spacing:.14em}.boot-line{height:2px;margin:15px 0 11px;border-radius:4px;background:#161a29;overflow:hidden}.boot-line span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));animation:bootLoad 1.25s ease forwards}.boot-status{font-size:10px;color:var(--muted);letter-spacing:.15em}.boot-screen.hide .boot-line span{animation:none}@keyframes bootLoad{to{width:100%}}.boot-screen{animation:bootFailSafe .15s linear 2.4s forwards}.boot-screen.hide{animation:none}@keyframes bootFailSafe{to{opacity:0;visibility:hidden;pointer-events:none}}
+.workspace-switcher{pointer-events:auto;display:flex;gap:4px;padding:4px;border-radius:12px}.workspace-btn{height:30px;padding:0 10px;border-radius:8px;background:transparent;color:var(--muted);font-size:10px;cursor:pointer}.workspace-btn:hover{background:rgba(255,255,255,.06);color:#fff}.workspace-btn.active{background:rgba(167,139,250,.15);color:var(--text);box-shadow:inset 0 0 0 1px rgba(167,139,250,.18)}
+.status{gap:8px}.notify-button{position:relative;width:28px;height:28px;border-radius:8px;background:transparent;color:#c8c6d4;cursor:pointer}.notify-button:hover{background:rgba(255,255,255,.07);color:#fff}.notify-badge{position:absolute;right:-2px;top:-3px;min-width:15px;height:15px;padding:0 4px;border-radius:99px;display:grid;place-items:center;background:var(--danger);color:#fff;font-size:8px;font-weight:800;border:2px solid #0b0d15}.notify-badge:empty{display:none}
+#notificationPanel{position:absolute;z-index:2200;right:22px;top:68px;width:320px;display:none;border:1px solid var(--line);border-radius:14px;background:rgba(10,12,21,.94);backdrop-filter:blur(24px);box-shadow:var(--shadow);overflow:hidden}.notification-panel.show{display:block}.notification-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line)}.notification-head b{font-size:11px}.notification-head button{padding:5px 8px;border-radius:7px;background:transparent;color:var(--muted);cursor:pointer;font-size:9px}.notification-head button:hover{background:rgba(255,255,255,.06);color:#fff}.notification-list{max-height:310px;overflow:auto}.notification{padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05)}.notification:last-child{border-bottom:0}.notification b{display:block;font-size:10px}.notification span{display:block;margin-top:3px;color:var(--muted);font-size:9px;line-height:1.45}.notification time{display:block;margin-top:5px;color:#72778e;font-size:8px}
+.window{resize:both;min-width:280px;min-height:150px}.browser-window{min-width:520px}.window.max{resize:none}
+.desktop-context{position:absolute;z-index:2600;display:none;width:210px;padding:6px;border:1px solid var(--line);border-radius:12px;background:rgba(10,12,21,.96);backdrop-filter:blur(20px);box-shadow:var(--shadow)}.desktop-context.show{display:block}.context-item{width:100%;display:flex;align-items:center;justify-content:space-between;padding:9px 10px;border-radius:8px;background:transparent;color:#dddbea;font-size:10px;text-align:left;cursor:pointer}.context-item:hover{background:rgba(255,255,255,.07);color:#fff}.context-item span{color:var(--muted);font-size:8px}
+.app-node.renaming{outline:1px solid var(--accent)}
+.desktop-ripple{position:absolute;z-index:4;width:24px;height:24px;margin:-12px 0 0 -12px;border:1px solid color-mix(in srgb,var(--accent) 70%,white);border-radius:50%;pointer-events:none;animation:ripple .75s ease-out forwards;box-shadow:0 0 24px color-mix(in srgb,var(--accent) 35%,transparent)}@keyframes ripple{to{transform:scale(12);opacity:0}}
+.radio-viz{display:block;width:100%;height:120px;margin-bottom:10px;border:1px solid var(--line);border-radius:11px;background:radial-gradient(circle at 50% 50%,rgba(167,139,250,.12),transparent 62%),linear-gradient(135deg,#07090f,#111327);box-shadow:inset 0 0 40px rgba(0,0,0,.22)}
+.dock-item.nexus{color:var(--accent2);font-weight:800}.dock-item.lock{color:#fbbf24}
+.nexus-overlay{position:fixed;inset:0;z-index:4800;display:none;overflow:hidden;background:radial-gradient(circle at 50% 45%,rgba(167,139,250,.18),transparent 24%),radial-gradient(circle at 30% 80%,rgba(103,232,249,.10),transparent 25%),rgba(2,3,9,.93);backdrop-filter:blur(8px)}.nexus-overlay.show{display:block}.nexus-overlay::before,.nexus-overlay::after{content:"";position:absolute;inset:10%;border:1px solid rgba(167,139,250,.11);border-radius:50%;animation:nexusSpin 24s linear infinite}.nexus-overlay::after{inset:22%;border-color:rgba(103,232,249,.09);animation-direction:reverse;animation-duration:30s}@keyframes nexusSpin{to{transform:rotate(360deg)}}.nexus-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:46px 46px;mask-image:radial-gradient(circle at center,black 0 42%,transparent 76%)}.nexus-panel{position:relative;z-index:2;width:min(980px,92vw);height:min(620px,84vh);margin:7vh auto 0;display:grid;grid-template-columns:1.3fr .7fr;gap:14px}.nexus-hero,.nexus-card{border:1px solid var(--line);border-radius:18px;background:rgba(8,10,18,.72);backdrop-filter:blur(22px);box-shadow:0 30px 100px rgba(0,0,0,.45)}.nexus-hero{padding:26px;position:relative;overflow:hidden}.nexus-hero::before{content:"";position:absolute;width:320px;height:320px;right:-80px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(103,232,249,.18),transparent 65%);filter:blur(10px)}.nexus-kicker{font-size:9px;letter-spacing:.2em;color:var(--accent2)}.nexus-hero h2{font-size:40px;margin:9px 0}.nexus-hero p{max-width:560px}.nexus-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:22px}.nexus-stat{padding:11px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.025)}.nexus-stat b{display:block;font-size:16px}.nexus-stat span{display:block;color:var(--muted);font-size:9px;margin-top:3px}.nexus-actions{position:absolute;left:26px;bottom:24px;display:flex;gap:8px}.nexus-side{display:grid;grid-template-rows:1fr 1fr;gap:14px}.nexus-card{padding:18px}.nexus-card h3{margin-bottom:10px}.nexus-list{display:grid;gap:8px}.nexus-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:10px}.nexus-row:last-child{border-bottom:0}.nexus-row span{color:var(--muted)}.nexus-live{display:flex;align-items:center;gap:7px;color:#4ade80}.nexus-live i{width:6px;height:6px;border-radius:50%;background:#4ade80;box-shadow:0 0 12px #4ade80}.nexus-close{position:absolute;z-index:5;top:18px;right:22px;width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.05);border:1px solid var(--line);color:#d8d6e4;cursor:pointer}.nexus-close:hover{background:rgba(255,255,255,.1);color:#fff}
+.lock-screen{position:fixed;inset:0;z-index:4700;display:none;place-items:center;background:radial-gradient(circle at 50% 40%,rgba(167,139,250,.15),transparent 28%),rgba(2,3,9,.94);backdrop-filter:blur(16px)}.lock-screen.show{display:grid}.lock-card{width:min(430px,88vw);padding:30px;border:1px solid var(--line);border-radius:20px;background:rgba(8,10,18,.72);box-shadow:0 30px 90px rgba(0,0,0,.45);text-align:center}.lock-time{font-size:52px;font-weight:700;letter-spacing:.03em}.lock-date{color:var(--muted);font-size:11px;margin:4px 0 24px}.lock-card .boot-mark{margin-bottom:16px}.lock-card .btn{margin-top:14px;min-width:130px}.lock-hint{margin-top:12px;color:#70758b;font-size:9px}
+@media(max-width:760px){.workspace-switcher{display:none}.status .status-label{display:none}#notificationPanel{right:10px;top:60px;width:min(320px,calc(100vw - 20px))}.nexus-panel{grid-template-columns:1fr;height:auto;max-height:none;margin:7vh auto}.nexus-side{grid-template-rows:auto}.nexus-hero{min-height:420px}.nexus-stats{grid-template-columns:1fr 1fr}.nexus-actions{position:static;margin-top:22px}.radio-viz{height:100px}.window{min-width:0}.browser-window{min-width:0}}
+
+.window.workspace-hidden{display:none!important}
+.app-node.dragging{z-index:80;cursor:grabbing;transform:scale(1.04)}
 </style>
 </head>
 <body>
-
-<div id="desktop">
-  <div id="topbar">
-    <div class="brand">
-      <div class="brand-mark">PX</div>
-      <div><strong>PIXEL//OS</strong><small>NEXUS DESKTOP</small></div>
-    </div>
-    <div class="status"><span class="live"></span><span id="statusText">CORE ONLINE</span></div>
-  </div>
-
-  <div id="orbit">
-    <div class="orbit-ring"><span class="orbit-dot"></span></div>
-    <div class="orbit-ring"><span class="orbit-dot"></span></div>
-    <div class="orbit-ring"><span class="orbit-dot"></span></div>
-    <div class="core" id="core">
-      <div><span>SYSTEM CORE</span><b>PIXEL</b><span id="coreTime">00:00</span></div>
-    </div>
-  </div>
-
-  <div class="app-node node-notes" data-open="notes"><div class="app-icon">N</div><span>Memory</span></div>
-  <div class="app-node node-files" data-open="files"><div class="app-icon">F</div><span>Archive</span></div>
-  <div class="app-node node-music" data-open="music"><div class="app-icon">♫</div><span>Radio</span></div>
-  <div class="app-node node-theme" data-open="theme"><div class="app-icon">◆</div><span>Atmosphere</span></div>
-  <div class="app-node node-calc" data-open="calculator"><div class="app-icon">Σ</div><span>Compute</span></div>
-
-  <div class="palette" id="palette">
-    <input id="commandInput" placeholder="Type a command or app name..." autocomplete="off">
-    <div id="commandList">
-      <div class="command" data-command="welcome">Open System Overview <kbd>Enter</kbd></div>
-      <div class="command" data-command="notes">Open Memory</div>
-      <div class="command" data-command="files">Open Archive</div>
-      <div class="command" data-command="music">Open Radio</div>
-      <div class="command" data-command="theme">Open Atmosphere</div>
-      <div class="command" data-command="calculator">Open Compute</div>
-      <div class="command" data-command="settings">Open Control Center</div>
-    </div>
-  </div>
-
-  <section class="window open" id="welcome" style="left:170px;top:95px;width:570px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>System Overview</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <div class="hero">
-        <div class="tag">browser operating environment</div>
-        <h1>Good evening.</h1>
-        <p>PixelOS turns the browser into a tiny desktop you can actually play with. The apps, files and theme live together instead of feeling like separate demos.</p>
-        <div class="stats">
-          <div class="stat"><b id="fileCount">0</b><span>stored files</span></div>
-          <div class="stat"><b id="noteState">EMPTY</b><span>memory status</span></div>
-          <div class="stat"><b id="sessionTime">0m</b><span>session</span></div>
-        </div>
-      </div>
-      <p style="margin:13px 0 0">Try the center core, drag a window, or press <b>Ctrl + K</b> to open the command palette.</p>
-    </div>
-  </section>
-
-  <section class="window" id="notes" style="left:250px;top:125px;width:520px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>Memory</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <h2>Memory</h2>
-      <p>A single note that survives a refresh.</p>
-      <textarea id="notesText" placeholder="Leave something for future-you..."></textarea>
-      <div class="note-actions"><button class="btn" id="saveNotes">Save memory</button><button class="btn alt" id="clearNotes">Clear</button></div>
-    </div>
-  </section>
-
-  <section class="window" id="files" style="left:300px;top:155px;width:590px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>Archive</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <h2>Archive</h2>
-      <p>Small text files stored locally in this browser.</p>
-      <div class="toolbar"><input id="fileName" placeholder="Name your file..."><button class="btn" id="newFile">Create</button></div>
-      <div class="editor" id="editor">
-        <div class="editor-head"><b id="editingName">Untitled</b><button class="btn alt" id="closeEditor">Close</button></div>
-        <textarea id="fileContent" placeholder="Start writing..."></textarea>
-        <div class="note-actions"><button class="btn" id="saveFile">Save file</button></div>
-      </div>
-      <div id="fileList"></div>
-    </div>
-  </section>
-
-  <section class="window" id="music" style="left:440px;top:120px;width:480px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>Radio</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <h2>Radio</h2>
-      <div class="player-status" id="songStatus">Nothing playing</div>
-      <div class="song" data-song="pixel"><b>PixelOS Theme</b><small>main system signal</small></div>
-      <div class="song" data-song="dreams"><b>Digital Dreams</b><small>late-night transmission</small></div>
-      <div class="note-actions"><button class="btn" id="playMusic">▶ Play</button><button class="btn alt" id="pauseMusic">⏸ Pause</button></div>
-      <audio id="pixelAudio" src="pixelos-theme.mp3"></audio>
-      <audio id="dreamAudio" src="digital-dreams.mp3"></audio>
-    </div>
-  </section>
-
-  <section class="window" id="calculator" style="left:390px;top:155px;width:390px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>Compute</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <h2>Compute</h2>
-      <input id="display" readonly style="height:52px;text-align:right;font-size:20px">
-      <div id="calc" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px"></div>
-      <div class="note-actions" style="justify-content:flex-end"><button class="btn alt" id="calcClear">Clear</button></div>
-    </div>
-  </section>
-
-  <section class="window" id="theme" style="left:480px;top:100px;width:500px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>Atmosphere</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <h2>Atmosphere</h2>
-      <div class="color-line"><span>Core accent</span><input type="color" id="accent" value="#a78bfa"></div>
-      <h3>Worlds</h3>
-      <div class="wallpapers">
-        <button class="wall" data-wall="void"></button>
-        <button class="wall" data-wall="violet"></button>
-        <button class="wall" data-wall="ocean"></button>
-        <button class="wall" data-wall="ember"></button>
-      </div>
-      <div class="note-actions"><button class="btn" id="randomTheme">Surprise me</button><button class="btn alt" id="resetTheme">Restore</button></div>
-    </div>
-  </section>
-
-  <section class="window" id="settings" style="left:520px;top:130px;width:500px">
-    <div class="titlebar">
-      <div class="window-title"><i></i>Control Center</div>
-      <div class="window-controls"><button class="max">□</button><button class="x">×</button></div>
-    </div>
-    <div class="content">
-      <h2>Control Center</h2>
-      <div class="setting">
-        <div class="setting-line"><div><h3>Notifications</h3><p>Show system messages.</p></div><div class="toggle on" id="notify"><i></i></div></div>
-      </div>
-      <div class="setting">
-        <div class="setting-line"><div><h3>Audio</h3><p>Allow the radio to play sound.</p></div><div class="toggle on" id="sound"><i></i></div></div>
-      </div>
-      <div class="setting">
-        <h3>Command palette</h3><p>Press Ctrl + K from anywhere to jump between apps.</p>
-        <button class="btn" id="openPalette">Open palette</button>
-      </div>
-      <div class="setting">
-        <h3>PixelOS // NEXUS</h3><p>A little browser desktop built around a system core instead of a normal app grid.</p>
-      </div>
-      <button class="btn red" id="resetAll">Reset local data</button>
-    </div>
-  </section>
-
-  <div id="dock">
-    <button class="dock-item active" data-open="welcome">CORE</button>
-    <button class="dock-item" data-open="notes">MEM</button>
-    <button class="dock-item" data-open="files">FILES</button>
-    <button class="dock-item" data-open="music">RADIO</button>
-    <button class="dock-item" data-open="calculator">CALC</button>
-    <button class="dock-item" data-open="theme">LOOK</button>
-    <button class="dock-item" data-open="settings">CTRL</button>
-    <div id="clock">00:00</div>
-  </div>
+<main aria-label="PixelOS desktop" id="desktop">
+<div class="ambient ambient-a"></div>
+<div class="ambient ambient-b"></div>
+<div class="grid-overlay"></div>
+<canvas aria-hidden="true" id="spaceCanvas"></canvas>
+<header id="topbar">
+<button aria-label="Open system overview" class="brand glass-button" id="brandButton">
+<span class="brand-mark">PX</span>
+<span><strong>PIXEL//OS</strong><small>NEXUS DESKTOP</small></span>
+</button>
+<div aria-label="Virtual desktops" class="workspace-switcher glass" id="workspaceSwitcher">
+<button class="workspace-btn active" data-space="1" title="Everyday desktop">01 MAIN</button>
+<button class="workspace-btn" data-space="2" title="Separate workspace for focused work">02 FOCUS</button>
+<button class="workspace-btn" data-space="3" title="Separate workspace for experiments">03 LAB</button>
 </div>
-
-<div class="toast" id="toast"></div>
-
+<div class="status glass"><span class="live"></span><span class="status-label" id="statusText">CORE ONLINE</span><button aria-label="Notifications" class="notify-button" id="notificationButton">◌<span class="notify-badge" id="notifyBadge"></span></button></div>
+</header>
+<section aria-label="Desktop workspace" id="workspace">
+<div aria-hidden="true" id="orbit">
+<div class="orbit-ring"><span class="orbit-dot"></span></div>
+<div class="orbit-ring"><span class="orbit-dot"></span></div>
+<div class="orbit-ring"><span class="orbit-dot"></span></div>
+<button aria-label="Open system overview" class="core" id="core">
+<span>SYSTEM CORE</span><b>PIXEL</b><span id="coreTime">00:00</span>
+</button>
+</div>
+<div class="app-node node-overview" data-open="welcome"><div class="app-icon">PX</div><span>Overview</span></div>
+<div class="app-node node-browser" data-open="browser"><div class="app-icon">WEB</div><span>Browser</span></div>
+<div class="app-node node-notes" data-open="notes"><div class="app-icon">N</div><span>Memory</span></div>
+<div class="app-node node-files" data-open="files"><div class="app-icon">F</div><span>Archive</span></div>
+<div class="app-node node-music" data-open="music"><div class="app-icon">♫</div><span>Radio</span></div>
+<div class="app-node node-theme" data-open="theme"><div class="app-icon">◆</div><span>Atmosphere</span></div>
+<div class="app-node node-calc" data-open="calculator"><div class="app-icon">Σ</div><span>Compute</span></div>
+<div class="app-node node-terminal" data-open="terminal"><div class="app-icon">&gt;_</div><span>Terminal</span></div>
+<div class="app-node node-monitor" data-open="monitor"><div class="app-icon">◫</div><span>Monitor</span></div>
+<div class="app-node node-tasks" data-open="tasks"><div class="app-icon">✓</div><span>Tasks</span></div>
+</section>
+<section aria-label="Command palette" class="palette" id="palette">
+<div class="palette-head"><span>COMMAND://</span><kbd>Ctrl K</kbd></div>
+<input autocomplete="off" id="commandInput" placeholder="Type an app, command, or action..."/>
+<div id="commandList"></div>
+</section>
+<section class="window open" data-app="welcome" id="welcome" style="left:170px;top:92px;width:590px">
+<div class="titlebar"><div class="window-title"><i></i>System Overview</div><div class="window-controls"><button aria-label="Minimize" class="min">—</button><button aria-label="Maximize" class="max">□</button><button aria-label="Close" class="x">×</button></div></div>
+<div class="content">
+<div class="hero">
+<div class="tag">browser operating environment</div>
+<h1 id="greeting">Good evening.</h1>
+<p>PixelOS turns the browser into a tiny desktop that actually behaves like one. Your tools, storage, audio, themes, and system utilities now share the same workspace.</p>
+<div class="stats">
+<div class="stat"><b id="fileCount">0</b><span>stored files</span></div>
+<div class="stat"><b id="noteState">EMPTY</b><span>memory status</span></div>
+<div class="stat"><b id="sessionTime">0m</b><span>session</span></div>
+<div class="stat"><b id="taskCount">0/0</b><span>tasks</span></div>
+</div>
+</div>
+<div class="quick-grid">
+<button class="quick-card" data-open="terminal"><b>Terminal</b><span>Run system commands</span></button>
+<button class="quick-card" data-open="monitor"><b>System Monitor</b><span>See live browser stats</span></button>
+<button class="quick-card" data-open="tasks"><b>Task Board</b><span>Keep a simple to-do list</span></button>
+<button class="quick-card" data-open="theme"><b>Terminal Theme</b><span>Switch the whole atmosphere</span></button>
+</div>
+<p class="hint">Tip: drag windows freely, use the minimize button, or press <b>Ctrl + K</b> to launch anything.</p>
+</div>
+</section>
+<section class="window" data-app="notes" id="notes" style="left:260px;top:126px;width:520px">
+<div class="titlebar"><div class="window-title"><i></i>Memory</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content">
+<h2>Memory</h2><p>One note that survives a refresh. Auto-save keeps edits from getting lost.</p>
+<textarea id="notesText" placeholder="Leave something for future-you..."></textarea>
+<div class="note-actions"><button class="btn" id="saveNotes">Save memory</button><button class="btn alt" id="clearNotes">Clear</button><span class="save-state" id="noteSaveState">Ready</span></div>
+</div>
+</section>
+<section class="window" data-app="files" id="files" style="left:302px;top:142px;width:600px">
+<div class="titlebar"><div class="window-title"><i></i>Archive</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content">
+<h2>Archive</h2><p>Small text files stored locally in this browser. Search, edit, duplicate, and delete without leaving the desktop.</p>
+<div class="toolbar"><input id="fileName" placeholder="Name your file..."/><button class="btn" id="newFile">Create</button></div>
+<div class="toolbar compact"><input id="fileSearch" placeholder="Search archive..."/><span class="count-chip" id="archiveCount">0 files</span></div>
+<div class="editor" id="editor"><div class="editor-head"><b id="editingName">Untitled</b><button class="btn alt" id="closeEditor">Close</button></div><textarea id="fileContent" placeholder="Start writing..."></textarea><div class="note-actions"><button class="btn" id="saveFile">Save file</button></div></div>
+<div id="fileList"></div>
+</div>
+</section>
+<section class="window" data-app="music" id="music" style="left:432px;top:115px;width:500px">
+<div class="titlebar"><div class="window-title"><i></i>Radio</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content">
+<h2>Radio</h2><p>Choose a signal and press play.</p>
+<div class="player-status" id="songStatus">Nothing playing</div>
+<canvas aria-label="Radio visualizer" class="radio-viz" id="radioViz"></canvas>
+<audio id="pixelOriginalAudio" preload="auto" src="pixelos-theme.mp3"></audio>
+<audio id="dreamOriginalAudio" preload="auto" src="digital-dreams.mp3"></audio>
+<div id="songList"></div>
+<div class="note-actions"><button class="btn" id="playMusic">▶ Play</button><button class="btn alt" id="pauseMusic">⏸ Pause</button><button class="btn alt" id="nextMusic">Next ›</button></div>
+</div>
+</section>
+<section class="window browser-window" data-app="browser" id="browser" style="left:150px;top:84px;width:760px">
+<div class="titlebar"><div class="window-title"><i></i>Browser</div><div class="window-controls"><button aria-label="Minimize" class="min">—</button><button aria-label="Maximize" class="max">□</button><button aria-label="Close" class="x">×</button></div></div>
+<div class="browser-shell">
+<div class="browser-toolbar">
+<button class="browser-nav" id="browserBack" title="Back">←</button><button class="browser-nav" id="browserForward" title="Forward">→</button><button class="browser-nav" id="browserReload" title="Reload">↻</button>
+<input aria-label="Address bar" class="browser-address" id="browserAddress" spellcheck="false" value="pixel://home"/>
+<button class="browser-tool" id="browserGo">Go</button><button class="browser-tool" id="browserNewTab">↗</button>
+</div>
+<div class="browser-viewport" id="browserViewport">
+<div class="browser-home" id="browserHome">
+<div class="tag">PIXEL://WEB</div><h3>Welcome to the NEXUS Browser</h3>
+<p>A lightweight in-desktop browser shell. Enter a URL or a search phrase above. Some sites refuse embedded frames; use ↗ to open the current address in a normal browser tab.</p>
+<div class="browser-links">
+<button class="browser-link" data-url="https://www.google.com/"><b>Google</b><span>Search the web</span></button>
+<button class="browser-link" data-url="https://en.wikipedia.org/wiki/Main_Page"><b>Wikipedia</b><span>Explore knowledge</span></button>
+<button class="browser-link" data-url="https://github.com/"><b>GitHub</b><span>Code &amp; projects</span></button>
+<button class="browser-link" data-url="https://developer.mozilla.org/"><b>MDN</b><span>Web documentation</span></button>
+</div>
+<div class="browser-note">Navigation is real, but websites control whether they allow themselves to be embedded inside another page.</div>
+</div>
+<iframe hidden="" id="browserFrame" referrerpolicy="no-referrer" title="PixelOS Browser"></iframe><div class="browser-message" hidden="" id="browserMessage"><strong>This site needs a normal browser tab</strong><span>Some websites block in-app frames. PixelOS will open those pages outside the desktop instead of leaving you with a blank or refused connection.</span><div class="browser-actions"><button class="btn" id="browserOpenExternal">Open page</button><button class="btn alt" id="browserReturnHome">Back to home</button></div></div>
+</div>
+</div>
+</section>
+<section class="window" data-app="calculator" id="calculator" style="left:385px;top:148px;width:390px">
+<div class="titlebar"><div class="window-title"><i></i>Compute</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content"><h2>Compute</h2><input aria-label="Calculator display" id="display" readonly="" style="height:52px;text-align:right;font-size:20px"/><div class="calc-grid" id="calc"></div><div class="note-actions" style="justify-content:flex-end"><button class="btn alt" id="calcClear">Clear</button></div></div>
+</section>
+<section class="window" data-app="theme" id="theme" style="left:475px;top:94px;width:500px">
+<div class="titlebar"><div class="window-title"><i></i>Atmosphere</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content">
+<h2>Atmosphere</h2>
+<div class="color-line"><span>Core accent</span><input id="accent" type="color" value="#a78bfa"/></div>
+<h3>Worlds</h3><div class="wallpapers" id="wallpapers"></div>
+<h3>Terminal preset</h3><div class="terminal-presets" id="terminalPresets"></div>
+<div class="note-actions"><button class="btn" id="randomTheme">Surprise me</button><button class="btn alt" id="resetTheme">Restore</button></div>
+</div>
+</section>
+<section class="window" data-app="settings" id="settings" style="left:520px;top:130px;width:500px">
+<div class="titlebar"><div class="window-title"><i></i>Control Center</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content"><h2>Control Center</h2>
+<div class="setting"><div class="setting-line"><div><h3>Notifications</h3><p>Show system messages.</p></div><div class="toggle on" id="notify"><i></i></div></div></div>
+<div class="setting"><div class="setting-line"><div><h3>Audio</h3><p>Allow the radio to play sound.</p></div><div class="toggle on" id="sound"><i></i></div></div></div>
+<div class="setting"><h3>Workspace management</h3><p>New windows auto-cascade and stay within the visible work area.</p><button class="btn alt" id="arrangeWindows">Arrange open windows</button></div>
+<div class="setting"><h3>Command palette</h3><p>Press Ctrl + K from anywhere to jump between apps or actions.</p><button class="btn" id="openPalette">Open palette</button></div>
+<button class="btn red" id="resetAll">Reset local data</button>
+</div>
+</section>
+<section class="window" data-app="terminal" id="terminal" style="left:205px;top:165px;width:660px">
+<div class="titlebar"><div class="window-title"><i></i>Terminal</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content terminal-content"><div class="terminal-output" id="terminalOutput"></div><div class="terminal-input-row"><span>pixel@nexus:~$</span><input autocomplete="off" id="terminalInput" placeholder="type help" spellcheck="false"/><button class="btn" id="terminalRun">Run</button></div></div>
+</section>
+<section class="window" data-app="monitor" id="monitor" style="left:270px;top:104px;width:560px">
+<div class="titlebar"><div class="window-title"><i></i>System Monitor</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content"><h2>System Monitor</h2><p>Browser-safe live telemetry. Values are estimates from the current page, not your operating system.</p><div class="monitor-grid" id="monitorGrid"></div><div class="meter"><span id="sessionMeter" style="width:0"></span></div></div>
+</section>
+<section class="window" data-app="tasks" id="tasks" style="left:350px;top:170px;width:540px">
+<div class="titlebar"><div class="window-title"><i></i>Task Board</div><div class="window-controls"><button class="min">—</button><button class="max">□</button><button class="x">×</button></div></div>
+<div class="content"><h2>Task Board</h2><p>A tiny persistent checklist for the project.</p><div class="toolbar"><input id="taskInput" placeholder="Add a task..."/><button class="btn" id="addTask">Add</button></div><div id="taskList"></div></div>
+</section>
+<nav aria-label="App dock" id="dock">
+<button class="dock-item active" data-open="welcome">CORE</button>
+<button class="dock-item" data-open="browser">WEB</button>
+<button class="dock-item" data-open="notes">MEM</button>
+<button class="dock-item" data-open="files">FILES</button>
+<button class="dock-item" data-open="music">RADIO</button>
+<button class="dock-item" data-open="calculator">CALC</button>
+<button class="dock-item" data-open="terminal">TERM</button>
+<button class="dock-item" data-open="monitor">MON</button>
+<button class="dock-item" data-open="theme">LOOK</button>
+<button class="dock-item" data-open="tasks">TASKS</button>
+<button class="dock-item" data-open="settings">CTRL</button>
+<button class="dock-item nexus" id="nexusDock">NEXUS</button>
+<button class="dock-item lock" id="lockDock">LOCK</button>
+<time id="clock">00:00</time>
+</nav>
+<div aria-live="polite" class="toast" id="toast" role="status"></div>
+<div aria-hidden="true" class="desktop-context" id="desktopContext">
+<button class="context-item" data-context="note">New memory <span>+</span></button>
+<button class="context-item" data-context="arrange">Arrange windows <span>↔</span></button>
+<button class="context-item" data-context="theme">Change atmosphere <span>LOOK</span></button>
+<button class="context-item" data-context="lock">Lock PixelOS <span>⌘</span></button>
+<button class="context-item" data-context="nexus">Enter NEXUS mode <span>↗</span></button>
+</div>
+<aside aria-label="Notification center" id="notificationPanel">
+<div class="notification-head"><b>Notification Center</b><button id="clearNotifications">Clear</button></div>
+<div class="notification-list" id="notificationList"></div>
+</aside>
+</main>
+<div class="nexus-overlay" id="nexusOverlay">
+<div class="nexus-grid"></div>
+<button aria-label="Exit NEXUS mode" class="nexus-close" id="nexusClose">×</button>
+<div class="nexus-panel">
+<section class="nexus-hero">
+<div class="nexus-kicker">PIXEL//OS NEXUS</div>
+<h2>System in motion.</h2>
+<p>The desktop is running as one live environment. Windows, sound, tasks, storage and the atmosphere are all connected here.</p>
+<div class="nexus-stats">
+<div class="nexus-stat"><b id="nexusWindows">0</b><span>windows</span></div>
+<div class="nexus-stat"><b id="nexusFiles">0</b><span>files</span></div>
+<div class="nexus-stat"><b id="nexusTasks">0/0</b><span>tasks</span></div>
+<div class="nexus-stat"><b id="nexusSpace">01</b><span>workspace</span></div>
+</div>
+<div class="nexus-actions"><button class="btn" id="nexusOpenTerminal">Open Terminal</button><button class="btn alt" id="nexusExit">Return to desktop</button></div>
+</section>
+<div class="nexus-side">
+<section class="nexus-card"><h3>Live system</h3><div class="nexus-list"><div class="nexus-row"><span>Core</span><b class="nexus-live"><i></i>ONLINE</b></div><div class="nexus-row"><span>Time</span><b id="nexusTime">00:00</b></div><div class="nexus-row"><span>Audio</span><b id="nexusAudio">IDLE</b></div><div class="nexus-row"><span>Theme</span><b id="nexusTheme">COSMOS</b></div></div></section>
+<section class="nexus-card"><h3>Quick actions</h3><div class="nexus-list"><button class="context-item" data-context="browser">Open Browser <span>WEB</span></button><button class="context-item" data-context="music">Open Radio <span>♫</span></button><button class="context-item" data-context="tasks">Open Tasks <span>✓</span></button><button class="context-item" data-context="theme">Open Atmosphere <span>◆</span></button></div></section>
+</div>
+</div>
+</div>
+<div class="lock-screen" id="lockScreen">
+<div class="lock-card">
+<div class="brand-mark">PX</div>
+<div class="lock-time" id="lockTime">00:00</div>
+<div class="lock-date" id="lockDate">Wednesday, September 23</div>
+<button class="btn" id="unlockButton">Unlock PixelOS</button>
+<div class="lock-hint">Press Escape to unlock</div>
+</div>
+</div>
+<div class="boot-screen" id="bootScreen">
+<div class="boot-core"><div class="boot-mark">PX</div><div class="boot-name">PIXEL//OS</div><div class="boot-line"><span></span></div><div class="boot-status">INITIALIZING NEXUS</div></div>
+</div>
 <script>
-const desktop=document.getElementById("desktop");
-const toastBox=document.getElementById("toast");
-let z=300, toastTimer, notifications=true, sound=true;
-const opened=new Set(["welcome"]);
+const $=(s,r=document)=>r.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+
+const desktop=$('#desktop');
+const workspace=$('#workspace');
+const toastBox=$('#toast');
+const bootScreen=$('#bootScreen');
+const lockScreen=$('#lockScreen');
+const notificationPanel=$('#notificationPanel');
+const notificationList=$('#notificationList');
+const notifyBadge=$('#notifyBadge');
+const desktopContext=$('#desktopContext');
+const nexusOverlay=$('#nexusOverlay');
+const started=Date.now();
+
+let z=300;
+let toastTimer;
+let notifications=true;
+let sound=true;
+let currentWorkspace=1;
+let cascadeIndex=0;
+let nexusOpen=false;
+let notesTimer;
+let files=[];
+let tasks=[];
+let editing=null;
+let currentSong=null;
+let audioCtx=null;
+let masterGain=null;
+let oscillators=[];
+let musicTimer=null;
+let appNames={};
+let appLayout={};
+let browserIndex=0;
+let browserHistory=['pixel://home'];
+let browserCurrentUrl='pixel://home';
+
+const defaultTheme={accent:'#a78bfa',wall:'cosmos',terminal:false};
+const walls={cosmos:['#03040b','#0e1024'],void:['#090b16','#0d1020'],violet:['#17132c','#0e1020'],ocean:['#0a2630','#07151f'],ember:['#2b1718','#130d12'],terminal:['#031108','#062a14']};
+const workspaceNames={1:'MAIN',2:'FOCUS',3:'LAB'};
+const commands=[
+  ['welcome','System Overview','Open the desktop overview'],
+  ['browser','Browser','Browse the web inside PixelOS'],
+  ['notes','Memory','Open persistent notes'],
+  ['files','Archive','Browse local text files'],
+  ['music','Radio','Play the built-in signals'],
+  ['calculator','Compute','Open the calculator'],
+  ['terminal','Terminal','Run PixelOS commands'],
+  ['monitor','System Monitor','View live browser stats'],
+  ['tasks','Task Board','Manage project tasks'],
+  ['theme','Atmosphere','Change worlds and terminal preset'],
+  ['settings','Control Center','Workspace and system settings'],
+  ['arrange','Arrange windows','Auto-place open windows'],
+  ['theme-terminal','Terminal theme','Switch to the terminal preset']
+];
+
+try{files=JSON.parse(localStorage.getItem('px-files')||'[]')||[]}catch{files=[]}
+try{tasks=JSON.parse(localStorage.getItem('px-tasks')||'[]')||[]}catch{tasks=[]}
+try{appNames=JSON.parse(localStorage.getItem('px-app-names')||'{}')||{}}catch{appNames={}}
+try{appLayout=JSON.parse(localStorage.getItem('px-app-layout')||'{}')||{}}catch{appLayout={}}
 
 function toast(text){
   if(!notifications)return;
   clearTimeout(toastTimer);
   toastBox.textContent=text;
-  toastBox.style.display="block";
-  toastTimer=setTimeout(()=>toastBox.style.display="none",2100);
+  toastBox.classList.add('show');
+  toastTimer=setTimeout(()=>toastBox.classList.remove('show'),2100);
+}
+
+function saveNotifications(log){localStorage.setItem('px-notifications',JSON.stringify(log.slice(0,30)))}
+let notificationsLog=[];
+try{notificationsLog=JSON.parse(localStorage.getItem('px-notifications')||'[]')||[]}catch{notificationsLog=[]}
+function renderNotifications(){
+  notificationList.innerHTML='';
+  if(!notificationsLog.length){
+    notificationList.innerHTML='<div class="empty">No notifications.</div>';
+    notifyBadge.textContent='';
+    return;
+  }
+  notificationsLog.slice(0,12).forEach(n=>{
+    const d=document.createElement('div');
+    d.className='notification';
+    d.innerHTML='<b></b><span></span><time></time>';
+    d.querySelector('b').textContent=n.title;
+    d.querySelector('span').textContent=n.text;
+    d.querySelector('time').textContent=new Date(n.time).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+    notificationList.appendChild(d);
+  });
+  notifyBadge.textContent=String(Math.min(9,notificationsLog.length));
+}
+function notify(text,title='PixelOS'){
+  notificationsLog.unshift({title,text,time:Date.now()});
+  saveNotifications(notificationsLog);
+  renderNotifications();
+  toast(text);
+}
+renderNotifications();
+$('#notificationButton').onclick=e=>{e.stopPropagation();notificationPanel.classList.toggle('show');renderNotifications()};
+$('#clearNotifications').onclick=()=>{notificationsLog=[];saveNotifications(notificationsLog);renderNotifications()};
+
+function updateWorkspaceView(){
+  $$('.workspace-btn').forEach(b=>b.classList.toggle('active',Number(b.dataset.space)===currentWorkspace));
+  $$('.window').forEach(w=>{
+    const ws=Number(w.dataset.workspace||1);
+    const visible=w.classList.contains('open')&&!w.classList.contains('minimized')&&ws===currentWorkspace;
+    w.classList.toggle('workspace-hidden',!visible);
+  });
+  $('#statusText').textContent='CORE ONLINE · '+String(currentWorkspace).padStart(2,'0')+' '+workspaceNames[currentWorkspace];
+  updateNexus();
+}
+function setWorkspace(n){
+  if(![1,2,3].includes(n))return;
+  currentWorkspace=n;
+  updateWorkspaceView();
+}
+$$('.workspace-btn').forEach(b=>b.onclick=()=>setWorkspace(Number(b.dataset.space)));
+
+function closeOverlays(){desktopContext.classList.remove('show');notificationPanel.classList.remove('show')}
+function lockPixelOS(){lockScreen.classList.add('show');closeOverlays()}
+function unlockPixelOS(){lockScreen.classList.remove('show')}
+$('#unlockButton').onclick=unlockPixelOS;
+
+function viewportClamp(win,left,top){
+  const margin=10;
+  const maxX=Math.max(margin,innerWidth-win.offsetWidth-margin);
+  const maxY=Math.max(56,innerHeight-95-win.offsetHeight);
+  return [Math.min(maxX,Math.max(margin,left)),Math.min(maxY,Math.max(56,top))];
+}
+function nextPosition(win){
+  cascadeIndex++;
+  const x=120+(cascadeIndex*38)%260;
+  const y=92+(cascadeIndex*34)%170;
+  return viewportClamp(win,x,y);
 }
 function openWindow(id){
   const win=document.getElementById(id);
   if(!win)return;
-  win.classList.add("open");
-  opened.add(id);
+  win.classList.remove('minimized','workspace-hidden');
+  win.classList.add('open');
+  win.dataset.workspace=String(currentWorkspace);
   z++;
   win.style.zIndex=z;
-  document.querySelectorAll(".dock-item").forEach(x=>x.classList.toggle("active",x.dataset.open===id));
+  if(!win.dataset.placed){
+    const [x,y]=nextPosition(win);
+    win.style.left=x+'px';
+    win.style.top=y+'px';
+    win.dataset.placed='1';
+  }
+  $$('.dock-item[data-open]').forEach(x=>x.classList.toggle('active',x.dataset.open===id));
+  if(id==='monitor')updateMonitor();
+  updateWorkspaceView();
 }
 function closeWindow(win){
-  win.classList.remove("open");
+  win.classList.remove('open','minimized');
+  win.classList.add('workspace-hidden');
   opened.delete(win.id);
+  updateNexus();
 }
-document.querySelectorAll("[data-open]").forEach(el=>{
-  el.addEventListener("click",()=>openWindow(el.dataset.open));
+function minimizeWindow(win){
+  win.classList.remove('open');
+  win.classList.add('minimized','workspace-hidden');
+  updateNexus();
+}
+function restoreWindow(win){
+  win.classList.remove('minimized','workspace-hidden');
+  win.classList.add('open');
+  win.dataset.workspace=String(currentWorkspace);
+  z++;
+  win.style.zIndex=z;
+  updateWorkspaceView();
+}
+function arrangeWindows(){
+  let i=0;
+  $$('.window.open').forEach(w=>{
+    if(w.classList.contains('max'))return;
+    const [x,y]=viewportClamp(w,95+(i%4)*45,82+(i%4)*38);
+    w.style.left=x+'px';
+    w.style.top=y+'px';
+    i++;
+  });
+  notify('Windows arranged','Workspace');
+}
+
+const opened=new Set(['welcome']);
+const originalOpen=openWindow;
+function openWindowTracked(id){opened.add(id);originalOpen(id)}
+window.openPixelWindow=openWindow;
+openWindow=openWindowTracked;
+
+$$('[data-open]').forEach(el=>el.addEventListener('click',()=>{
+  if(el.dataset.skipClick)return;
+  openWindow(el.dataset.open);
+}));
+
+const appLayoutKey='px-app-layout';
+function saveAppLayout(){localStorage.setItem(appLayoutKey,JSON.stringify(appLayout))}
+function applyAppLayout(){
+  $$('.app-node').forEach(app=>{
+    const pos=appLayout[app.dataset.open];
+    if(!pos)return;
+    app.style.left=pos.x+'px';
+    app.style.top=pos.y+'px';
+    app.style.right='auto';
+    app.style.bottom='auto';
+    app.classList.add('custom-position');
+  });
+}
+function bindAppDragging(app){
+  let dragging=false;
+  let moved=false;
+  let startX=0,startY=0,baseX=0,baseY=0;
+  app.addEventListener('pointerdown',e=>{
+    if(e.button!==undefined&&e.button!==0)return;
+    const r=app.getBoundingClientRect();
+    const wr=workspace.getBoundingClientRect();
+    startX=e.clientX;startY=e.clientY;
+    baseX=r.left-wr.left;baseY=r.top-wr.top;
+    dragging=true;moved=false;
+    app.classList.add('dragging');
+    app.setPointerCapture?.(e.pointerId);
+  });
+  app.addEventListener('pointermove',e=>{
+    if(!dragging)return;
+    const dx=e.clientX-startX,dy=e.clientY-startY;
+    if(Math.abs(dx)>4||Math.abs(dy)>4)moved=true;
+    const maxX=Math.max(8,workspace.clientWidth-app.offsetWidth-8);
+    const maxY=Math.max(8,workspace.clientHeight-app.offsetHeight-8);
+    const x=Math.min(maxX,Math.max(8,baseX+dx));
+    const y=Math.min(maxY,Math.max(8,baseY+dy));
+    app.style.left=x+'px';app.style.top=y+'px';
+    app.style.right='auto';app.style.bottom='auto';
+  });
+  const end=()=>{
+    if(!dragging)return;
+    dragging=false;
+    app.classList.remove('dragging');
+    if(moved){
+      appLayout[app.dataset.open]={x:Math.round(parseFloat(app.style.left)||0),y:Math.round(parseFloat(app.style.top)||0)};
+      saveAppLayout();
+      app.dataset.skipClick='1';
+      setTimeout(()=>delete app.dataset.skipClick,80);
+    }
+  };
+  app.addEventListener('pointerup',end);
+  app.addEventListener('pointercancel',end);
+}
+$$('.app-node').forEach(bindAppDragging);
+$$('.app-node').forEach(app=>{
+  const label=app.querySelector('span');
+  if(appNames[app.dataset.open])label.textContent=appNames[app.dataset.open];
+  app.addEventListener('contextmenu',e=>{
+    e.preventDefault();e.stopPropagation();
+    desktopContext.innerHTML='<button class="context-item" data-context="open">Open <span>↗</span></button><button class="context-item" data-context="rename">Rename <span>NAME</span></button><button class="context-item" data-context="lock">Lock PixelOS <span>⌘</span></button><button class="context-item" data-context="nexus">Enter NEXUS mode <span>↗</span></button>';
+    desktopContext.style.left=Math.min(innerWidth-220,Math.max(8,e.clientX))+'px';
+    desktopContext.style.top=Math.min(innerHeight-240,Math.max(8,e.clientY))+'px';
+    desktopContext.classList.add('show');
+    desktopContext.querySelector('[data-context="open"]').onclick=()=>{closeOverlays();openWindow(app.dataset.open)};
+    desktopContext.querySelector('[data-context="rename"]').onclick=()=>{closeOverlays();runContext('rename',app)};
+    desktopContext.querySelector('[data-context="lock"]').onclick=()=>runContext('lock');
+    desktopContext.querySelector('[data-context="nexus"]').onclick=()=>runContext('nexus');
+  });
 });
-document.querySelectorAll(".window").forEach(win=>{
-  win.addEventListener("mousedown",()=>{z++;win.style.zIndex=z});
-  win.querySelector(".x").addEventListener("click",e=>{e.stopPropagation();closeWindow(win)});
-  win.querySelector(".max").addEventListener("click",e=>{e.stopPropagation();win.classList.toggle("max");});
-  const bar=win.querySelector(".titlebar");
+applyAppLayout();
+
+$$('.window').forEach(win=>{
+  win.dataset.workspace=win.dataset.workspace||'1';
+  if(win.id!=='welcome')win.classList.remove('open');
+  win.classList.toggle('workspace-hidden',win.id!=='welcome');
+  win.addEventListener('mousedown',()=>{z++;win.style.zIndex=z});
+  $('.x',win)?.addEventListener('click',e=>{e.stopPropagation();closeWindow(win)});
+  $('.min',win)?.addEventListener('click',e=>{e.stopPropagation();minimizeWindow(win)});
+  $('.max',win)?.addEventListener('click',e=>{
+    e.stopPropagation();
+    win.classList.toggle('max');
+    if(!win.classList.contains('max')){
+      const [x,y]=viewportClamp(win,parseFloat(win.style.left)||100,parseFloat(win.style.top)||90);
+      win.style.left=x+'px';win.style.top=y+'px';
+    }
+  });
+  const bar=$('.titlebar',win);
   let drag=false,ox=0,oy=0;
-  bar.addEventListener("mousedown",e=>{
-    if(e.target.closest("button")||win.classList.contains("max"))return;
-    drag=true;const r=win.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;
+  bar.addEventListener('dblclick',e=>{
+    if(e.target.closest('button'))return;
+    win.classList.toggle('max');
+  });
+  bar.addEventListener('mousedown',e=>{
+    if(e.target.closest('button')||win.classList.contains('max'))return;
+    drag=true;
+    const r=win.getBoundingClientRect();
+    ox=e.clientX-r.left;oy=e.clientY-r.top;
     e.preventDefault();
   });
-  document.addEventListener("mousemove",e=>{
+  document.addEventListener('mousemove',e=>{
     if(!drag)return;
-    const maxX=Math.max(0,innerWidth-win.offsetWidth),maxY=Math.max(45,innerHeight-75-win.offsetHeight);
-    win.style.left=Math.min(maxX,Math.max(0,e.clientX-ox))+"px";
-    win.style.top=Math.min(maxY,Math.max(50,e.clientY-oy))+"px";
+    const [x,y]=viewportClamp(win,e.clientX-ox,e.clientY-oy);
+    win.style.left=x+'px';win.style.top=y+'px';
   });
-  document.addEventListener("mouseup",()=>drag=false);
+  document.addEventListener('mouseup',()=>drag=false);
 });
 
-desktop.addEventListener("mousemove",e=>{
-  desktop.style.setProperty("--mx",(e.clientX/innerWidth*100)+"%");
-  desktop.style.setProperty("--my",(e.clientY/innerHeight*100)+"%");
-});
-
-document.getElementById("core").addEventListener("click",()=>{
-  openWindow("welcome");
-  toast("Core diagnostics: all systems normal");
-});
-
-const notes=document.getElementById("notesText");
-notes.value=localStorage.getItem("px-notes")||"";
-function updateNoteState(){
-  const has=notes.value.trim().length>0;
-  document.getElementById("noteState").textContent=has?"READY":"EMPTY";
+function runContext(action,app){
+  closeOverlays();
+  if(action==='note'){openWindow('notes');$('#notesText').focus()}
+  else if(action==='arrange')arrangeWindows();
+  else if(action==='theme')openWindow('theme');
+  else if(action==='lock')lockPixelOS();
+  else if(action==='nexus')toggleNexus(true);
+  else if(action==='open'&&app)openWindow(app.dataset.open);
+  else if(action==='browser'||action==='music'||action==='tasks')openWindow(action);
+  else if(action==='rename'&&app){
+    const label=app.querySelector('span');
+    const next=prompt('Rename app',label?.textContent||'');
+    if(next&&next.trim()){
+      label.textContent=next.trim();
+      appNames[app.dataset.open]=next.trim();
+      localStorage.setItem('px-app-names',JSON.stringify(appNames));
+    }
+  }
 }
+$$('#desktopContext .context-item').forEach(b=>b.onclick=()=>runContext(b.dataset.context));
+desktop.addEventListener('contextmenu',e=>{
+  if(e.target.closest('.window,.app-node')||e.target.closest('button,input,textarea,a'))return;
+  e.preventDefault();
+  desktopContext.innerHTML='<button class="context-item" data-context="note">New memory <span>+</span></button><button class="context-item" data-context="arrange">Arrange windows <span>↔</span></button><button class="context-item" data-context="theme">Change atmosphere <span>LOOK</span></button><button class="context-item" data-context="lock">Lock PixelOS <span>⌘</span></button><button class="context-item" data-context="nexus">Enter NEXUS mode <span>↗</span></button>';
+  desktopContext.querySelectorAll('.context-item').forEach(b=>b.onclick=()=>runContext(b.dataset.context));
+  desktopContext.style.left=Math.min(innerWidth-220,Math.max(8,e.clientX))+'px';
+  desktopContext.style.top=Math.min(innerHeight-240,Math.max(8,e.clientY))+'px';
+  desktopContext.classList.add('show');
+});
+document.addEventListener('mousedown',e=>{
+  if(!e.target.closest('#desktopContext')&&!e.target.closest('#notificationPanel')&&!e.target.closest('#notificationButton'))closeOverlays();
+});
+desktop.addEventListener('pointerdown',e=>{
+  if(e.target.closest('.window,.app-node,#dock,#topbar,.palette,.desktop-context'))return;
+  const r=document.createElement('div');
+  r.className='desktop-ripple';
+  r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';
+  desktop.appendChild(r);setTimeout(()=>r.remove(),800);
+});
+
+$('#brandButton').onclick=()=>openWindow('welcome');
+$('#core').onclick=()=>{openWindow('welcome');toast('Core diagnostics: all systems normal')};
+
+desktop.addEventListener('mousemove',e=>{
+  desktop.style.setProperty('--mx',e.clientX/innerWidth*100+'%');
+  desktop.style.setProperty('--my',e.clientY/innerHeight*100+'%');
+});
+
+const spaceCanvas=$('#spaceCanvas');
+const spaceCtx=spaceCanvas.getContext('2d');
+let stars=[],sparks=[],spaceW=0,spaceH=0,spaceDpr=1,mouseX=.5,mouseY=.5;
+function seedSpace(){
+  stars=Array.from({length:260},()=>({x:Math.random(),y:Math.random(),z:.2+Math.random()*.9,r:.35+Math.random()*1.45,a:.18+Math.random()*.8,t:Math.random()*Math.PI*2,s:.5+Math.random()*1.8}));
+  sparks=Array.from({length:78},()=>({x:Math.random(),y:Math.random(),p:Math.random()*Math.PI*2,z:.3+Math.random()*.9}));
+}
+function resizeSpace(){
+  spaceDpr=Math.min(devicePixelRatio||1,2);
+  spaceW=innerWidth;spaceH=innerHeight;
+  spaceCanvas.width=Math.floor(spaceW*spaceDpr);spaceCanvas.height=Math.floor(spaceH*spaceDpr);
+  spaceCtx.setTransform(spaceDpr,0,0,spaceDpr,0,0);seedSpace();
+}
+resizeSpace();addEventListener('resize',resizeSpace);addEventListener('pointermove',e=>{mouseX=e.clientX/innerWidth;mouseY=e.clientY/innerHeight});
+function wavePoint(i,now,x){
+  const t=now*.00035,mid=spaceH*(.52+Math.sin(t*.72+i*.33)*.045),amp=spaceH*(.055+.012*Math.sin(i*.9)),u=x/Math.max(1,spaceW);
+  return mid+Math.sin(u*Math.PI*2.2+t*1.5+i*.55)*amp+Math.sin(u*Math.PI*5.3-t*1.1)*amp*.32+(i-5)*15+(mouseY-.5)*22;
+}
+function drawRibbon(i,now,width,alpha){
+  spaceCtx.beginPath();
+  for(let x=-90;x<=spaceW+90;x+=18){const y=wavePoint(i,now,x);if(x===-90)spaceCtx.moveTo(x,y);else spaceCtx.lineTo(x,y)}
+  spaceCtx.strokeStyle=`hsla(${i%3===0?188:i%3===1?264:322},92%,68%,${alpha})`;spaceCtx.lineWidth=width;spaceCtx.stroke();
+}
+function drawSpace(now){
+  spaceCtx.clearRect(0,0,spaceW,spaceH);
+  const g=spaceCtx.createRadialGradient(spaceW*.52,spaceH*.5,30,spaceW*.52,spaceH*.5,Math.max(spaceW,spaceH)*.72);
+  g.addColorStop(0,'rgba(15,10,28,.02)');g.addColorStop(.5,'rgba(10,7,23,.14)');g.addColorStop(1,'rgba(1,2,7,.38)');
+  spaceCtx.fillStyle=g;spaceCtx.fillRect(0,0,spaceW,spaceH);
+  spaceCtx.save();spaceCtx.globalCompositeOperation='screen';
+  for(let i=0;i<10;i++)drawRibbon(i,now,18+i*2,.015);
+  for(let i=0;i<6;i++)drawRibbon(i+1,now,1.2+(i%2)*.75,.12);
+  stars.forEach(st=>{
+    const x=(st.x*spaceW+(mouseX-.5)*42*st.z)%spaceW,y=(st.y*spaceH+(mouseY-.5)*28*st.z)%spaceH,tw=st.a*(.55+.45*Math.sin(now*.001*st.s+st.t));
+    spaceCtx.beginPath();spaceCtx.arc(x,y,st.r*st.z,0,Math.PI*2);spaceCtx.fillStyle=`rgba(255,255,255,${Math.max(.05,tw)})`;spaceCtx.fill();
+  });
+  sparks.forEach((sp,i)=>{
+    const x=sp.x*spaceW+(mouseX-.5)*80*sp.z,y=sp.y*spaceH+(mouseY-.5)*60*sp.z,p=.35+.65*Math.sin(now*.002*sp.z+sp.p),len=8+16*sp.z;
+    spaceCtx.strokeStyle=`rgba(${i%3===0?'103,232,249':i%3===1?'167,139,250':'244,114,182'},${.08+.16*p})`;spaceCtx.lineWidth=1;
+    spaceCtx.beginPath();spaceCtx.moveTo(x,y);spaceCtx.lineTo(x+len,y-len*.28);spaceCtx.stroke();
+  });
+  spaceCtx.restore();
+  requestAnimationFrame(drawSpace);
+}
+requestAnimationFrame(drawSpace);
+
+function updateTime(){
+  const now=new Date(),h=now.getHours();
+  $('#greeting').textContent=h<5?'Good night.':h<12?'Good morning.':h<18?'Good afternoon.':'Good evening.';
+  const time=now.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  $('#clock').textContent=time;$('#coreTime').textContent=time;$('#lockTime').textContent=time;
+  $('#lockDate').textContent=now.toLocaleDateString([],{weekday:'long',month:'long',day:'numeric'});
+  $('#sessionTime').textContent=Math.floor((Date.now()-started)/60000)+'m';
+  updateNexus();
+}
+updateTime();setInterval(updateTime,1000);
+
+const notes=$('#notesText');
+notes.value=localStorage.getItem('px-notes')||'';
+function updateNoteState(){$('#noteState').textContent=notes.value.trim()?'READY':'EMPTY'}
 updateNoteState();
-notes.addEventListener("input",updateNoteState);
-document.getElementById("saveNotes").onclick=()=>{
-  localStorage.setItem("px-notes",notes.value);
-  updateNoteState();toast("Memory saved");
-};
-document.getElementById("clearNotes").onclick=()=>{
-  notes.value="";localStorage.removeItem("px-notes");updateNoteState();toast("Memory cleared");
-};
+notes.addEventListener('input',()=>{
+  updateNoteState();clearTimeout(notesTimer);notesTimer=setTimeout(()=>{localStorage.setItem('px-notes',notes.value);$('#noteSaveState').textContent='Auto-saved'},500);
+});
+$('#saveNotes').onclick=()=>{localStorage.setItem('px-notes',notes.value);$('#noteSaveState').textContent='Saved';notify('Memory saved','Memory')};
+$('#clearNotes').onclick=()=>{notes.value='';localStorage.removeItem('px-notes');updateNoteState();$('#noteSaveState').textContent='Cleared';notify('Memory cleared','Memory')};
 
-let files=[];
-try{files=JSON.parse(localStorage.getItem("px-files"))||[]}catch{files=[]}
-let editing=null;
-const list=document.getElementById("fileList");
-function saveFiles(){localStorage.setItem("px-files",JSON.stringify(files));}
+const list=$('#fileList');
+function saveFiles(){localStorage.setItem('px-files',JSON.stringify(files))}
 function renderFiles(){
-  list.innerHTML="";
-  document.getElementById("fileCount").textContent=files.length;
-  if(!files.length){list.innerHTML='<div class="empty">Archive is empty.<br>Create a file to begin.</div>';return}
-  [...files].sort((a,b)=>b.updated-a.updated).forEach(file=>{
-    const row=document.createElement("div");row.className="file";
-    row.innerHTML='<div class="file-badge">TXT</div><div class="file-main"><b></b><small></small></div><div class="file-actions"></div>';
-    row.querySelector("b").textContent=file.name;
-    row.querySelector("small").textContent="edited "+new Date(file.updated).toLocaleString();
-    const open=document.createElement("button");open.className="btn alt";open.textContent="Open";open.onclick=()=>openFile(file.id);
-    const del=document.createElement("button");del.className="btn red";del.textContent="Delete";del.onclick=()=>deleteFile(file.id);
-    row.querySelector(".file-actions").append(open,del);list.appendChild(row);
+  list.innerHTML='';
+  const q=($('#fileSearch').value||'').toLowerCase().trim();
+  const visible=files.filter(f=>(f.name+' '+f.content).toLowerCase().includes(q)).sort((a,b)=>b.updated-a.updated);
+  $('#fileCount').textContent=files.length;$('#archiveCount').textContent=files.length+' file'+(files.length===1?'':'s');
+  if(!visible.length){list.innerHTML='<div class="empty">'+(files.length?'No files match that search.':'Archive is empty.<br>Create a file to begin.')+'</div>';return}
+  visible.forEach(file=>{
+    const row=document.createElement('div');row.className='file';row.innerHTML='<div class="file-badge">TXT</div><div class="file-main"><b></b><small></small></div><div class="file-actions"></div>';
+    row.querySelector('b').textContent=file.name;row.querySelector('small').textContent='edited '+new Date(file.updated).toLocaleString();
+    const open=document.createElement('button');open.className='btn alt';open.textContent='Open';open.onclick=()=>openFile(file.id);
+    const dup=document.createElement('button');dup.className='btn alt';dup.textContent='Copy';dup.onclick=()=>duplicateFile(file.id);
+    const del=document.createElement('button');del.className='btn red';del.textContent='Delete';del.onclick=()=>deleteFile(file.id);
+    row.querySelector('.file-actions').append(open,dup,del);list.appendChild(row);
   });
 }
-function openFile(id){
-  const file=files.find(x=>x.id===id);if(!file)return;
-  editing=id;document.getElementById("editingName").textContent=file.name;
-  document.getElementById("fileContent").value=file.content;
-  document.getElementById("editor").classList.add("show");
-}
-function deleteFile(id){
-  const file=files.find(x=>x.id===id);files=files.filter(x=>x.id!==id);
-  if(editing===id){editing=null;document.getElementById("editor").classList.remove("show")}
-  saveFiles();renderFiles();toast(file.name+" removed");
-}
-document.getElementById("newFile").onclick=()=>{
-  const input=document.getElementById("fileName"),name=input.value.trim();
-  if(!name){toast("Name the file first");return}
-  if(files.some(x=>x.name.toLowerCase()===name.toLowerCase())){toast("That file already exists");return}
-  const file={id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36),name,content:"",updated:Date.now()};
-  files.push(file);saveFiles();renderFiles();openFile(file.id);input.value="";toast("File created");
+function openFile(id){const file=files.find(x=>x.id===id);if(!file)return;editing=id;$('#editingName').textContent=file.name;$('#fileContent').value=file.content;$('#editor').classList.add('show')}
+function deleteFile(id){const file=files.find(x=>x.id===id);files=files.filter(x=>x.id!==id);if(editing===id){editing=null;$('#editor').classList.remove('show')}saveFiles();renderFiles();notify(file?.name+' removed','Archive')}
+function duplicateFile(id){const file=files.find(x=>x.id===id);if(!file)return;let name=file.name+' copy',n=2;while(files.some(x=>x.name.toLowerCase()===name.toLowerCase()))name=file.name+' copy '+n++;files.push({id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36),name,content:file.content,updated:Date.now()});saveFiles();renderFiles();notify('File duplicated','Archive')}
+$('#newFile').onclick=()=>{
+  const input=$('#fileName'),name=input.value.trim();
+  if(!name){toast('Name the file first');return}
+  if(files.some(x=>x.name.toLowerCase()===name.toLowerCase())){toast('That file already exists');return}
+  const file={id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36),name,content:'',updated:Date.now()};
+  files.push(file);saveFiles();renderFiles();openFile(file.id);input.value='';notify('File created','Archive');
 };
-document.getElementById("saveFile").onclick=()=>{
-  const file=files.find(x=>x.id===editing);if(!file)return;
-  file.content=document.getElementById("fileContent").value;file.updated=Date.now();
-  saveFiles();renderFiles();toast("File saved");
-};
-document.getElementById("closeEditor").onclick=()=>{
-  editing=null;document.getElementById("editor").classList.remove("show");
-};
+$('#fileSearch').oninput=renderFiles;
+$('#saveFile').onclick=()=>{const file=files.find(x=>x.id===editing);if(!file)return;file.content=$('#fileContent').value;file.updated=Date.now();saveFiles();renderFiles();notify('File saved','Archive')};
+$('#closeEditor').onclick=()=>{$('#editor').classList.remove('show');editing=null};
 renderFiles();
 
-const display=document.getElementById("display");
-const calc=document.getElementById("calc");
-["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].forEach(key=>{
-  const b=document.createElement("button");b.className="btn"+(["/","*","-","+"].includes(key)?" alt":"");
-  b.style.height="48px";b.textContent=key==="*"?"×":key==="/"?"÷":key;
-  b.onclick=()=>key==="="?calculate():appendCalc(key);calc.appendChild(b);
+const display=$('#display'),calc=$('#calc');
+['7','8','9','/','4','5','6','*','1','2','3','-','0','.','(',')','+','=','%'].forEach(key=>{
+  const b=document.createElement('button');b.className='btn'+(['/','*','-','+','%'].includes(key)?' alt':'');b.textContent={'*':'×','/':'÷'}[key]||key;b.onclick=()=>key==='='?calculate():appendCalc(key);calc.appendChild(b);
 });
-function appendCalc(v){display.value=display.value==="Error"?v:display.value+v}
+function appendCalc(v){display.value=display.value==='Error'?v:display.value+v}
 function calculate(){
   if(!display.value)return;
-  if(!/^[0-9+\-*/(). ]+$/.test(display.value)){display.value="Error";return}
-  try{const result=Function("return ("+display.value+")")();if(!Number.isFinite(result))throw 0;display.value=result}catch{display.value="Error"}
+  if(!/^[0-9+\-*/(). %]+$/.test(display.value)){display.value='Error';return}
+  try{const expr=display.value.replace(/%/g,'/100');const result=Function('return ('+expr+')')();if(!Number.isFinite(result))throw 0;display.value=String(result)}catch{display.value='Error'}
 }
-document.getElementById("calcClear").onclick=()=>display.value="";
-document.addEventListener("keydown",e=>{
-  if(e.ctrlKey&&e.key.toLowerCase()==="k"){e.preventDefault();togglePalette();return}
-  if(!document.getElementById("calculator").classList.contains("open")||e.target.matches("input,textarea"))return;
-  if(e.key.length===1&&/[0-9+\-*/().]/.test(e.key))appendCalc(e.key);
-  if(e.key==="Enter")calculate();
-  if(e.key==="Escape")display.value="";
-});
+$('#calcClear').onclick=()=>display.value='';
 
-const walls={void:["#090b16","#0d1020"],violet:["#17132c","#0e1020"],ocean:["#0a2630","#07151f"],ember:["#2b1718","#130d12"]};
+const pixelOriginalAudio=$('#pixelOriginalAudio'),dreamOriginalAudio=$('#dreamOriginalAudio');
+const songData=[
+  {id:'pixel',name:'PixelOS Theme',desc:'main system signal',kind:'file',audio:pixelOriginalAudio,src:'pixelos-theme.mp3',base:180,tempo:72},
+  {id:'dreams',name:'Digital Dreams',desc:'late-night transmission',kind:'file',audio:dreamOriginalAudio,src:'digital-dreams.mp3',base:220,tempo:82},
+  {id:'nebula',name:'Nebula Drift',desc:'slow orbital ambience',base:146,tempo:64},
+  {id:'sunrise',name:'Terminal Sunrise',desc:'warm boot sequence',base:196,tempo:96},
+  {id:'orbit',name:'Orbit Loop',desc:'minimal signal geometry',base:126,tempo:58}
+];
+function renderSongs(){
+  $('#songList').innerHTML='';
+  songData.forEach(s=>{const el=document.createElement('div');el.className='song';el.dataset.song=s.id;el.innerHTML='<b>'+s.name+'</b><small>'+s.desc+'</small>';el.onclick=()=>selectSong(s.id);$('#songList').appendChild(el)})
+}
+renderSongs();
+function ensureAudio(){
+  if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();masterGain=audioCtx.createGain();masterGain.gain.value=.06;masterGain.connect(audioCtx.destination)}
+  return audioCtx;
+}
+function stopGenerated(){oscillators.forEach(o=>{try{o.stop()}catch{}});oscillators=[];if(musicTimer)clearInterval(musicTimer);musicTimer=null}
+function stopRadio(){stopGenerated();[pixelOriginalAudio,dreamOriginalAudio].forEach(a=>{try{a.pause();a.currentTime=0}catch{}})}
+function selectSong(id){currentSong=songData.find(x=>x.id===id);if(!currentSong)return;stopRadio();$$('.song').forEach(x=>x.classList.toggle('selected',x.dataset.song===id));$('#songStatus').textContent=currentSong.name+' selected';updateNexus()}
+function playGenerated(){
+  if(!currentSong||!sound)return;
+  const ctx=ensureAudio();ctx.resume?.();$('#songStatus').textContent='Playing: '+currentSong.name;
+  const makeTone=(freq,detune=0,type='sine')=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type=type;o.frequency.value=freq;o.detune.value=detune;g.gain.value=.15;o.connect(g);g.connect(masterGain);o.start();oscillators.push(o)};
+  makeTone(currentSong.base,0,'sine');makeTone(currentSong.base*1.5,7,'triangle');
+  let step=0;musicTimer=setInterval(()=>{step++;oscillators.forEach((o,i)=>{o.frequency.setTargetAtTime(currentSong.base*(i?1.5:1)*(1+(step%4)*.015),ctx.currentTime,.04);o.detune.setTargetAtTime((step%8-4)*4,ctx.currentTime,.04)})},Math.max(220,currentSong.tempo*2));
+  updateNexus();
+}
+function playRadio(){
+  if(!currentSong){toast('Choose a signal first');return}
+  if(!sound){toast('Audio is muted');return}
+  stopRadio();
+  if(currentSong.kind==='file'){
+    currentSong.audio.currentTime=0;
+    currentSong.audio.play().then(()=>{$('#songStatus').textContent='Playing: '+currentSong.name;updateNexus()}).catch(()=>{$('#songStatus').textContent='Original audio file unavailable';toast('Put '+currentSong.src+' beside index.html to restore this track')});
+  }else playGenerated();
+}
+pixelOriginalAudio?.addEventListener('ended',()=>{$('#songStatus').textContent='Ended: PixelOS Theme';updateNexus()});
+dreamOriginalAudio?.addEventListener('ended',()=>{$('#songStatus').textContent='Ended: Digital Dreams';updateNexus()});
+$('#playMusic').onclick=playRadio;
+$('#pauseMusic').onclick=()=>{if(!currentSong){toast('Nothing is selected');return}stopRadio();$('#songStatus').textContent='Paused: '+currentSong.name;updateNexus()};
+$('#nextMusic').onclick=()=>{const i=Math.max(0,songData.findIndex(x=>x.id===currentSong?.id));const next=songData[(i+1)%songData.length];selectSong(next.id);playRadio()};
+
+const radioViz=$('#radioViz'),radioCtx=radioViz.getContext('2d');let vizPhase=0;
+function resizeViz(){const dpr=Math.min(devicePixelRatio||1,2),r=radioViz.getBoundingClientRect();radioViz.width=Math.max(1,Math.floor(r.width*dpr));radioViz.height=Math.max(1,Math.floor(r.height*dpr));radioCtx.setTransform(dpr,0,0,dpr,0,0)}
+resizeViz();addEventListener('resize',resizeViz);
+function drawRadioViz(now){
+  const w=radioViz.clientWidth,h=radioViz.clientHeight;radioCtx.clearRect(0,0,w,h);const cx=w/2,cy=h/2;vizPhase+=.018;
+  const grad=radioCtx.createRadialGradient(cx,cy,0,cx,cy,h*.7);grad.addColorStop(0,'rgba(167,139,250,.15)');grad.addColorStop(.5,'rgba(103,232,249,.05)');grad.addColorStop(1,'rgba(0,0,0,0)');radioCtx.fillStyle=grad;radioCtx.fillRect(0,0,w,h);
+  const level=currentSong?.kind==='file'?(Math.sin(now*.008)+1)*.5:(Math.sin(now*.01)+Math.sin(now*.017)*.35+1.35)/2.7;
+  for(let i=0;i<52;i++){const amp=(7+28*level)*(.35+.65*Math.sin(vizPhase+i*.42)**2),x=(i+.5)*w/52;const hue=i%3===0?188:i%3===1?264:322;radioCtx.fillStyle=`hsla(${hue},90%,70%,.58)`;radioCtx.fillRect(x,cy-amp,2,amp*2)}
+  requestAnimationFrame(drawRadioViz);
+}
+requestAnimationFrame(drawRadioViz);
+
+const browserAddress=$('#browserAddress'),browserFrame=$('#browserFrame'),browserHome=$('#browserHome'),browserMessage=$('#browserMessage');
+const browserOpenExternal=$('#browserOpenExternal'),browserReturnHome=$('#browserReturnHome');
+function normaliseAddress(value){
+  const v=value.trim();
+  if(!v)return 'pixel://home';
+  if(v==='pixel://home')return v;
+  if(/^https?:\/\//i.test(v))return v;
+  if(/^[\w.-]+\.[a-z]{2,}(\/.*)?$/i.test(v))return 'https://'+v;
+  return 'https://www.google.com/search?q='+encodeURIComponent(v);
+}
+function isWikipedia(url){try{const host=new URL(url).hostname.toLowerCase();return host==='wikipedia.org'||host==='www.wikipedia.org'||host.endsWith('.wikipedia.org')}catch{return false}}
+function showBrowserHome(){browserFrame.hidden=true;browserMessage.hidden=true;browserHome.hidden=false;browserAddress.value='pixel://home';browserCurrentUrl='pixel://home'}
+function showBrowserMessage(url){browserFrame.hidden=true;browserHome.hidden=true;browserMessage.hidden=false;browserAddress.value=url;browserCurrentUrl=url}
+function showBrowserPage(url){browserHome.hidden=true;browserMessage.hidden=true;browserFrame.hidden=false;browserFrame.src=url;browserAddress.value=url;browserCurrentUrl=url}
+function openExternal(url){if(/^https?:\/\//i.test(url))window.open(url,'_blank','noopener,noreferrer')}
+function navigateBrowser(raw,push=true){
+  const url=normaliseAddress(raw);
+  if(url==='pixel://home')showBrowserHome();
+  else if(isWikipedia(url))showBrowserPage(url);
+  else{showBrowserMessage(url);openExternal(url)}
+  if(push){browserHistory.splice(browserIndex+1);browserHistory.push(url);browserIndex=browserHistory.length-1}
+}
+$('#browserGo').onclick=()=>navigateBrowser(browserAddress.value);
+browserAddress.addEventListener('keydown',e=>{if(e.key==='Enter')navigateBrowser(browserAddress.value)});
+$('#browserReload').onclick=()=>{if(browserCurrentUrl==='pixel://home')showBrowserHome();else if(isWikipedia(browserCurrentUrl))showBrowserPage(browserCurrentUrl);else openExternal(browserCurrentUrl)};
+$('#browserBack').onclick=()=>{if(browserIndex<=0){showBrowserHome();return}browserIndex--;navigateBrowser(browserHistory[browserIndex],false)};
+$('#browserForward').onclick=()=>{if(browserIndex>=browserHistory.length-1)return;browserIndex++;navigateBrowser(browserHistory[browserIndex],false)};
+$('#browserNewTab').onclick=()=>openExternal(browserCurrentUrl==='pixel://home'?'https://www.google.com':browserCurrentUrl);
+browserOpenExternal.onclick=()=>openExternal(browserCurrentUrl);
+browserReturnHome.onclick=()=>showBrowserHome();
+$$('.browser-link').forEach(b=>b.onclick=()=>navigateBrowser(b.dataset.url));
+
 function setWall(name,save=true){
   if(!walls[name])return;
-  desktop.style.background=`radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(167,139,250,.13),transparent 24%),linear-gradient(135deg,${walls[name][0]},${walls[name][1]})`;
-  if(save)localStorage.setItem("px-wall",name);
+  const [a,b]=walls[name];
+  desktop.style.background=`radial-gradient(circle at 18% 82%,rgba(103,232,249,.13),transparent 28%),radial-gradient(circle at 82% 22%,rgba(244,114,182,.09),transparent 24%),radial-gradient(circle at var(--mx,50%) var(--my,35%),rgba(167,139,250,.18),transparent 28%),linear-gradient(135deg,${a},${b})`;
+  if(save)localStorage.setItem('px-wall',name);
+  $$('.wall').forEach(w=>w.classList.toggle('selected',w.dataset.wall===name));
 }
-document.querySelectorAll("[data-wall]").forEach(x=>x.onclick=()=>{setWall(x.dataset.wall);toast("Atmosphere changed")});
-document.getElementById("accent").oninput=e=>{
-  document.documentElement.style.setProperty("--accent",e.target.value);
-  localStorage.setItem("px-accent",e.target.value);
-};
-document.getElementById("randomTheme").onclick=()=>{
-  const colors=["#a78bfa","#67e8f9","#4ade80","#fb7185","#fbbf24","#f472b6"];
-  const names=Object.keys(walls);
-  const c=colors[Math.floor(Math.random()*colors.length)],w=names[Math.floor(Math.random()*names.length)];
-  document.getElementById("accent").value=c;document.documentElement.style.setProperty("--accent",c);localStorage.setItem("px-accent",c);
-  setWall(w);toast("Atmosphere randomized");
-};
-document.getElementById("resetTheme").onclick=()=>{
-  document.getElementById("accent").value="#a78bfa";document.documentElement.style.setProperty("--accent","#a78bfa");
-  localStorage.removeItem("px-accent");setWall("void");localStorage.removeItem("px-wall");toast("Atmosphere restored");
-};
-const ac=localStorage.getItem("px-accent");if(ac){document.getElementById("accent").value=ac;document.documentElement.style.setProperty("--accent",ac)}
-setWall(localStorage.getItem("px-wall")||"void",false);
-
-function toggle(el,value){el.classList.toggle("on",value)}
-document.getElementById("notify").onclick=()=>{notifications=!notifications;toggle(document.getElementById("notify"),notifications);if(notifications)toast("Notifications on")};
-document.getElementById("sound").onclick=()=>{sound=!sound;toggle(document.getElementById("sound"),sound);if(sound)toast("Audio on")};
-
-let currentSong=null;
-const songs={pixel:{name:"PixelOS Theme",audio:document.getElementById("pixelAudio")},dreams:{name:"Digital Dreams",audio:document.getElementById("dreamAudio")}};
-document.querySelectorAll(".song").forEach(item=>item.onclick=()=>{
-  if(currentSong)currentSong.audio.pause();
-  currentSong=songs[item.dataset.song];
-  document.querySelectorAll(".song").forEach(x=>x.classList.remove("selected"));item.classList.add("selected");
-  document.getElementById("songStatus").textContent=currentSong.name;toast(currentSong.name+" selected");
-});
-document.getElementById("playMusic").onclick=()=>{
-  if(!currentSong){toast("Choose a signal first");return}
-  if(!sound){toast("Audio is muted");return}
-  currentSong.audio.play().then(()=>document.getElementById("songStatus").textContent="Playing: "+currentSong.name).catch(()=>toast("Audio file not found"));
-};
-document.getElementById("pauseMusic").onclick=()=>{
-  if(!currentSong){toast("Nothing is selected");return}
-  currentSong.audio.pause();document.getElementById("songStatus").textContent="Paused: "+currentSong.name;
-};
-
-const palette=document.getElementById("palette"),commandInput=document.getElementById("commandInput");
-function togglePalette(){
-  palette.classList.toggle("show");
-  if(palette.classList.contains("show")){commandInput.value="";commandInput.focus()}
+const accent=$('#accent');
+function setAccent(v,save=true){document.documentElement.style.setProperty('--accent',v);accent.value=v;if(save)localStorage.setItem('px-accent',v)}
+accent.oninput=e=>setAccent(e.target.value);
+function setTerminalTheme(on,save=true){
+  document.body.classList.toggle('terminal-theme',on);
+  if(save)localStorage.setItem('px-terminal',on?'1':'0');
+  $$('.preset').forEach(p=>p.classList.toggle('active',(p.dataset.preset==='terminal'&&on)||(p.dataset.preset==='default'&&!on)));
 }
-document.getElementById("openPalette").onclick=togglePalette;
-document.querySelectorAll(".command").forEach(x=>x.onclick=()=>{openWindow(x.dataset.command);palette.classList.remove("show")});
-commandInput.addEventListener("keydown",e=>{
-  if(e.key==="Escape")palette.classList.remove("show");
-  if(e.key==="Enter"){
-    const first=[...document.querySelectorAll(".command")].find(x=>x.style.display!=="none");
-    if(first){openWindow(first.dataset.command);palette.classList.remove("show")}
+$('#wallpapers').innerHTML=Object.keys(walls).map(name=>'<button class="wall" data-wall="'+name+'" title="'+name+'"></button>').join('');
+$$('.wall').forEach(w=>w.onclick=()=>{setWall(w.dataset.wall);notify('Atmosphere changed','Theme')});
+$('#terminalPresets').innerHTML='<button class="preset" data-preset="default">Default</button><button class="preset" data-preset="terminal">Terminal</button>';
+$$('.preset').forEach(p=>p.onclick=()=>{const t=p.dataset.preset==='terminal';setTerminalTheme(t);if(t){setWall('terminal');setAccent('#86efac')}else{setWall(localStorage.getItem('px-wall')||'cosmos');setAccent(localStorage.getItem('px-accent')||'#a78bfa')}notify(t?'Terminal preset enabled':'Default preset enabled','Theme')});
+$('#randomTheme').onclick=()=>{const names=Object.keys(walls),colors=['#a78bfa','#67e8f9','#4ade80','#fb7185','#fbbf24','#f472b6'];setAccent(colors[Math.floor(Math.random()*colors.length)]);setWall(names[Math.floor(Math.random()*names.length)]);setTerminalTheme(false);notify('Atmosphere randomized','Theme')};
+$('#resetTheme').onclick=()=>{localStorage.removeItem('px-accent');localStorage.removeItem('px-wall');localStorage.removeItem('px-terminal');setAccent(defaultTheme.accent,false);setWall(defaultTheme.wall,false);setTerminalTheme(false,false);notify('Atmosphere restored','Theme')};
+setAccent(localStorage.getItem('px-accent')||defaultTheme.accent,false);setWall(localStorage.getItem('px-wall')||defaultTheme.wall,false);setTerminalTheme(localStorage.getItem('px-terminal')==='1',false);
+
+function toggle(el,value){el.classList.toggle('on',value)}
+$('#notify').onclick=()=>{notifications=!notifications;toggle($('#notify'),notifications);if(notifications)toast('Notifications on')};
+$('#sound').onclick=()=>{sound=!sound;toggle($('#sound'),sound);if(!sound)stopGenerated();else toast('Audio on')};
+$('#arrangeWindows').onclick=arrangeWindows;
+$('#openPalette').onclick=togglePalette;
+$('#resetAll').onclick=()=>{
+  ['px-notes','px-files','px-wall','px-accent','px-terminal','px-tasks','px-app-layout','px-app-names'].forEach(k=>localStorage.removeItem(k));
+  files=[];tasks=[];appLayout={};appNames={};notes.value='';renderFiles();renderTasks();updateNoteState();
+  $$('.app-node').forEach(a=>{a.style.left='';a.style.top='';a.style.right='';a.style.bottom='';a.classList.remove('custom-position')});
+  setAccent(defaultTheme.accent,false);setWall(defaultTheme.wall,false);setTerminalTheme(false,false);notify('Local data reset','System');
+};
+
+const termOut=$('#terminalOutput'),termInput=$('#terminalInput');
+function termPrint(text,cls=''){const d=document.createElement('div');if(cls)d.className=cls;d.textContent=text;termOut.appendChild(d);termOut.scrollTop=termOut.scrollHeight}
+function termCommand(raw){
+  const cmd=raw.trim().toLowerCase();if(!cmd)return;termPrint('pixel@nexus:~$ '+raw);
+  switch(cmd){
+    case'help':termPrint('Commands: help, apps, time, clear, files, note, browser, theme terminal, theme default, arrange, status, space 1, space 2, space 3');break;
+    case'apps':termPrint('Overview  Browser  Memory  Archive  Radio  Compute  Terminal  Monitor  Tasks  Atmosphere  Control Center');break;
+    case'time':termPrint(new Date().toString(),'accent');break;
+    case'clear':termOut.innerHTML='';break;
+    case'files':termPrint(files.length?files.map(f=>'• '+f.name).join('\n'):'Archive is empty.','muted');break;
+    case'browser':openWindow('browser');break;
+    case'note':termPrint(notes.value||'Memory is empty.','muted');break;
+    case'arrange':arrangeWindows();break;
+    case'status':termPrint('Core online | workspace '+workspaceNames[currentWorkspace]+' | '+files.length+' files | '+(notes.value.trim()?'memory ready':'memory empty')+' | '+tasks.length+' tasks');break;
+    case'space 1':setWorkspace(1);termPrint('Switched to MAIN.');break;
+    case'space 2':setWorkspace(2);termPrint('Switched to FOCUS.');break;
+    case'space 3':setWorkspace(3);termPrint('Switched to LAB.');break;
+    case'theme terminal':setTerminalTheme(true);setWall('terminal');setAccent('#86efac');termPrint('Terminal preset enabled.');break;
+    case'theme default':setTerminalTheme(false);setAccent(localStorage.getItem('px-accent')||'#a78bfa');setWall(localStorage.getItem('px-wall')||'cosmos');termPrint('Default preset restored.');break;
+    default:termPrint('Unknown command. Type help for a list.','muted');
   }
-});
-commandInput.addEventListener("input",()=>{
-  const q=commandInput.value.toLowerCase();
-  document.querySelectorAll(".command").forEach(x=>x.style.display=x.textContent.toLowerCase().includes(q)?"block":"none");
-});
-document.addEventListener("mousedown",e=>{
-  if(palette.classList.contains("show")&&!palette.contains(e.target)&&!e.target.closest("#openPalette"))palette.classList.remove("show");
-});
-
-document.getElementById("resetAll").onclick=()=>{
-  localStorage.removeItem("px-notes");localStorage.removeItem("px-files");localStorage.removeItem("px-wall");localStorage.removeItem("px-accent");
-  files=[];notes.value="";renderFiles();updateNoteState();
-  document.getElementById("accent").value="#a78bfa";document.documentElement.style.setProperty("--accent","#a78bfa");setWall("void",false);
-  toast("Local data reset");
-};
-
-const started=Date.now();
-function clock(){
-  const now=new Date();
-  const time=now.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-  document.getElementById("clock").textContent=time;
-  document.getElementById("coreTime").textContent=time;
-  document.getElementById("sessionTime").textContent=Math.floor((Date.now()-started)/60000)+"m";
 }
-clock();setInterval(clock,1000);
+$('#terminalRun').onclick=()=>{termCommand(termInput.value);termInput.value='';termInput.focus()};
+termInput.addEventListener('keydown',e=>{if(e.key==='Enter')$('#terminalRun').click()});
+termPrint('PixelOS NEXUS terminal ready. Type help to begin.','accent');
+
+function updateMonitor(){
+  const mem=performance.memory?.usedJSHeapSize?Math.round(performance.memory.usedJSHeapSize/1024/1024)+' MB':'n/a';
+  const nav=performance.getEntriesByType('navigation')[0];
+  const load=nav?Math.round(nav.domContentLoadedEventEnd)+' ms':'n/a';
+  $('#monitorGrid').innerHTML=[['Windows',[...opened].filter(id=>$('#'+id)?.classList.contains('open')).length],['Archive',files.length+' files'],['JS heap',mem],['DOM nodes',document.querySelectorAll('*').length],['Page load',load],['Viewport',innerWidth+' × '+innerHeight]].map(x=>'<div class="monitor-card"><b>'+x[1]+'</b><span>'+x[0]+'</span></div>').join('');
+  $('#sessionMeter').style.width=Math.min(100,(Date.now()-started)/60000*10)+'%';
+}
+setInterval(updateMonitor,2000);updateMonitor();
+
+function saveTasks(){localStorage.setItem('px-tasks',JSON.stringify(tasks))}
+function updateTaskCount(){const done=tasks.filter(x=>x.done).length;$('#taskCount').textContent=done+'/'+tasks.length}
+function renderTasks(){
+  const list=$('#taskList');list.innerHTML='';
+  if(!tasks.length){list.innerHTML='<div class="empty">No tasks yet. Add one above.</div>';updateTaskCount();updateNexus();return}
+  tasks.forEach(t=>{
+    const row=document.createElement('div');row.className='task'+(t.done?' done':'');
+    const cb=document.createElement('input');cb.type='checkbox';cb.checked=t.done;cb.onchange=()=>{t.done=cb.checked;saveTasks();renderTasks()};
+    const text=document.createElement('span');text.className='task-text';text.textContent=t.text;
+    const del=document.createElement('button');del.className='task-del';del.textContent='×';del.title='Delete';del.onclick=()=>{tasks=tasks.filter(x=>x.id!==t.id);saveTasks();renderTasks();notify('Task removed','Tasks')};
+    row.append(cb,text,del);list.appendChild(row);
+  });
+  updateTaskCount();updateNexus();
+}
+function addTask(){
+  const input=$('#taskInput'),text=input.value.trim();if(!text){toast('Write a task first');return}
+  tasks.push({id:crypto.randomUUID?crypto.randomUUID():Date.now().toString(36),text,done:false});saveTasks();renderTasks();input.value='';input.focus();notify('Task added','Tasks')
+}
+$('#addTask').onclick=addTask;$('#taskInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTask()});renderTasks();
+
+const palette=$('#palette'),commandInput=$('#commandInput'),commandList=$('#commandList');
+function renderCommands(q=''){const query=q.toLowerCase();commandList.innerHTML='';commands.filter(c=>(c[0]+' '+c[1]+' '+c[2]).toLowerCase().includes(query)).forEach((c,i)=>{const d=document.createElement('div');d.className='command'+(i===0?' active':'');d.dataset.command=c[0];d.innerHTML='<b>'+c[1]+'</b><small>'+c[2]+'</small>';d.onclick=()=>runCommand(c[0]);commandList.appendChild(d)})}
+function togglePalette(){palette.classList.toggle('show');if(palette.classList.contains('show')){commandInput.value='';renderCommands();commandInput.focus()}}
+function runCommand(id){palette.classList.remove('show');if(id==='arrange')arrangeWindows();else if(id==='theme-terminal'){setTerminalTheme(true);setWall('terminal');setAccent('#86efac');toast('Terminal preset enabled')}else openWindow(id)}
+renderCommands();
+commandInput.oninput=()=>renderCommands(commandInput.value);
+commandInput.addEventListener('keydown',e=>{if(e.key==='Escape')palette.classList.remove('show');if(e.key==='Enter'){const first=commandList.querySelector('.command');if(first)runCommand(first.dataset.command)}});
+
+function toggleNexus(force){nexusOpen=force??!nexusOpen;nexusOverlay.classList.toggle('show',nexusOpen);document.body.classList.toggle('nexus-active',nexusOpen);updateNexus()}
+function updateNexus(){
+  if(!nexusOverlay)return;
+  $('#nexusWindows').textContent=[...opened].filter(id=>$('#'+id)?.classList.contains('open')&&Number($('#'+id)?.dataset.workspace||1)===currentWorkspace).length;
+  $('#nexusFiles').textContent=files.length;
+  const done=tasks.filter(x=>x.done).length;$('#nexusTasks').textContent=done+'/'+tasks.length;
+  $('#nexusSpace').textContent=String(currentWorkspace).padStart(2,'0');
+  $('#nexusTime').textContent=$('#clock').textContent;
+  $('#nexusAudio').textContent=currentSong?(currentSong.name+(currentSong.kind==='file'&&currentSong.audio?.paused?' · PAUSED':'')):'IDLE';
+  $('#nexusTheme').textContent=(localStorage.getItem('px-terminal')==='1'?'TERMINAL':(localStorage.getItem('px-wall')||'cosmos')).toUpperCase();
+}
+$('#nexusClose').onclick=()=>toggleNexus(false);$('#nexusExit').onclick=()=>toggleNexus(false);$('#nexusOpenTerminal').onclick=()=>{toggleNexus(false);openWindow('terminal')};$('#nexusDock').onclick=()=>toggleNexus();
+$('#lockDock').onclick=lockPixelOS;
+$('#nexusOverlay').addEventListener('mousedown',e=>{if(e.target===nexusOverlay)toggleNexus(false)});
+
+$('#workspaceSwitcher').addEventListener('dblclick',e=>{const b=e.target.closest('.workspace-btn');if(!b)return;setWorkspace(Number(b.dataset.space))});
+
+document.addEventListener('keydown',e=>{
+  if(lockScreen.classList.contains('show')){if(e.key==='Escape')unlockPixelOS();return}
+  if(e.ctrlKey&&e.key.toLowerCase()==='k'){e.preventDefault();togglePalette();return}
+  if(e.altKey&&e.code==='Space'){e.preventDefault();togglePalette();return}
+  if(e.ctrlKey&&e.shiftKey&&e.key==='Enter'){e.preventDefault();toggleNexus();return}
+  if(e.key==='Escape'&&!palette.classList.contains('show'))display.value='';
+});
+
+$$('.window').forEach(w=>{if(w.id==='welcome'){w.dataset.workspace='1';w.classList.add('open');w.classList.remove('workspace-hidden')}});
+setWorkspace(1);
+notify('NEXUS workspace ready','System');
+setTimeout(()=>bootScreen.classList.add('hide'),1350);
 </script>
 </body>
 </html>
